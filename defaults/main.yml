@@ -1,0 +1,18 @@
+---
+# Default variables - inventory or playbook overrides will be respected
+
+# Virtual host settings
+apache_default_var_www_server_admin: "basweb@bas.ac.uk"
+apache_default_var_www_document_root: /var/www/ 
+apache_default_var_www_options:
+  - "-Indexes"
+  - "+FollowSymLinks"
+  - "-MultiViews"
+apache_default_var_www_allowoverride: "All"
+
+# Virtual host settings: SSL
+apache_default_var_www_ssl_enabled: false
+apache_default_var_www_ssl_cert_path: "/vagrant/data/certificates"
+apache_default_var_www_ssl_key_path: "{{ apache_default_var_www_ssl_cert_path }}"
+apache_default_var_www_ssl_cert_file: "cert.cer"
+apache_default_var_www_ssl_key_file: "cert.key"

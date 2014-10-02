@@ -1,0 +1,22 @@
+---
+galaxy_info:
+  description: Installs Apache web-sever using default virtual host
+  author: British Antarctic Survey - Web and Applications Team
+  company: British Antarctic Survey
+  license: Open Government Licence V2
+  min_ansible_version: 1.6
+  platforms:
+  - name: Ubuntu
+      - trusty
+  categories:
+  - web
+
+armadillo_info:
+  name: Apache
+  version: 0.2.2
+  source: git@stash.ceh.ac.uk:7999/barc/apache.git
+  dependencies:
+  - git@stash.ceh.ac.uk:7999/barc/core.git#v0.4.0
+
+dependencies:
+  - core

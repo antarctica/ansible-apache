@@ -1,0 +1,10 @@
+---
+# Remove default Apache content
+
+- name: remove default content
+  file: path=/var/www/index.html state=absent
+  when: ansible_distribution_version == "12.04"
+
+- name: remove default content
+  file: path=/var/www/html state=absent
+  when: ansible_distribution_version == "14.04"
