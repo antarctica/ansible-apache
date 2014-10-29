@@ -40,6 +40,10 @@ If using SSL the certificate and private key used must be accessible on the serv
 
 Variables used in default virtual host `/etc/apache2/sites-available/default`:
 
+* `apache_app_user_username`
+	* The username of the app user, used for day to day tasks, if enabled
+	* This variable **must** be a valid unix username
+	* Default: "app"
 * `apache_default_var_www_server_admin`
 	* E-mail address shown to users in error pages (404, 500, etc.).
 	* External servers should use `basweb@bas.ac.uk`.
@@ -67,7 +71,7 @@ Variables used in default virtual host `/etc/apache2/sites-available/default`:
     * Path, without a trailing slash, to the directory holding the SSL private key
     * Default: "{{ apache_default_var_www_ssl_cert_path }}" (i.e. same directory as `apache_default_var_www_ssl_cert_path`)
 * `apache_default_var_www_ssl_cert_file`
-    * File name (including extension) of SSL certifcate in `apache_default_var_www_ssl_cert_path`
+    * File name (including extension) of SSL certificate in `apache_default_var_www_ssl_cert_path`
     * Default: "cert.cer"
 * `apache_default_var_www_ssl_key_file`
     * File name (including extension) of SSL private key in `apache_default_var_www_ssl_key_path`
@@ -78,6 +82,8 @@ Variables used in default virtual host `/etc/apache2/sites-available/default`:
 ### 0.2.3 - October 2014
 
 * Updating role dependencies
+* The app user's username is now configurable
+* Spelling
 
 ### 0.2.2 - October 2014
 
