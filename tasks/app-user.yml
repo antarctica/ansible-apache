@@ -2,7 +2,7 @@
 # Configure Apache for use with app user
 
 - name: assign web-server rights to app user
-  user: name=app groups=www-data
+  user: name="{{ apache_app_user_username }}" groups=www-data
 
 - name: assign ownership of web root to app user
-  file: path=/var/www owner=app group=www-data recurse=yes
+  file: path=/var/www owner="{{ apache_app_user_username }}" group=www-data recurse=yes
