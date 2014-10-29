@@ -75,6 +75,10 @@ Variables used in default virtual host `/etc/apache2/sites-available/default`:
 
 ## Changelog
 
+### 0.2.3 - October 2014
+
+* Updating role dependencies
+
 ### 0.2.2 - October 2014
 
 * Adjusting role for inclusion in BARC
