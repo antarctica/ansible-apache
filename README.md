@@ -71,7 +71,7 @@ Variables used in default virtual host `/etc/apache2/sites-available/default`:
     * Path, without a trailing slash, to the directory holding the SSL private key
     * Default: "{{ apache_default_var_www_ssl_cert_path }}" (i.e. same directory as `apache_default_var_www_ssl_cert_path`)
 * `apache_default_var_www_ssl_cert_file`
-    * File name (including extension) of SSL certifcate in `apache_default_var_www_ssl_cert_path`
+    * File name (including extension) of SSL certificate in `apache_default_var_www_ssl_cert_path`
     * Default: "cert.cer"
 * `apache_default_var_www_ssl_key_file`
     * File name (including extension) of SSL private key in `apache_default_var_www_ssl_key_path`
@@ -83,6 +83,7 @@ Variables used in default virtual host `/etc/apache2/sites-available/default`:
 
 * Updating role dependencies
 * The app user's username is now configurable
+* Spelling
 
 ### 0.2.2 - October 2014
 
