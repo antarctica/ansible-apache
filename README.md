@@ -40,40 +40,50 @@ If using SSL the certificate and private key used must be accessible on the serv
 
 Variables used in default virtual host `/etc/apache2/sites-available/default`:
 
+* `apache_app_user_username`
+	* The username of the app user, used for day to day tasks, if enabled
+	* This variable **must** be a valid unix username
+	* Default: "app"
 * `apache_default_var_www_server_admin`
 	* E-mail address shown to users in error pages (404, 500, etc.).
 	* External servers should use `basweb@bas.ac.uk`.
-    * Default: "webteam@bas.ac.uk" 
+    * Default: "webteam@bas.ac.uk"
 * `apache_default_var_www_document_root`
-	* Location on server containing site files. 
+	* Location on server containing site files.
 	* If a non-default root is used ensure the `www-data` group has access.
-    * Default: "/var/www/" 
+    * Default: "/var/www/"
 * `apache_default_var_www_options`
-    * Array of options, each will be added as a separate `option: {{ item }}` 
+    * Array of options, each will be added as a separate `option: {{ item }}`
 	* Default: [array]
         * "-Indexes"
         * "+FollowSymLinks"
         * "-MultiViews
 * `apache_default_var_www_allowoverride`
-	* To disable `.htaccess` support set this to `None`. 
+	* To disable `.htaccess` support set this to `None`.
 	* Default: "All"`
 * `apache_default_var_www_ssl_enabled`
-    * Boolean value for enabling SSL support 
+    * Boolean value for enabling SSL support
     * Default: "false"
 * `apache_default_var_www_ssl_cert_path`
-    * Path, without a trailing slash, to the directory holding the SSL certificate 
+    * Path, without a trailing slash, to the directory holding the SSL certificate
     * Default: "/vagrant/data/certificates"
 * `apache_default_var_www_ssl_key_path`
-    * Path, without a trailing slash, to the directory holding the SSL private key 
+    * Path, without a trailing slash, to the directory holding the SSL private key
     * Default: "{{ apache_default_var_www_ssl_cert_path }}" (i.e. same directory as `apache_default_var_www_ssl_cert_path`)
 * `apache_default_var_www_ssl_cert_file`
-    * File name (including extension) of SSL certifcate in `apache_default_var_www_ssl_cert_path`
+    * File name (including extension) of SSL certificate in `apache_default_var_www_ssl_cert_path`
     * Default: "cert.cer"
 * `apache_default_var_www_ssl_key_file`
     * File name (including extension) of SSL private key in `apache_default_var_www_ssl_key_path`
     * Default: "cert.key"
 
 ## Changelog
+
+### 0.2.3 - October 2014
+
+* Updating role dependencies
+* The app user's username is now configurable
+* Spelling
 
 ### 0.2.2 - October 2014
 
@@ -111,11 +121,3 @@ Variables used in default virtual host `/etc/apache2/sites-available/default`:
 ### 0.1.0 - June 2014
 
 * Initial version
-
-
-
-
-
-
-
-
