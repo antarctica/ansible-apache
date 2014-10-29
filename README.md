@@ -109,6 +109,7 @@ Variables used in default virtual host `/etc/apache2/sites-available/default`:
 * Updating role dependencies
 * The app user's username is now configurable
 * Spelling
+* Preparing role for public release
 
 ### 0.2.2 - October 2014
 
