@@ -11,6 +11,7 @@ Installs Apache web-sever using default virtual host
 * Optionally configures virtual host for HTTPS connections, if a non-default document root is used the virtual host will be configured to point to this location.
 * The app user is made a member of the `www-data` group and ownership of the default document root is set to the 'app' user.
 * Default content is removed (for use with a default document root).
+* Optionally adds support for a single alias, for compatibility with production environments.
 
 ## Availability
 
@@ -44,6 +45,10 @@ Variables used in default virtual host `/etc/apache2/sites-available/default`:
 	* Location on server containing site files.
 	* If a non-default root is used ensure the `www-data` group has access.
     * Default: "/var/www/"
+* `apache_default_var_www_document_root_alias` 
+	* Path, without a leading or trailing slash, of the virtual directory (i.e. the value as used in the URL). 
+	* The alias will always point to the path set by `apache_default_var_www_document_root`.
+	* Default: "" (empty string)
 * `apache_default_var_www_options`
     * Array of options, each will be added as a separate `option: {{ item }}`
 	* Default: [array]

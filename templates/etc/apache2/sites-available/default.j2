@@ -6,6 +6,9 @@ ServerTokens ProductOnly
 <VirtualHost *:80>
     ServerAdmin {{ apache_default_var_www_server_admin }}
     DocumentRoot {{ apache_default_var_www_document_root }}
+{% if apache_default_var_www_document_root_alias !=  '' %}
+    Alias /{{ apache_default_var_www_document_root_alias }} "{{ apache_default_var_www_document_root }}"
+{% endif %}
 
     # Possible values include: debug, info, notice, warn, error, crit, alert, emerg.
     LogLevel warn
