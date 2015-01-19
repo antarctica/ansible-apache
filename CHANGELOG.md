@@ -1,5 +1,9 @@
 # Apache (`apache`) - Changelog
 
+## 0.3.0 - January 2015
+
+* Adds single alias support
+
 ## 0.2.4 - December 2014
 
 * Preparing role for public release
