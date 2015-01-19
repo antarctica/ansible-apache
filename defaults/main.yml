@@ -7,6 +7,7 @@ apache_app_user_username: app
 # Virtual host settings
 apache_default_var_www_server_admin: "basweb@bas.ac.uk"
 apache_default_var_www_document_root: /var/www/
+apache_default_var_www_document_root_alias: ""
 apache_default_var_www_options:
   - "-Indexes"
   - "+FollowSymLinks"
