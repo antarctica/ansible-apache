@@ -35,8 +35,33 @@ Variables used in default virtual host `/etc/apache2/sites-available/default`:
 
 * `apache_app_user_username`
 	* The username of the app user, used for day to day tasks, if enabled
-	* This variable **must** be a valid unix username
+	* This variable **MUST** be a valid unix username
 	* Default: "app"
+* `apache_server_use_canonical_name`
+    * Whether Apache should use the server name value when constructing self-referential links or if a dynamic value can be used.
+    * If this variable is set to "on", you **MUST** ensure the `apache_default_var_www_server_name` variable is set correctly. 
+    * In most cases it is safe to leave this option turned off.
+    * See [the Apache documentation](http://httpd.apache.org/docs/current/mod/core.html#usecanonicalname) for more information.
+    * You **MUST** quote this value or Ansible will evaluate this value to a "True" or "False" which are not valid.
+    * Allowed values: "on" or "off".
+    * Default: "off"
+* `apache_default_var_www_server_binding`
+    * The networking interface Apache will listen for connections on
+    * By default this variable listens on any IPv4 interface.
+    * Default: "0.0.0.0"
+* `apache_default_var_www_server_http_port`
+    * The port on which Apache will listen for HTTP connections
+    * By default this variable uses port 80, this is a convention and **SHOULD NOT** be changed.
+    * Default: "80"
+* `apache_default_var_www_server_https_port`
+    * The port on which Apache will listen for HTTPS connections
+    * By default this variable uses port 80, this is a convention and **SHOULD NOT** be changed.
+    * Default: "443"
+* `apache_default_var_www_server_name`
+    * Name of the virtual server
+    * If using an SSL certificate this variable **MUST** match the subject of the certificate
+    * By default this variable will use the system hostname
+    * Default: "{{ ansible_hostname }}"
 * `apache_default_var_www_server_admin`
 	* E-mail address shown to users in error pages (404, 500, etc.).
 	* External servers should use `basweb@bas.ac.uk`.
@@ -63,16 +88,28 @@ Variables used in default virtual host `/etc/apache2/sites-available/default`:
     * Default: "false"
 * `apache_default_var_www_ssl_cert_path`
     * Path, without a trailing slash, to the directory holding the SSL certificate
-    * Default: "/vagrant/data/certificates"
+    * Default: "/app/provisioning/certificates/domain"
+* `apache_default_var_www_ssl_cert_file`
+    * The file name and extension of the SSL certificate file within the directory specified by `apache_default_var_www_ssl_cert_path`
+    * The certificate file **SHOULD** contain any required trust chain, but **SHOULD NOT** contain the root of the chain.
+    * By convention this file **SHOULD** use a `.crt` extension.
+    * Default: "certificate-including-trust-chain.crt"
+* `apache_default_var_www_ssl_cert_chain_path`
+    * Path, without a trailing slash, to the directory holding the SSL certificate chain
+    * Default: "{{ apache_default_var_www_ssl_cert_path }}" (i.e. same directory as `apache_default_var_www_ssl_cert_path`)
+* `apache_default_var_www_ssl_cert_chain_file`
+    * The file name and extension of the SSL certificate chain file within the directory specified by `apache_default_var_www_ssl_cert_chain_path`
+    * This variable is usually the same as `apache_default_var_www_ssl_cert_file` as the trust chain is part of the same file
+    * By convention this file **SHOULD** use a `.crt` extension.
+    * Default: "{{ apache_default_var_www_ssl_cert_file }}" (i.e. same directory as `apache_default_var_www_ssl_cert_file`)
 * `apache_default_var_www_ssl_key_path`
     * Path, without a trailing slash, to the directory holding the SSL private key
-    * Default: "{{ apache_default_var_www_ssl_cert_path }}" (i.e. same directory as `apache_default_var_www_ssl_cert_path`)
-* `apache_default_var_www_ssl_cert_file`
-    * File name (including extension) of SSL certificate in `apache_default_var_www_ssl_cert_path`
-    * Default: "cert.cer"
+    * By default this variable uses the Debian convention for SSL private keys and so this variable **SHOULD NOT** be changed.
+    * Default: "/etc/ssl/private"
 * `apache_default_var_www_ssl_key_file`
-    * File name (including extension) of SSL private key in `apache_default_var_www_ssl_key_path`
-    * Default: "cert.key"
+    * The file name and extension of the SSL private key within the directory specified by `apache_default_var_www_ssl_key_path`
+    * By convention this file **SHOULD** use a `.key` extension
+    * Default: "certificate.key"
 
 ## Contributing
 
@@ -82,7 +119,7 @@ This project welcomes contributions, see `CONTRIBUTING` for our general policy.
 
 ### Committing changes
 
-The [Git flow](https://github.com/fzaninotto/Faker#formatters) workflow is used to manage development of this package.
+The [Git flow](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow/) workflow is used to manage development of this package.
 
 Discrete changes should be made within *feature* branches, created from and merged back into *develop* (where small one-line changes may be made directly).
 
@@ -96,4 +133,4 @@ Issues, bugs, improvements, questions, suggestions and other tasks related to th
 
 ## License
 
-Copyright 2014 NERC BAS. Licensed under the MIT license, see `LICENSE` for details.
+Copyright 2015 NERC BAS. Licensed under the MIT license, see `LICENSE` for details.

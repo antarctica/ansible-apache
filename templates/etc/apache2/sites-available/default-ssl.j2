@@ -1,15 +1,16 @@
 # {{ ansible_managed }}
 
-ServerName {{ ansible_hostname }}
 ServerTokens ProductOnly
+UseCanonicalName {{ apache_server_use_canonical_name }}
 
 <IfModule mod_ssl.c>
-    <VirtualHost *:443>
+    <VirtualHost {{ apache_default_var_www_server_binding }}:{{ apache_default_var_www_server_https_port }}>
+        ServerName {{ apache_default_var_www_server_name }}
         ServerAdmin {{ apache_default_var_www_server_admin }}
         DocumentRoot {{ apache_default_var_www_document_root }}
-{% if apache_default_var_www_document_root_alias !=  '' %}
+    {% if apache_default_var_www_document_root_alias !=  '' %}
         Alias /{{ apache_default_var_www_document_root_alias }} "{{ apache_default_var_www_document_root }}"
-{% endif %}
+    {% endif %}
 
         # Possible values include: debug, info, notice, warn, error, crit, alert, emerg.
         LogLevel warn ssl:warn
@@ -48,8 +49,9 @@ ServerTokens ProductOnly
 
         # Enable SSL for this virtual host.
         SSLEngine on
-        SSLCertificateFile    {{ apache_default_var_www_ssl_cert_path }}/{{ apache_default_var_www_ssl_cert_file }}
-        SSLCertificateKeyFile {{ apache_default_var_www_ssl_key_path }}/{{ apache_default_var_www_ssl_key_file }}
+        SSLCertificateFile      {{ apache_default_var_www_ssl_cert_path }}/{{ apache_default_var_www_ssl_cert_file }}
+        SSLCertificateChainFile {{ apache_default_var_www_ssl_cert_chain_path }}/{{ apache_default_var_www_ssl_cert_chain_file }}
+        SSLCertificateKeyFile   {{ apache_default_var_www_ssl_key_path }}/{{ apache_default_var_www_ssl_key_file }}
 
         # Apply SSL settings
         <FilesMatch "\.(cgi|shtml|phtml|php)$">

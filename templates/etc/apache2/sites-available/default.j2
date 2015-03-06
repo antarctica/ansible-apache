@@ -1,9 +1,10 @@
 # {{ ansible_managed }}
 
-ServerName {{ ansible_hostname }}
 ServerTokens ProductOnly
+UseCanonicalName {{ apache_server_use_canonical_name }}
 
-<VirtualHost *:80>
+<VirtualHost {{ apache_default_var_www_server_binding }}:{{ apache_default_var_www_server_http_port }} >
+    ServerName {{ apache_default_var_www_server_name }}
     ServerAdmin {{ apache_default_var_www_server_admin }}
     DocumentRoot {{ apache_default_var_www_document_root }}
 {% if apache_default_var_www_document_root_alias !=  '' %}
