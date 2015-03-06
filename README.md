@@ -45,6 +45,18 @@ Variables used in default virtual host `/etc/apache2/sites-available/default`:
     * You **MUST** quote this value or Ansible will evaluate this value to a "True" or "False" which are not valid.
     * Allowed values: "on" or "off".
     * Default: "off"
+* `apache_default_var_www_server_binding`
+    * The networking interface Apache will listen for connections on
+    * By default this variable listens on any IPv4 interface.
+    * Default: "0.0.0.0"
+* `apache_default_var_www_server_http_port`
+    * The port on which Apache will listen for HTTP connections
+    * By default this variable uses port 80, this is a convention and **SHOULD NOT** be changed.
+    * Default: "80"
+* `apache_default_var_www_server_https_port`
+    * The port on which Apache will listen for HTTPS connections
+    * By default this variable uses port 80, this is a convention and **SHOULD NOT** be changed.
+    * Default: "443"
 * `apache_default_var_www_server_name`
     * Name of the virtual server
     * If using an SSL certificate this variable **MUST** match the subject of the certificate

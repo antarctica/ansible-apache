@@ -4,7 +4,7 @@ ServerTokens ProductOnly
 UseCanonicalName {{ apache_server_use_canonical_name }}
 
 <IfModule mod_ssl.c>
-    <VirtualHost *:443>
+    <VirtualHost {{ apache_default_var_www_server_binding }}:{{ apache_default_var_www_server_https_port }}>
         ServerName {{ apache_default_var_www_server_name }}
         ServerAdmin {{ apache_default_var_www_server_admin }}
         DocumentRoot {{ apache_default_var_www_document_root }}
