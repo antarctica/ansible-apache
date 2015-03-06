@@ -1,6 +1,7 @@
 # {{ ansible_managed }}
 
 ServerTokens ProductOnly
+UseCanonicalName {{ apache_server_use_canonical_name }}
 
 <IfModule mod_ssl.c>
     <VirtualHost *:443>

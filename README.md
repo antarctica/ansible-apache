@@ -37,6 +37,14 @@ Variables used in default virtual host `/etc/apache2/sites-available/default`:
 	* The username of the app user, used for day to day tasks, if enabled
 	* This variable **must** be a valid unix username
 	* Default: "app"
+* `apache_server_use_canonical_name`
+    * Whether Apache should use the server name value when constructing self-referential links or if a dynamic value can be used.
+    * If this variable is set to "on", you **MUST** ensure the `apache_default_var_www_server_name` variable is set correctly. 
+    * In most cases it is safe to leave this option turned off.
+    * See [the Apache documentation](http://httpd.apache.org/docs/current/mod/core.html#usecanonicalname) for more information.
+    * You **MUST** quote this value or Ansible will evaluate this value to a "True" or "False" which are not valid.
+    * Allowed values: "on" or "off".
+    * Default: "off"
 * `apache_default_var_www_server_name`
     * Name of the virtual server
     * If using an SSL certificate this variable **MUST** match the subject of the certificate

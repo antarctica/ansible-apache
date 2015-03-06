@@ -1,6 +1,7 @@
 # {{ ansible_managed }}
 
 ServerTokens ProductOnly
+UseCanonicalName {{ apache_server_use_canonical_name }}
 
 <VirtualHost *:80>
     ServerName {{ apache_default_var_www_server_name }}

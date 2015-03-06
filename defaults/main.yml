@@ -4,6 +4,9 @@
 # User settings
 apache_app_user_username: app
 
+# Server settings
+apache_server_use_canonical_name: "off"
+
 # Virtual host settings
 apache_default_var_www_server_name: "{{ ansible_hostname }}"
 apache_default_var_www_server_admin: "basweb@bas.ac.uk"
