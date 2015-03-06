@@ -4,7 +4,7 @@
 
 * Adds SSL chain file support
 * Adds server name support
-* Adds use canonical name support
+* Adds canonical name support
 * Adds support for setting the network interface and secure/non-secure port bindings
 
 ## 0.3.0 - January 2015
