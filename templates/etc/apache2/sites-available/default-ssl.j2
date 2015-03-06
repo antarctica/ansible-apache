@@ -50,6 +50,7 @@ ServerTokens ProductOnly
         SSLEngine on
         SSLCertificateFile    {{ apache_default_var_www_ssl_cert_path }}/{{ apache_default_var_www_ssl_cert_file }}
         SSLCertificateKeyFile {{ apache_default_var_www_ssl_key_path }}/{{ apache_default_var_www_ssl_key_file }}
+        SSLCertificateChainFile {{ apache_default_var_www_ssl_cert_chain_path }}/{{ apache_default_var_www_ssl_cert_chain_file }}
 
         # Apply SSL settings
         <FilesMatch "\.(cgi|shtml|phtml|php)$">

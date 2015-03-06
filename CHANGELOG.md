@@ -1,5 +1,9 @@
 # Apache (`apache`) - Changelog
 
+## 0.4.0 - March 2015
+
+* Adds SSL chain file support
+
 ## 0.3.0 - January 2015
 
 * Adds single alias support
