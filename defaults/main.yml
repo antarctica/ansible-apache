@@ -19,4 +19,6 @@ apache_default_var_www_ssl_enabled: false
 apache_default_var_www_ssl_cert_path: "/vagrant/data/certificates"
 apache_default_var_www_ssl_key_path: "{{ apache_default_var_www_ssl_cert_path }}"
 apache_default_var_www_ssl_cert_file: "cert.cer"
+apache_default_var_www_ssl_cert_chain_path: "{{ apache_default_var_www_ssl_cert_path }}"
+apache_default_var_www_ssl_cert_chain_file: "{{ apache_default_var_www_ssl_cert_file }}"
 apache_default_var_www_ssl_key_file: "cert.key"

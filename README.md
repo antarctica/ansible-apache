@@ -70,6 +70,13 @@ Variables used in default virtual host `/etc/apache2/sites-available/default`:
 * `apache_default_var_www_ssl_cert_file`
     * File name (including extension) of SSL certificate in `apache_default_var_www_ssl_cert_path`
     * Default: "cert.cer"
+* `apache_default_var_www_ssl_cert_chain_path`
+    * Path, without a trailing slash, to the directory holding the SSL certificate chain
+    * Default: "{{ apache_default_var_www_ssl_cert_path }}" (i.e. same directory as `apache_default_var_www_ssl_cert_path`)
+* `apache_default_var_www_ssl_cert_chain_file`
+    * File name, including extension, of the SSL certificate chain
+    * This is usually the same file as the `apache_default_var_www_ssl_cert_file`
+    * Default: "{{ apache_default_var_www_ssl_cert_file }}" (i.e. same directory as `apache_default_var_www_ssl_cert_file`)
 * `apache_default_var_www_ssl_key_file`
     * File name (including extension) of SSL private key in `apache_default_var_www_ssl_key_path`
     * Default: "cert.key"
