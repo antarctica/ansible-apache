@@ -14,8 +14,10 @@ apache_default_var_www_server_https_port: 443
 
 apache_default_var_www_server_name: "{{ ansible_hostname }}"
 apache_default_var_www_server_admin: "basweb@bas.ac.uk"
+
 apache_default_var_www_document_root: /var/www/
 apache_default_var_www_document_root_alias: ""
+
 apache_default_var_www_options:
   - "-Indexes"
   - "+FollowSymLinks"
@@ -24,9 +26,12 @@ apache_default_var_www_allowoverride: "All"
 
 # Virtual host settings: SSL
 apache_default_var_www_ssl_enabled: false
+
 apache_default_var_www_ssl_cert_path: /app/provisioning/certificates/domain
 apache_default_var_www_ssl_cert_file: certificate-including-trust-chain.crt
+
 apache_default_var_www_ssl_cert_chain_path: "{{ apache_default_var_www_ssl_cert_path }}"
 apache_default_var_www_ssl_cert_chain_file: "{{ apache_default_var_www_ssl_cert_file }}"
+
 apache_default_var_www_ssl_key_path: /etc/ssl/private
 apache_default_var_www_ssl_key_file: "certificate.key"

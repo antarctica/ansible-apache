@@ -35,7 +35,7 @@ Variables used in default virtual host `/etc/apache2/sites-available/default`:
 
 * `apache_app_user_username`
 	* The username of the app user, used for day to day tasks, if enabled
-	* This variable **must** be a valid unix username
+	* This variable **MUST** be a valid unix username
 	* Default: "app"
 * `apache_server_use_canonical_name`
     * Whether Apache should use the server name value when constructing self-referential links or if a dynamic value can be used.
@@ -119,7 +119,7 @@ This project welcomes contributions, see `CONTRIBUTING` for our general policy.
 
 ### Committing changes
 
-The [Git flow](https://github.com/fzaninotto/Faker#formatters) workflow is used to manage development of this package.
+The [Git flow](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow/) workflow is used to manage development of this package.
 
 Discrete changes should be made within *feature* branches, created from and merged back into *develop* (where small one-line changes may be made directly).
 
@@ -133,4 +133,4 @@ Issues, bugs, improvements, questions, suggestions and other tasks related to th
 
 ## License
 
-Copyright 2014 NERC BAS. Licensed under the MIT license, see `LICENSE` for details.
+Copyright 2015 NERC BAS. Licensed under the MIT license, see `LICENSE` for details.
