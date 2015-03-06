@@ -76,23 +76,28 @@ Variables used in default virtual host `/etc/apache2/sites-available/default`:
     * Default: "false"
 * `apache_default_var_www_ssl_cert_path`
     * Path, without a trailing slash, to the directory holding the SSL certificate
-    * Default: "/vagrant/data/certificates"
-* `apache_default_var_www_ssl_key_path`
-    * Path, without a trailing slash, to the directory holding the SSL private key
-    * Default: "{{ apache_default_var_www_ssl_cert_path }}" (i.e. same directory as `apache_default_var_www_ssl_cert_path`)
+    * Default: "/app/provisioning/certificates/domain"
 * `apache_default_var_www_ssl_cert_file`
-    * File name (including extension) of SSL certificate in `apache_default_var_www_ssl_cert_path`
-    * Default: "cert.cer"
+    * The file name and extension of the SSL certificate file within the directory specified by `apache_default_var_www_ssl_cert_path`
+    * The certificate file **SHOULD** contain any required trust chain, but **SHOULD NOT** contain the root of the chain.
+    * By convention this file **SHOULD** use a `.crt` extension.
+    * Default: "certificate-including-trust-chain.crt"
 * `apache_default_var_www_ssl_cert_chain_path`
     * Path, without a trailing slash, to the directory holding the SSL certificate chain
     * Default: "{{ apache_default_var_www_ssl_cert_path }}" (i.e. same directory as `apache_default_var_www_ssl_cert_path`)
 * `apache_default_var_www_ssl_cert_chain_file`
-    * File name, including extension, of the SSL certificate chain
-    * This is usually the same file as the `apache_default_var_www_ssl_cert_file`
+    * The file name and extension of the SSL certificate chain file within the directory specified by `apache_default_var_www_ssl_cert_chain_path`
+    * This variable is usually the same as `apache_default_var_www_ssl_cert_file` as the trust chain is part of the same file
+    * By convention this file **SHOULD** use a `.crt` extension.
     * Default: "{{ apache_default_var_www_ssl_cert_file }}" (i.e. same directory as `apache_default_var_www_ssl_cert_file`)
+* `apache_default_var_www_ssl_key_path`
+    * Path, without a trailing slash, to the directory holding the SSL private key
+    * By default this variable uses the Debian convention for SSL private keys and so this variable **SHOULD NOT** be changed.
+    * Default: "/etc/ssl/private"
 * `apache_default_var_www_ssl_key_file`
-    * File name (including extension) of SSL private key in `apache_default_var_www_ssl_key_path`
-    * Default: "cert.key"
+    * The file name and extension of the SSL private key within the directory specified by `apache_default_var_www_ssl_key_path`
+    * By convention this file **SHOULD** use a `.key` extension
+    * Default: "certificate.key"
 
 ## Contributing
 
