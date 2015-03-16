@@ -65,11 +65,12 @@ Variables used in default virtual host `/etc/apache2/sites-available/default`:
     * Default: "{{ ansible_hostname }}"
 * `apache_default_var_www_server_admin`
 	* E-mail address shown to users in error pages (404, 500, etc.).
-	* External servers should use `basweb@bas.ac.uk`.
-    * Default: "webteam@bas.ac.uk"
+	* External servers **SHOULD** use `basweb@bas.ac.uk`.
+    * Default: "basweb@bas.ac.uk"
 * `apache_default_var_www_document_root`
-	* Location on server containing site files.
-	* If a non-default root is used ensure the `www-data` group has access.
+	* Path, without a trailing slash, of the physical directory on the server containing site files.
+    * This variable **MUST** be a valid UNIX path without a trailing slash (i.e. `/`).
+	* If a non-default root is used you **MUST** ensure the `www-data` group has access.
     * Default: "/var/www/"
 * `apache_default_var_www_document_root_alias` 
 	* Path, without a leading or trailing slash, of the virtual directory (i.e. the value as used in the URL). 
@@ -89,6 +90,7 @@ Variables used in default virtual host `/etc/apache2/sites-available/default`:
     * Default: "false"
 * `apache_default_var_www_ssl_cert_path`
     * Path, without a trailing slash, to the directory holding the SSL certificate
+    * This variable **MUST** be a valid UNIX path without a trailing slash (i.e. `/`).
     * Default: "/app/provisioning/certificates/domain"
 * `apache_default_var_www_ssl_cert_file`
     * The file name and extension of the SSL certificate file within the directory specified by `apache_default_var_www_ssl_cert_path`
@@ -97,6 +99,7 @@ Variables used in default virtual host `/etc/apache2/sites-available/default`:
     * Default: "certificate-including-trust-chain.crt"
 * `apache_default_var_www_ssl_cert_chain_path`
     * Path, without a trailing slash, to the directory holding the SSL certificate chain
+    * This variable **MUST** be a valid UNIX path without a trailing slash (i.e. `/`).
     * Default: "{{ apache_default_var_www_ssl_cert_path }}" (i.e. same directory as `apache_default_var_www_ssl_cert_path`)
 * `apache_default_var_www_ssl_cert_chain_file`
     * The file name and extension of the SSL certificate chain file within the directory specified by `apache_default_var_www_ssl_cert_chain_path`
@@ -105,6 +108,7 @@ Variables used in default virtual host `/etc/apache2/sites-available/default`:
     * Default: "{{ apache_default_var_www_ssl_cert_file }}" (i.e. same directory as `apache_default_var_www_ssl_cert_file`)
 * `apache_default_var_www_ssl_key_path`
     * Path, without a trailing slash, to the directory holding the SSL private key
+    * This variable **MUST** be a valid UNIX path without a trailing slash (i.e. `/`).
     * By default this variable uses the Debian convention for SSL private keys and so this variable **SHOULD NOT** be changed.
     * Default: "/etc/ssl/private"
 * `apache_default_var_www_ssl_key_file`

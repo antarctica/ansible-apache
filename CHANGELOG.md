@@ -1,5 +1,9 @@
 # Apache (`apache`) - Changelog
 
+## 0.4.2 - March 2015
+
+* Fixing default document root which incorrectly contained a trailing slash
+
 ## 0.4.1 - March 2015
 
 * Adds support for configuring ports file to support non-default ports
