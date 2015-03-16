@@ -68,8 +68,9 @@ Variables used in default virtual host `/etc/apache2/sites-available/default`:
 	* External servers should use `basweb@bas.ac.uk`.
     * Default: "webteam@bas.ac.uk"
 * `apache_default_var_www_document_root`
-	* Location on server containing site files.
-	* If a non-default root is used ensure the `www-data` group has access.
+	* Path, without a trailing slash, of the physical directory on the server containing site files.
+    * This variable **MUST** be a valid UNIX path without a trailing slash (i.e. `/`).
+	* If a non-default root is used you **MUST** ensure the `www-data` group has access.
     * Default: "/var/www/"
 * `apache_default_var_www_document_root_alias` 
 	* Path, without a leading or trailing slash, of the virtual directory (i.e. the value as used in the URL). 
