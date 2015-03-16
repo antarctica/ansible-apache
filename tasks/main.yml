@@ -16,6 +16,7 @@
 - include: configure-default-virtualhost.yml
 
 - include: remove-default-content.yml
+- include: configure-ports.yml
 
 - include: app-user.yml
 

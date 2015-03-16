@@ -12,6 +12,7 @@ Installs Apache web-sever using default virtual host
 * The app user is made a member of the `www-data` group and ownership of the default document root is set to the 'app' user.
 * Default content is removed (for use with a default document root).
 * Optionally adds support for a single alias, for compatibility with production environments.
+* Optionally allows non-default ports and IP bindings to be set (i.e. listening for local connections only or setting port 80 to 8080)
 
 ## Availability
 

@@ -1,5 +1,9 @@
 # Apache (`apache`) - Changelog
 
+## 0.4.1 - March 2015
+
+* Adds support for configuring ports file to support non-default ports
+
 ## 0.4.0 - March 2015
 
 * Adds SSL chain file support
