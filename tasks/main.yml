@@ -13,12 +13,13 @@
   notify:
     - Restart Apache
 
-- include: configure-default-virtualhost.yml
+- include: app-user.yml
 
-- include: remove-default-content.yml
 - include: configure-ports.yml
 
-- include: app-user.yml
+- include: configure-default-virtualhost.yml
 
 - include: configure-ssl.yml
   when: apache_default_var_www_ssl_enabled == true
+
+- include: remove-default-content.yml
