@@ -1,5 +1,9 @@
 # Apache (`apache`) - Changelog
 
+## 0.5.0 - March 2015
+
+* Adding markers for including module and custom configuration within virtualhost configuration files
+
 ## 0.4.2 - March 2015
 
 * Fixing default document root which incorrectly contained a trailing slash

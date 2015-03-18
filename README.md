@@ -13,6 +13,7 @@ Installs Apache web-sever using default virtual host
 * Default content is removed (for use with a default document root).
 * Optionally adds support for a single alias, for compatibility with production environments.
 * Optionally allows non-default ports and IP bindings to be set (i.e. listening for local connections only or setting port 80 to 8080)
+* Provides 'markers' for adding additional configuration to default and default-ssl configuration files
 
 ## Availability
 
@@ -121,6 +122,47 @@ Variables used in default virtual host `/etc/apache2/sites-available/default`:
 This project welcomes contributions, see `CONTRIBUTING` for our general policy.
 
 ## Developing
+
+### Apache modules
+
+This role **MUST NOT** contain any additional Apache modules or module configuration, except for modules available in Apache by default.
+
+Separate roles **MUST** be used for these modules, each module **SHOULD** have a separate role with this `apache` role as a dependency (plus any other roles as needed).
+
+Where a module requires configuration directives within virtualhost files, isolated configuration files **SHOULD** be used. These files can be templated, assembled or copied as needed and **SHOULD** be stored in `/etc/apache2/conf-available`, using a `.conf` file extension. These files can then be included within virtualhost files using an [include directive](http://httpd.apache.org/docs/2.0/mod/core.html#include) using the [lineinfile](http://docs.ansible.com/lineinfile_module.html) Ansible action.
+
+For example:
+
+```yaml
+---
+
+- name: create module config file
+  template: src=etc/apache2/conf-available/module.conf.j2 dest="{{ apache_module_config_file_path }}"
+
+- name: add module configuration to default apache virtual host
+  lineinfile: dest=/etc/apache2/sites-available/default line="    include {{ apache_wsgi_config_file_path }}" insertafter="# Marker - Apache module configuration" state=present
+  notify:
+    - Restart Apache
+  when: ansible_distribution_version == "12.04"
+
+- name: add module configuration to default apache virtual host
+  lineinfile: dest=/etc/apache2/sites-available/000-default.conf line="    include {{ apache_wsgi_config_file_path }}" insertafter="# Marker - Apache module configuration" state=present
+  notify:
+    - Restart Apache
+  when: ansible_distribution_version == "14.04"
+```
+
+This ensures each *lineinfile* call is unique (as each refers to a unique file) neatly sidestepping issues where common elements, such as `</Directory>`, are ignored as such element will almost certainly already exist elsewhere in the virtualhost file. Using separate files also encourages loose coupling between roles, and makes managing the file itself much easier.
+
+Roles **SHOULD NOT** duplicate virtualhost file templates. Doing so introduces brittleness and fragmentation between the 'upstream' `apache` role and module roles (which will typically update at much slower frequencies).
+
+### Custom configuration
+
+There may be times where a project or role needs to make alterations to virtualhosts files which cannot be catered for using variables (e.g. directory or location directives). A similar approach to modules **SHOULD** be taken whereby isolated configuration files are created and included in the main virtualhosts file.
+
+See the *apache modules* sub-section in the *developing* section for details on how this approach works.
+
+Note: For these sorts of include files use `insertafter="# Marker - Other custom configuration"` instead of `insertafter="# Marker - Apache module configuration"`.
 
 ### Committing changes
 
