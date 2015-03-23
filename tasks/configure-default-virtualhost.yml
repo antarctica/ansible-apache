@@ -2,13 +2,13 @@
 # Configure default Apache virtualhost
 
 - name: configure default apache virtual host
-  template: src=etc/apache2/sites-available/default.j2 dest=/etc/apache2/sites-available/default # no validation currently
+  template: src=etc/apache2/sites-available/default.conf.j2 dest=/etc/apache2/sites-available/default # no validation currently
   notify:
     - Restart Apache
   when: ansible_distribution_version == "12.04"
 
 - name: configure default apache virtual host
-  template: src=etc/apache2/sites-available/default.j2 dest=/etc/apache2/sites-available/000-default.conf # no validation currently
+  template: src=etc/apache2/sites-available/default.conf.j2 dest=/etc/apache2/sites-available/000-default.conf # no validation currently
   notify:
     - Restart Apache
   when: ansible_distribution_version == "14.04"
