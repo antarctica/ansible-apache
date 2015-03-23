@@ -1,5 +1,9 @@
 # Apache (`apache`) - Changelog
 
+## 0.5.1 - March 2015
+
+* Fixing names of virtualhost template files
+
 ## 0.5.0 - March 2015
 
 * Adding markers for including module and custom configuration within virtualhost configuration files
