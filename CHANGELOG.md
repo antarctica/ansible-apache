@@ -1,5 +1,9 @@
 # Apache (`apache`) - Changelog
 
+## 0.5.2 - May 2015
+
+* Changing the Apache serverName property to use the FQDN by default, rather than the hostname 
+
 ## 0.5.1 - March 2015
 
 * Fixing names of virtualhost template files
