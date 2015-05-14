@@ -12,7 +12,7 @@ apache_default_var_www_server_binding: 0.0.0.0
 apache_default_var_www_server_http_port: 80
 apache_default_var_www_server_https_port: 443
 
-apache_default_var_www_server_name: "{{ ansible_hostname }}"
+apache_default_var_www_server_name: "{{ ansible_fqdn }}"
 apache_default_var_www_server_admin: "basweb@bas.ac.uk"
 
 apache_default_var_www_document_root: /var/www
