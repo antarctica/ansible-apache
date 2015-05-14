@@ -62,8 +62,8 @@ Variables used in default virtual host `/etc/apache2/sites-available/default`:
 * `apache_default_var_www_server_name`
     * Name of the virtual server
     * If using an SSL certificate this variable **MUST** match the subject of the certificate
-    * By default this variable will use the system hostname
-    * Default: "{{ ansible_hostname }}"
+    * By default this variable will use the Fully Qualified Domain Name of the local machine.
+    * Default: "{{ ansible_fqdn }}"
 * `apache_default_var_www_server_admin`
 	* E-mail address shown to users in error pages (404, 500, etc.).
 	* External servers **SHOULD** use `basweb@bas.ac.uk`.
