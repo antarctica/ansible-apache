@@ -13,7 +13,7 @@ galaxy_info:
 
 armadillo_info:
   name: Apache
-  version: 0.5.2
+  version: 0.5.1
   source: git@stash.ceh.ac.uk:7999/barc/apache.git
   dependencies:
   - git@stash.ceh.ac.uk:7999/barc/core.git#v0.9.0
