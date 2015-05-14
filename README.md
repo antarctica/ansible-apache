@@ -2,7 +2,7 @@
 
 **Part of the BAS Ansible Role Collection (BARC)**
 
-Installs Apache web-sever using default virtual host
+Installs the Apache web-sever using default virtual hosts
 
 ## Overview
 
