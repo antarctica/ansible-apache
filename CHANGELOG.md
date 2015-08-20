@@ -1,5 +1,7 @@
 # Apache (`apache`) - Changelog
 
+* BREAKING CHANGE! Removing markers for including module and custom virtualhost configuration details, 
+in favour of loading al such configuration files from a directory
 ## 0.5.1 - May 2015
 
 * Changing the Apache serverName property to use the FQDN by default, rather than the hostname 

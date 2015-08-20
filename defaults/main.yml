@@ -25,6 +25,9 @@ apache_default_var_www_options:
 apache_default_var_www_allowoverride: "All"
 
 # Virtual host settings: SSL
+apache_available_configs_dir: /etc/apache2/conf-available
+apache_enabled_configs_dir: /etc/apache2/conf-enabled/*.conf
+
 apache_default_var_www_ssl_enabled: false
 
 apache_default_var_www_ssl_cert_path: /app/provisioning/certificates/domain

@@ -99,6 +99,16 @@ Variables used in default virtual host `/etc/apache2/sites-available/default`:
 * `apache_default_var_www_allowoverride`
 	* To disable `.htaccess` support set this to `None`.
 	* Default: "All"`
+* `apache_available_configs_dir`
+    * Path to the location additional configuration files should be kept, regardless of whether they are active
+    * This variable **MUST** be a valid UNIX directory and **MUST NOT** contain a trailing slash (`/`).
+    * The default value for this variable is a conventional default, therefore you **SHOULD NOT** change this value without good reason.
+    * Default: "/etc/apache2/conf-available"
+* `apache_enabled_configs_dir`
+    * Path to the location, active, additional configuration files should be kept
+    * This variable **MUST** be a valid UNIX directory and **MUST** end with "/*.conf".
+    * The default value for this variable is a conventional default, therefore you **SHOULD NOT** change this value without good reason.
+    * Default: "/etc/apache2/conf-enabled/*.conf"
 * `apache_default_var_www_ssl_enabled`
     * If "true" support for secure connections will be enabled within Apache
     * This is a binary variable and MUST be set to either "true" or "false" (without quotes).
@@ -145,42 +155,13 @@ This project welcomes contributions, see `CONTRIBUTING` for our general policy.
 
 This role **MUST NOT** contain any additional Apache modules or module configuration, except for modules available in Apache by default.
 
-Separate roles **MUST** be used for these modules, each module **SHOULD** have a separate role with this `apache` role as a dependency (plus any other roles as needed).
+Separate roles **MUST** be used for these modules, each module **SHOULD** have a separate role with this `apache` role as a dependency (plus any other roles as needed). By convention they should be named `ansible-*` where `*` is the name of the role, e.g. `apache-some-module`. Roles **SHOULD NOT** duplicate virtualhost file templates. Doing so introduces brittleness and fragmentation between the 'upstream' `apache` role and module roles (which will typically update at much slower frequencies).
 
-Where a module requires configuration directives within virtualhost files, isolated configuration files **SHOULD** be used. These files can be templated, assembled or copied as needed and **SHOULD** be stored in `/etc/apache2/conf-available`, using a `.conf` file extension. These files can then be included within virtualhost files using an [include directive](http://httpd.apache.org/docs/2.0/mod/core.html#include) using the [lineinfile](http://docs.ansible.com/lineinfile_module.html) Ansible action.
+### Additional configuration
 
-For example:
+Where a module, or an application requires additional configuration within virtualhost files isolated configuration files **SHOULD** be used. These files can be templated, assembled or copied as needed, using a `.conf` file extension. They **SHOULD** be stored in the directory set by the `apache_available_configs_dir` variable (by convention this is `/etc/apache2/config-available`).
 
-```yaml
----
-
-- name: create module config file
-  template: src=etc/apache2/conf-available/module.conf.j2 dest="{{ apache_module_config_file_path }}"
-
-- name: add module configuration to default apache virtual host
-  lineinfile: dest=/etc/apache2/sites-available/default line="    include {{ apache_wsgi_config_file_path }}" insertafter="# Marker - Apache module configuration" state=present
-  notify:
-    - Restart Apache
-  when: ansible_distribution_version == "12.04"
-
-- name: add module configuration to default apache virtual host
-  lineinfile: dest=/etc/apache2/sites-available/000-default.conf line="    include {{ apache_wsgi_config_file_path }}" insertafter="# Marker - Apache module configuration" state=present
-  notify:
-    - Restart Apache
-  when: ansible_distribution_version == "14.04"
-```
-
-This ensures each *lineinfile* call is unique (as each refers to a unique file) neatly sidestepping issues where common elements, such as `</Directory>`, are ignored as such element will almost certainly already exist elsewhere in the virtualhost file. Using separate files also encourages loose coupling between roles, and makes managing the file itself much easier.
-
-Roles **SHOULD NOT** duplicate virtualhost file templates. Doing so introduces brittleness and fragmentation between the 'upstream' `apache` role and module roles (which will typically update at much slower frequencies).
-
-### Custom configuration
-
-There may be times where a project or role needs to make alterations to virtualhosts files which cannot be catered for using variables (e.g. directory or location directives). A similar approach to modules **SHOULD** be taken whereby isolated configuration files are created and included in the main virtualhosts file.
-
-See the *apache modules* sub-section in the *developing* section for details on how this approach works.
-
-Note: For these sorts of include files use `insertafter="# Marker - Other custom configuration"` instead of `insertafter="# Marker - Apache module configuration"`.
+To enable these additional configuration files create a (soft) symbolic link to the directory set by the `apache_enabled_configs_dir` variable, (by convention this is `/etc/apache2/config-enabled/*.conf`). Virtualhost files created by this role are configured to include all configuration files (using the `.conf` file extension) inside the `apache_enabled_configs_dir` directory.
 
 ### Committing changes
 

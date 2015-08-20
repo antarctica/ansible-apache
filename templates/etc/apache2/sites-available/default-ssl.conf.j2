@@ -80,13 +80,8 @@ UseCanonicalName {{ apache_server_use_canonical_name }}
             Allow from all
         </Directory>
 
-        # Additional configuration markers
-
-        # Marker - Apache module configuration
+        # Load any additional configuration files found in this directory
+        Include {{ apache_default_var_www_include_configs_dir }}
     
-
-        # Marker - Other custom configuration
-    
-
     </VirtualHost>
 </IfModule>
