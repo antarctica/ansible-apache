@@ -12,7 +12,6 @@ Installs the Apache web-sever using default virtual hosts
 * If a non-default document root is used, virtual hosts for HTTP and, if enabled, HTTPS, will be configured to point to this location
 * The app user is made a member of the `www-data` group and ownership of the default document root is assigned to the 'app' user
 * Content is removed from the default document root, this is performed regardless of whether the default document root is used or not
-* Optionally adds support for a single alias, for compatibility with some types of production environments - this is deprecated!
 * Optionally allows non-default ports and IP bindings to be set (i.e. listening for local connections only or using port 8080 for HTTP connections)
 * Provides 'markers' for including additional Apache configuration directives into default and default-ssl configuration files
 
@@ -26,7 +25,6 @@ This role is designed for internal use but if useful can be shared publicly.
 
 The following features are deprecated within this role. They will be removed in the next major version.
 
-* Support for aliases
 
 ### Requirements
 
@@ -83,11 +81,6 @@ Variables used in default virtual host `/etc/apache2/sites-available/default`:
     * This variable **MUST** be a valid UNIX directory and **MUST NOT** contain a trailing slash (`/`).
 	* If a non-default root is used, you **MUST** ensure the `www-data` group has access.
     * Default: "/var/www"
-* `apache_default_var_www_document_root_alias` 
-	* Path, without a leading or trailing slash, of the virtual directory (i.e. the value as used in the URL). 
-    * Support for aliases is **deprecated** and as such this feature **SHOULD NOT** be used.
-    * The alias will always point to the path set by `apache_default_var_www_document_root`.
-	* Default: "" (empty string)
 * `apache_default_var_www_options`
     * Array of options, each will be added as a separate `option: {{ item }}`
     * Each option **MUST** be valid options as defined by Apache.
