@@ -115,11 +115,15 @@ Variables used in default virtual host `/etc/apache2/sites-available/default`:
 * `apache_default_var_www_ssl_cert_path`
     * Path to the directory containing the SSL certificate for secure connections
     * This variable **MUST** be a valid UNIX directory and **MUST NOT** contain a trailing slash (`/`).
-    * Default: "/app/provisioning/certificates/domain"
+    * By default this variable will use the `core_ssl_private_key_destination_path` variable if available. If not, a fall back value will be used.
+    * The `core_ssl_private_key_destination_path` variable **SHOULD** be set within a project, either in a playbook or group/host vars file.
+    * Default:  "{{ core_ssl_private_key_destination_path }}" if defined otherwise, "/app/provisioning/certificates/domain"
 * `apache_default_var_www_ssl_cert_file`
     * File name and extension of the SSL certificate for secure connections
     * By convention, this file **SHOULD** use a `.crt` extension.
-    * Default: "certificate-including-trust-chain.crt"
+    * By default this variable will use the `core_ssl_private_key_destination_file` variable if available. If not, a fall back value will be used.
+    * The `core_ssl_private_key_destination_file` variable **SHOULD** be set within a project, either in a playbook or group/host vars file.
+    * Default:  "{{ core_ssl_private_key_destination_file }}" if defined otherwise, "certificate-including-trust-chain.crt"
 * `apache_default_var_www_ssl_cert_chain_path`
     * Path to the directory containing the SSL certificate trust chain, this file is usually the same as the SSL certificate
     * This variable **MUST** be a valid UNIX directory and **MUST NOT** contain a trailing slash (`/`).

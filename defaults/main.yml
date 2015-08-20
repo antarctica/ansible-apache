@@ -30,8 +30,8 @@ apache_enabled_configs_dir: /etc/apache2/conf-enabled/*.conf
 
 apache_default_var_www_ssl_enabled: false
 
-apache_default_var_www_ssl_cert_path: /app/provisioning/certificates/domain
-apache_default_var_www_ssl_cert_file: certificate-including-trust-chain.crt
+apache_default_var_www_ssl_cert_path: "{{ core_ssl_private_key_destination_path | default('/app/provisioning/certificates/domain') }}"
+apache_default_var_www_ssl_cert_file: "{{ core_ssl_private_key_destination_file | default('certificate-including-trust-chain.crt') }}"
 
 apache_default_var_www_ssl_cert_chain_path: "{{ apache_default_var_www_ssl_cert_path }}"
 apache_default_var_www_ssl_cert_chain_file: "{{ apache_default_var_www_ssl_cert_file }}"
