@@ -1,5 +1,6 @@
 # Apache (`apache`) - Changelog
 
+* BREAKING CHANGE! Removing support for aliases within virtualhosts
 * Fixing setting of default variable values, which were previously defined within core role
 * BREAKING CHANGE! Removing support for Ubuntu versions before 14.04
 * BREAKING CHANGE! Removing markers for including module and custom virtualhost configuration details, 
