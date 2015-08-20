@@ -27,7 +27,6 @@ This role is designed for internal use but if useful can be shared publicly.
 The following features are deprecated within this role. They will be removed in the next major version.
 
 * Support for aliases
-* Support for Ubuntu 12.0 or lower
 
 ### Requirements
 
