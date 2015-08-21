@@ -1,6 +1,11 @@
 ---
 # Configure secure default virtual hosts and enable support for SSL connections
 
+- name: enable SSL module
+  apache2_module: state=present name=ssl
+  notify:
+    - Restart Apache
+
 - name: enable headers module
   apache2_module: state=present name=headers
   notify:
@@ -22,8 +27,5 @@
 
 - name: enable default SSL apache virtual host
   file: src=/etc/apache2/sites-available/default-ssl.conf dest=/etc/apache2/sites-enabled/default-ssl.conf state=link
-
-- name: enable SSL module
-  apache2_module: state=present name=ssl
   notify:
     - Restart Apache
