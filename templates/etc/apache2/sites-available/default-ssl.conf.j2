@@ -78,7 +78,7 @@ UseCanonicalName {{ apache_server_use_canonical_name }}
         </Directory>
 
         # Load any additional configuration files found in this directory
-        Include {{ apache_default_var_www_include_configs_dir }}
+        Include {{ apache_enabled_configs_dir }}/{{ apache_enabled_configs_file_selector }}
     
     </VirtualHost>
 </IfModule>

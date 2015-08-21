@@ -7,6 +7,9 @@ apache_app_user_username: app
 # Server settings
 apache_server_use_canonical_name: "off"
 
+apache_available_configs_dir: /etc/apache2/conf-available
+apache_enabled_configs_dir: /etc/apache2/conf-enabled
+apache_enabled_configs_file_selector: "*.conf"
 # Virtual host settings
 apache_default_var_www_server_binding: 0.0.0.0
 apache_default_var_www_server_http_port: 80
@@ -24,9 +27,6 @@ apache_default_var_www_options:
 apache_default_var_www_allowoverride: "All"
 
 # Virtual host settings: SSL
-apache_available_configs_dir: /etc/apache2/conf-available
-apache_enabled_configs_dir: /etc/apache2/conf-enabled/*.conf
-
 apache_default_var_www_ssl_enabled: false
 
 apache_default_var_www_ssl_cert_path: "{{ core_ssl_private_key_destination_path | default('/app/provisioning/certificates/domain') }}"

@@ -57,6 +57,23 @@ Variables used in default virtual host `/etc/apache2/sites-available/default`:
     * This is a binary variable and **MUST** be set to either "on" or "off" (with quotes).
     * The value for this variable **MUST** be quoted or Ansible will evaluate it to "True" or "False" which are not valid values.
     * Default: "off"
+* `apache_available_configs_dir`
+    * Path to the directory for additional configuration files, typically used for settings that apply to all virtualhosts
+    * Importantly files can be stored in this location without necessarily being enabled. Where a configuration file should be enabled, it will be sym-linked from this directory to that set by the `apache_enabled_configs_dir` variable.
+    * This variable **MUST** point to a valid UNIX directory and **MUST NOT** contain a trailing slash (`/`).
+    * The default value for this variable is a conventional default, therefore you **SHOULD NOT** change this value without good reason.
+    * Default: "/etc/apache2/conf-available"
+* `apache_enabled_configs_dir`
+    * Path to the directory for additional configuration files that are currently enabled, typically used for settings that apply to all virtualhosts
+    * This variable **MUST** point to a valid UNIX directory and **MUST NOT** contain a trailing slash (`/`).
+    * The default value for this variable is a conventional default, therefore you **SHOULD NOT** change this value without good reason.
+    * Default: "/etc/apache2/conf-enabled"
+* `apache_enabled_configs_file_selector`
+    * Within virtualhosts an [Include](http://httpd.apache.org/docs/2.2/mod/core.html#include) directive is used to load all configuration files within the directory set by `apache_enabled_configs_dir` variable, this variable controls the pattern that a file within this directory must match to be included
+    * For example, the default value is "*.conf" meaning "some-file.conf" would be included, but "some-file.txt" would not.
+    * A directory separator (`/`) will be inserted between the `apache_enabled_configs_dir` variable and this variable, and therefore **MUST NOT** be included within this variable.
+    * The default value for this variable is a conventional default, therefore you **SHOULD NOT** change this value without good reason.
+    * Default: "*.conf"
 * `apache_default_var_www_server_binding`
     * Networking interface on which Apache will listen for HTTP and HTTPS connections
     * By default, this variable listens on any IPv4 interface.
