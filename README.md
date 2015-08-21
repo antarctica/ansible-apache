@@ -57,6 +57,13 @@ Variables used in default virtual host `/etc/apache2/sites-available/default`:
     * This is a binary variable and **MUST** be set to either "on" or "off" (with quotes).
     * The value for this variable **MUST** be quoted or Ansible will evaluate it to "True" or "False" which are not valid values.
     * Default: "off"
+* `apache_enable_feature_disable_default_configs`
+    * If "true", the configuration files that ship with Apache and enabled by default are disabled
+    * See the `apache_default_enabled_configs` variable for the files that will be disabled where this feature is enabled
+    * Files are disabled by removing the sym-link between *conf-available* and *conf-enabled*, the actual configuration file is untouched.
+    * This is a binary variable and MUST be set to either "true" or "false" (without quotes).
+    * This feature is enabled by default as the default `security.conf` file triggers an invalid configuration error within Apache.
+    * Default: "true"
 * `apache_available_configs_dir`
     * Path to the directory for additional configuration files, typically used for settings that apply to all virtualhosts
     * Importantly files can be stored in this location without necessarily being enabled. Where a configuration file should be enabled, it will be sym-linked from this directory to that set by the `apache_enabled_configs_dir` variable.
@@ -74,6 +81,17 @@ Variables used in default virtual host `/etc/apache2/sites-available/default`:
     * A directory separator (`/`) will be inserted between the `apache_enabled_configs_dir` variable and this variable, and therefore **MUST NOT** be included within this variable.
     * The default value for this variable is a conventional default, therefore you **SHOULD NOT** change this value without good reason.
     * Default: "*.conf"
+* `apache_default_enabled_configs`
+    * Where `apache_enable_feature_disable_default_configs` is true, defines the configuration files to be disabled
+    * By default this variable is set to all configuration files that ship with Apache by default, you **SHOULD NOT** need to change its value.
+    * If overriding this variable you **MUST** ensure you include any configuration files you wish to disable, as the entire list if overridden.
+    * Structured as an array of file names located in the directory set by `apache_enabled_configs_dir` (i.e. configuration files that are already enabled)
+    * Default: (array)
+        * "charset.conf"
+        * "localized-error-pages.conf"
+        * "other-vhosts-access-log.conf"
+        * "security.conf"
+        *"serve-cgi-bin.conf"
 * `apache_default_var_www_server_binding`
     * Networking interface on which Apache will listen for HTTP and HTTPS connections
     * By default, this variable listens on any IPv4 interface.

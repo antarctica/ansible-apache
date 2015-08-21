@@ -7,9 +7,18 @@ apache_app_user_username: app
 # Server settings
 apache_server_use_canonical_name: "off"
 
+apache_enable_feature_remove_default_enabled_configs: true
 apache_available_configs_dir: /etc/apache2/conf-available
 apache_enabled_configs_dir: /etc/apache2/conf-enabled
 apache_enabled_configs_file_selector: "*.conf"
+
+apache_default_enabled_configs:
+  - "charset.conf"
+  - "localized-error-pages.conf"
+  - "other-vhosts-access-log.conf"
+  - "security.conf"
+  - "serve-cgi-bin.conf"
+
 # Virtual host settings
 apache_default_var_www_server_binding: 0.0.0.0
 apache_default_var_www_server_http_port: 80

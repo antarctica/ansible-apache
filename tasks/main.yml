@@ -7,6 +7,9 @@
 
 - include: configure-ports.yml
 
+- include: disable-default-configs.yml
+  when: apache_enable_feature_disable_default_configs == true
+
 - include: configure-default-virtualhost.yml
 
 - include: configure-ssl.yml
