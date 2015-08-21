@@ -77,7 +77,7 @@ UseCanonicalName {{ apache_server_use_canonical_name }}
             Allow from all
         </Directory>
 
-        # Load any additional configuration files found in this directory
+        # Load any additional configuration files found in this directory - including additional SSL configuration
         Include {{ apache_enabled_configs_dir }}/{{ apache_enabled_configs_file_selector }}
     
     </VirtualHost>
