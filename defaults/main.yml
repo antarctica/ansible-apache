@@ -37,3 +37,12 @@ apache_default_var_www_ssl_cert_chain_file: "{{ apache_default_var_www_ssl_cert_
 
 apache_default_var_www_ssl_key_path: /etc/ssl/private
 apache_default_var_www_ssl_key_file: "certificate.key"
+
+# SSL settings
+apache_ssl_config_path: "{{ apache_available_configs_dir }}"
+
+apache_enable_feature_ssl_custom_dh_parameters: false
+apache_ssl_dhparam_cert_path: /etc/ssl/certs
+apache_ssl_dhparam_cert_file: dhparam.pem
+
+apache_enable_feature_ssl_hsts: true

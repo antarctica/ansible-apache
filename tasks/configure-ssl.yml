@@ -1,8 +1,24 @@
 ---
 # Configure secure default virtual hosts and enable support for SSL connections
 
+- name: enable headers module
+  apache2_module: state=present name=headers
+  notify:
+    - Restart Apache
+  when: apache_enable_feature_ssl_hsts == true
+
+- name: copy stronger DH parameters file
+  copy: src=etc/ssl/certs/dhparam.pem dest="{{ apache_ssl_dhparam_cert_path }}/{{ apache_ssl_dhparam_cert_file }}" owner=root group=root mode=0444
+  when: apache_enable_feature_ssl_custom_dh_parameters == true
+
+- name: configure additional SSL configuration
+  template: src=etc/apache2/conf-available/ssl.conf.j2 dest="{{ apache_ssl_config_path }}/ssl.conf"
+
 - name: configure default SSL apache virtual host
   template: src=etc/apache2/sites-available/default-ssl.conf.j2 dest=/etc/apache2/sites-available/default-ssl.conf
+
+- name: enable additional SSL configuration
+  file: src=/etc/apache2/conf-available/ssl.conf dest="{{ apache_enabled_configs_dir }}/ssl.conf" state=link
 
 - name: enable default SSL apache virtual host
   file: src=/etc/apache2/sites-available/default-ssl.conf dest=/etc/apache2/sites-enabled/default-ssl.conf state=link

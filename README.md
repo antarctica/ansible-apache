@@ -9,6 +9,8 @@ Installs the Apache web-sever using default virtual hosts
 * Installs Apache server and enabled mod_rewrite support
 * Configures default virtual host for HTTP connections
 * Optionally configures virtual host for HTTPS connections, this is disabled by default
+* Where HTTPS connections are supported, additional configuration is applied to improve security (including HTST)
+* Supports the use of a custom DH parameters file for use in SSL connections, this is disabled by default
 * If a non-default document root is used, virtual hosts for HTTP and, if enabled, HTTPS, will be configured to point to this location
 * The app user is made a member of the `www-data` group and ownership of the default document root is assigned to the 'app' user
 * Content is removed from the default document root, this is performed regardless of whether the default document root is used or not
@@ -140,6 +142,33 @@ Variables used in default virtual host `/etc/apache2/sites-available/default`:
     * Private keys **MUST** be stored and distributed securely.
     * By convention this file **SHOULD** use a `.key` extension
     * Default: "certificate.key"
+* `apache_ssl_config_path`
+    * Path to the location where additional Apache configurations should be kept, but specifically where the configuration for additional SSL configuration files should be kept
+    * This variable **MUST** be a valid UNIX directory and **MUST NOT** contain a trailing slash (`/`).
+    * The default value for this variable is a conventional default, therefore you **SHOULD NOT** change this value without good reason.
+    * By default this variable will use the value of the `apache_available_configs_dir` variable.
+    * Default: "{{ apache_available_configs_dir }}"
+* `apache_enable_feature_ssl_custom_dh_parameters`
+    * If "true", support for a custom DH parameters file will be enabled
+    * See the *DH parameters* section for more information on what this does.
+    * This is a binary variable and MUST be set to either "true" or "false" (without quotes).
+    * Default: "false"
+* `apache_ssl_dhparam_cert_path`
+    * path to the directory holding the custom DH parameters file, if enabled
+    * See the *DH parameters* section for more information on what this does.
+    * This variable **MUST** be a valid UNIX directory and **MUST NOT** contain a trailing slash (`/`).
+    * By default, this variable uses the Debian convention for SSL private keys, this **SHOULD NOT** be changed.
+    * Default: "/etc/ssl/certs"
+* `apache_ssl_dhparam_cert_file`
+    * The file name and extension of the custom DH parameters file, if enabled
+    * See the *DH parameters* section for more information on what this does.
+    * This file **MUST** be located in the directory set by the `apache_ssl_dhparam_cert_path` variable
+    * The default value for this variable is a conventional default, therefore you **SHOULD NOT** change this value without good reason.
+    * Default: "dhparam.pem"
+* `apache_enable_feature_ssl_hsts`
+    * If "true", support for [HTTP Strict Transport Security](https://en.wikipedia.org/wiki/HTTP_Strict_Transport_Security) will be enabled, this is recommended wherever HTTPS is supported
+    * This is a binary variable and MUST be set to either "true" or "false" (without quotes).
+    * Default: "true"
 
 ## Contributing
 
@@ -158,6 +187,22 @@ Separate roles **MUST** be used for these modules, each module **SHOULD** have a
 Where a module, or an application requires additional configuration within virtualhost files isolated configuration files **SHOULD** be used. These files can be templated, assembled or copied as needed, using a `.conf` file extension. They **SHOULD** be stored in the directory set by the `apache_available_configs_dir` variable (by convention this is `/etc/apache2/config-available`).
 
 To enable these additional configuration files create a (soft) symbolic link to the directory set by the `apache_enabled_configs_dir` variable, (by convention this is `/etc/apache2/config-enabled/*.conf`). Virtualhost files created by this role are configured to include all configuration files (using the `.conf` file extension) inside the `apache_enabled_configs_dir` directory.
+
+### DH Parameters
+
+Where secure connections are supported (i.e. `apache_default_var_www_ssl_enabled` is set to *true*) it is possible to use a custom Diffie Hellman Ephemeral Parameters file. More information is available [here](http://security.stackexchange.com/questions/43355/what-are-the-implications-of-using-the-same-dh-parameters-in-a-tls-server) (and other places).
+
+This is recommended as the default shipped with OpenSSL (the library Apache uses for SSL related functions) uses, by default, a 1024-bit key. To use a custom key enable the `apache_enable_feature_ssl_custom_dh_parameters` variable and set the `apache_ssl_dhparam_cert_path` and `apache_ssl_dhparam_cert_file` variables accordingly.
+
+This role includes a 4096 bit key for this purpose, though you can of course replace it with your own. The included key was generated on the 21st August 2015 (at about 10:00 AM) on a machine running MAC OS X 10.10.4 and OpenSSL 1.0.2d 9 Jul 2015. The command ran was:
+
+```shell
+$ mkdir -p files/etc/ssl/certs
+$ cd files/etc/ssl/certs
+$ openssl dhparam -out dhparam.pem 4096
+```
+
+Note: Using a custom DH parameters file requires OpenSSL version 1.0.2 or higher. This version is not available in Ubuntu 14.04 and so this feature is disabled by default. When this changes this role will be updated to enable this feature by default (requiring a new major version). This change can be tracked in the issue [BARC-35](https://jira.ceh.ac.uk/browse/BARC-35).
 
 ### Committing changes
 
