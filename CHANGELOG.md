@@ -1,5 +1,7 @@
 # Apache (`apache`) - Changelog
 
+* Significantly improving the configuration of secure connections, through the choice of supported cipher sets and protocols
+* Providing future support for custom DH parameters for secure connections, for when this is available with operating systems
 * BREAKING CHANGE! Removing support for aliases within virtualhosts
 * Fixing setting of default variable values, which were previously defined within core role
 * BREAKING CHANGE! Removing support for Ubuntu versions before 14.04
