@@ -13,7 +13,7 @@ Installs the Apache web-sever using default virtual hosts
 * Supports the use of a custom DH parameters file for use in SSL connections, this is disabled by default
 * If a non-default document root is used, virtual hosts for HTTP and, if enabled, HTTPS, will be configured to point to this location
 * The app user is made a member of the `www-data` group and ownership of the default document root is assigned to the 'app' user
-* Content is removed from the default document root, this is performed regardless of whether the default document root is used or not
+* Content is removed from the default document root, if enabled, this is performed regardless of whether the default document root is used or not
 * Optionally allows non-default ports and IP bindings to be set (i.e. listening for local connections only or using port 8080 for HTTP connections)
 * Provides 'markers' for including additional Apache configuration directives into default and default-ssl configuration files
 
@@ -63,6 +63,10 @@ Variables used in default virtual host `/etc/apache2/sites-available/default`:
     * Files are disabled by removing the sym-link between *conf-available* and *conf-enabled*, the actual configuration file is untouched.
     * This is a binary variable and MUST be set to either "true" or "false" (without quotes).
     * This feature is enabled by default as the default `security.conf` file triggers an invalid configuration error within Apache.
+    * Default: "true"
+* `apache_enable_feature_remove_default_document_root_content`
+    * If "true", the default Apache document root content will be removed, this will result in a "403 - Forbidden" error where other defaults are used
+    * This is a binary variable and MUST be set to either "true" or "false" (without quotes).
     * Default: "true"
 * `apache_available_configs_dir`
     * Path to the directory for additional configuration files, typically used for settings that apply to all virtualhosts

@@ -1,5 +1,6 @@
 # Apache (`apache`) - Changelog
 
+* Removing content from the default document root is now optional, but still enabled by default
 * Significantly improving the configuration of secure connections, through the choice of supported cipher sets and protocols
 * Providing future support for custom DH parameters for secure connections, for when this is available with operating systems
 * BREAKING CHANGE! Removing support for aliases within virtualhosts

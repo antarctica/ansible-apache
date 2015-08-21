@@ -16,3 +16,4 @@
   when: apache_default_var_www_ssl_enabled == true
 
 - include: remove-default-content.yml
+  when: apache_enable_feature_remove_default_document_root_content == true
