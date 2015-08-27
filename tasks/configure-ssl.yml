@@ -6,7 +6,7 @@
   notify:
     - Restart Apache
 
-- name: enable headers module
+- name: enable headers module for setting HSTS headers if enabled
   apache2_module: state=present name=headers
   notify:
     - Restart Apache

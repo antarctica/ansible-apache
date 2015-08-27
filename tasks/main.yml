@@ -14,6 +14,8 @@
 - include: configure-ssl.yml
   when: apache_enable_feature_ssl == true
 
+- include: app-user.yml
+
 # TODO: Rename to configure-default-http-virtualhost
 - include: configure-default-virtualhost.yml
 

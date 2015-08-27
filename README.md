@@ -15,17 +15,13 @@ Installs the Apache web-sever using default virtual hosts
 * The app user is made a member of the `www-data` group and ownership of the default document root is assigned to the 'app' user
 * Content is removed from the default document root, if enabled, this is performed regardless of whether the default document root is used or not
 * Optionally allows non-default ports and IP bindings to be set (i.e. listening for local connections only or using port 8080 for HTTP connections)
-* Provides 'markers' for including additional Apache configuration directives into default and default-ssl configuration files
+* Includes additional Apache configuration directives from files in a location such as 'conf-enabled'
 
 ## Availability
 
 This role is designed for internal use but if useful can be shared publicly.
 
 ## Usage
-
-### Deprecated features
-
-The following features are deprecated within this role. They will be removed in the next major version.
 
 ### Limitations
 

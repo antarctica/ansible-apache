@@ -1,5 +1,7 @@
 # Apache (`apache`) - Changelog
 
+## Unreleased
+
 * BREAKING CHANGE! This now assumes SSL certificates and private keys will be stored as single files inside a base directory (i.e. '/etc/ssl/private/certificate.key' not '/etc/ssl/private/certificate/certificate.key')
 * BREAKING CHANGE! Refactoring all variables relating to secure connections
 * Moving support for uploading a SSL private key required fro secure connections from core role
@@ -14,6 +16,7 @@
 * BREAKING CHANGE! Removing support for Ubuntu versions before 14.04
 * BREAKING CHANGE! Removing markers for including module and custom virtualhost configuration details, 
 in favour of loading al such configuration files from a directory
+
 ## 0.5.1 - May 2015
 
 * Changing the Apache serverName property to use the FQDN by default, rather than the hostname 
