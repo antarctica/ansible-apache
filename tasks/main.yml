@@ -12,7 +12,7 @@
   when: apache_enable_feature_remove_default_document_root_content == true
 
 - include: configure-ssl.yml
-  when: apache_default_var_www_ssl_enabled == true
+  when: apache_enable_feature_ssl == true
 
 # TODO: Rename to configure-default-http-virtualhost
 - include: configure-default-virtualhost.yml

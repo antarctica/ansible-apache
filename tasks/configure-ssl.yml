@@ -16,14 +16,14 @@
   copy: src=etc/ssl/certs/dhparam.pem dest="{{ apache_ssl_dhparam_cert_path }}/{{ apache_ssl_dhparam_cert_file }}" owner=root group=root mode=0444
   when: apache_enable_feature_ssl_custom_dh_parameters == true
 
-- name: configure additional SSL configuration
-  template: src=etc/apache2/conf-available/ssl.conf.j2 dest="{{ apache_ssl_config_path }}/ssl.conf"
 - name: copy SSL certificate to SSL directory
   copy: src="{{ apache_ssl_cert_src }}/{{ apache_ssl_cert_file }}" dest="{{ apache_ssl_cert_base }}/{{ apache_ssl_cert_file }}"
 
 - name: copy SSL certificate private key to SSL directory
   copy: src="{{ apache_ssl_key_src }}/{{ apache_ssl_key_file }}" dest="{{ apache_ssl_key_base }}/{{ apache_ssl_key_file }}" owner=root group=root mode=600
 
+- name: configure additional SSL configuration
+  template: src=etc/apache2/conf-available/ssl.conf.j2 dest="{{ apache_ssl_additional_config_path }}/ssl.conf"
 
 - name: enable additional SSL configuration
   file: src=/etc/apache2/conf-available/ssl.conf dest="{{ apache_enabled_configs_dir }}/ssl.conf" state=link
