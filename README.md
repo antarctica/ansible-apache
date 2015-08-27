@@ -257,6 +257,145 @@ After releases the *master* branch should be merged with *develop* to restart th
 
 Issues, bugs, improvements, questions, suggestions and other tasks related to this package are managed through the BAS Web & Applications Team Jira project ([BASWEB](https://jira.ceh.ac.uk/browse/BASWEB)).
 
+### Testing
+
+To ensure this role provides its stated functionality tests **MUST** be performed before releasing new versions of this role.
+
+To assist with this a testing environment is provided within this role, through the `tests` directory.
+
+It includes two environments, local and remote for testing changes (a remote environment is provided fro testing SSL configurations with SSL Labs and other similar tools). Ansible is used to configure these environments, the aim being to replicate, as far as possible, the same workflow and environment in which this role will be used.
+
+#### Requirements
+
+##### All environments
+
+* [Mac OS X](https://www.apple.com/uk/osx/)
+* [NMap](http://nmap.org/) `brew cask install nmap` [1]
+* [Git](http://git-scm.com/) `brew install git`
+* [Ansible](http://www.ansible.com) `brew install ansible`
+* You have a [private key](https://help.github.com/articles/generating-ssh-keys/) `id_rsa`
+and [public key](https://help.github.com/articles/generating-ssh-keys/) `id_rsa.pub` in `~/.ssh/`
+
+[1] `nmap` is needed to determine if you access internal resources (such as Stash).
+
+##### Testing - local
+
+* [VMware Fusion](http://vmware.com/fusion) `brew cask install vmware-fusion`
+* [Vagrant](http://vagrantup.com) `brew cask install vagrant`
+* Vagrant plugins:
+    * [Vagrant VMware](http://www.vagrantup.com/vmware) `vagrant plugin install vagrant-vmware-fusion`
+    * [Host manager](https://github.com/smdahlen/vagrant-hostmanager) `vagrant plugin install vagrant-hostmanager`
+    * [Vagrant triggers](https://github.com/emyl/vagrant-triggers) `vagrant plugin install vagrant-triggers`
+* You have an entry like [1] in your `~/.ssh/config`
+* You have a [self signed SSL certificate for local use](https://gist.github.com/felnne/25c220a03f8f39663a5d), with the
+certificate assumed at, `tests/provisioning/certificates/v.m/v.m.tls.crt`, and private key at `tests/provisioning/certificates/v.m/v.m.tls.key`
+
+[1] SSH config entry
+
+```shell
+Host *.v.m
+    ForwardAgent yes
+    User app
+    IdentityFile ~/.ssh/id_rsa
+    Port 22
+```
+
+##### Testing - remote
+
+* [Terraform](terraform.io) `brew cask install terraform` (minimum version: 6.0)
+* [Rsync](https://rsync.samba.org/) `brew install rsync`
+* You have an entry like [1] in your `~/.ssh/config`
+* An environment variable: `TF_VAR_digital_ocean_token=XXX` set,
+where `XXX` is your DigitalOcean personal access token - used by Terraform
+* An environment variable: `TF_VAR_ssh_fingerprint=XXX` set,
+ where `XXX` is [your public key fingerprint](https://gist.github.com/felnne/596d2bf11842a0cf64d6) - used by Terraform
+* You have the `*.web.nerc-bas.ac.uk` wildcard SSL certificate, with the
+certificate assumed at, `tests/provisioning/certificates/star.web.nerc-bas.ac.uk/star.web.nerc-bas.ac.uk-certificate-including-trust-chain.crt`, and private key at `tests/provisioning/certificates/star.web.nerc-bas.ac.uk/star.web.nerc-bas.ac.uk.key`
+
+[1] SSH config entry
+
+```shell
+Host *.web.nerc-bas.ac.uk
+    ForwardAgent yes
+    User app
+    IdentityFile ~/.ssh/id_rsa
+    Port 22
+```
+
+#### Setup
+
+##### All environments
+
+It is assumed you are in the root of this role.
+
+```shell
+cd tests
+```
+
+##### Testing - local
+
+VMs are powered by VMware, managed using Vagrant and configured by Ansible.
+
+```shell
+$ vagrant up
+```
+
+Vagrant will automatically configure the localhost hosts file for infrastructure it creates on your behalf:
+
+| Name                      | Points To                                     | FQDN                        | Notes                             |
+| ------------------------- | --------------------------------------------- | --------------------------- | --------------------------------- |
+| barc-apache-test-web1.v.m | *computed value*                              | `barc-apache-test-web1.v.m` | The VM's private IP address       |
+
+Note: Vagrant managed VMs also have a second, host-guest only, network for management purposes not documented here.
+
+##### Testing - remote
+
+VMs are powered by DigitalOcean, managed using Terraform and configured by Ansible.
+
+```shell
+$ terraform get
+$ terraform apply
+```
+
+Terraform will automatically configure DNS records for infrastructure it creates on your behalf:
+
+| Kind      | Name                           | Points To                                           | FQDN                                                | Notes                                             |
+| --------- | ------------------------------ | --------------------------------------------------- | --------------------------------------------------- | ------------------------------------------------- |
+| **A**     | barc-apache-test-web2.internal | *computed value*                                    | `barc-apache-test-web2.internal.web.nerc-bas.ac.uk` | The VM's private IP address                       |
+| **A**     | barc-apache-test-web2.external | *computed value*                                    | `barc-apache-test-web2.external.web.nerc-bas.ac.uk` | The VM's public IP address                        |
+| **CNAME** | barc-apache-test-web2          | `barc-apache-test-web2.external.web.nerc-bas.ac.uk` | `barc-apache-test-web2.web.nerc-bas.ac.uk`          | A pointer for the default address                 |
+
+Note: Terraform cannot provision VMs itself due to [this issue](https://github.com/hashicorp/terraform/issues/1178),
+therefore these tasks need to be performed manually:
+
+```shell
+$ ansible-galaxy install https://github.com/antarctica/ansible-prelude,v0.1.2 --roles-path=provisioning/roles_bootstrap  --no-deps --force
+$ ansible-playbook -i provisioning/local provisioning/prelude.yml
+$ ansible-playbook -i provisioning/testing provisioning/bootstrap-digitalocean.yml
+```
+
+#### Usage
+
+Currently testing is limited to building a server, installing Apache and configuring it to use SSL.
+
+It is assumed that getting to the to that point indicates this role is working correctly, however manual testing will be needed to confirm this.
+
+In the future these checks will be made automatically, and more scenarios will be tested to more systematically test the different features of this role.
+
+**Note:** Role tests are currently proof-of-concept and may change significantly during development. If practical and useful tests will be added to all BARC roles. Please report all feedback via the issue tracker mentioned previously. 
+
+##### Testing - local
+
+```shell
+$ ansible-playbook -i provisioning/testing provisioning/site-test-local.yml
+```
+
+##### Testing - remote
+
+```shell
+$ ansible-playbook -i provisioning/testing provisioning/site-test-remote.yml
+```
+
 ## License
 
 Copyright 2015 NERC BAS. Licensed under the MIT license, see `LICENSE` for details.
