@@ -27,6 +27,9 @@ This role is designed for internal use but if useful can be shared publicly.
 
 The following features are deprecated within this role. They will be removed in the next major version.
 
+### Limitations
+
+* This role assumes the SSL certificate chain will be contained in the same file as the SSL certificate. Whilst this role supports specifying a different path and file for the chain, this role will not upload this file. Therefore you are responsible for ensuring the chain file is available at the path you specify (i.e. by uploading it using the *copy* module).
 
 ### Requirements
 

@@ -18,6 +18,11 @@
 
 - name: configure additional SSL configuration
   template: src=etc/apache2/conf-available/ssl.conf.j2 dest="{{ apache_ssl_config_path }}/ssl.conf"
+- name: copy SSL certificate to SSL directory
+  copy: src="{{ apache_ssl_cert_src }}/{{ apache_ssl_cert_file }}" dest="{{ apache_ssl_cert_base }}/{{ apache_ssl_cert_file }}"
+
+- name: copy SSL certificate private key to SSL directory
+  copy: src="{{ apache_ssl_key_src }}/{{ apache_ssl_key_file }}" dest="{{ apache_ssl_key_base }}/{{ apache_ssl_key_file }}" owner=root group=root mode=600
 
 - name: configure default SSL apache virtual host
   template: src=etc/apache2/sites-available/default-ssl.conf.j2 dest=/etc/apache2/sites-available/default-ssl.conf

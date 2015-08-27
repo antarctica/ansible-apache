@@ -2,26 +2,7 @@
 # These variables override those defined by roles
 
 # Generic
-# TODO: none of these variables (except those with "" values) will change role to role, 
-# therefore move to role defaults.
-
-generic_ssl_cert_src: certificates
-generic_ssl_cert_base: /etc/ssl/certs
-generic_ssl_cert_path: ""
-generic_ssl_cert_file: ""
-
 generic_ssl_key_src: "{{ generic_ssl_cert_src }}"
-generic_ssl_key_path: "{{ generic_ssl_cert_path }}"  
-generic_ssl_key_file: "{{ generic_ssl_cert_file }}"
-
-# Core
-core_ssl_private_key_enabled: true
-
-core_ssl_private_key_source_path: "{{ generic_ssl_key_src }}/{{ generic_ssl_key_path }}"
-core_ssl_private_key_source_file: "{{ generic_ssl_key_file }}"
 
 # Apache
 apache_default_var_www_ssl_enabled: true
-
-apache_default_var_www_ssl_cert_path: "{{ generic_ssl_cert_base }}"  # use default of /etc/ssl/certs
-apache_default_var_www_ssl_cert_file: "{{ generic_ssl_cert_file }}"

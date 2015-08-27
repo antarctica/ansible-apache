@@ -40,17 +40,19 @@ apache_default_var_www_allowoverride: "All"
 # Virtual host settings: SSL
 apache_default_var_www_ssl_enabled: false
 
-apache_default_var_www_ssl_cert_path: "{{ core_ssl_private_key_destination_path | default('/app/provisioning/certificates/domain') }}"
-apache_default_var_www_ssl_cert_file: "{{ core_ssl_private_key_destination_file | default('certificate-including-trust-chain.crt') }}"
 
-apache_default_var_www_ssl_cert_chain_path: "{{ apache_default_var_www_ssl_cert_path }}"
-apache_default_var_www_ssl_cert_chain_file: "{{ apache_default_var_www_ssl_cert_file }}"
+apache_ssl_cert_src: "{{ generic_ssl_cert_src | default('certificates') }}"  # Include additional sub-directories if required
+apache_ssl_cert_base: "{{ generic_ssl_cert_base | default('/etc/ssl/certs') }}"
+apache_ssl_cert_file: "{{ generic_ssl_cert_file | default('certificate-including-trust-chain.crt') }}"
 
-apache_default_var_www_ssl_key_path: /etc/ssl/private
-apache_default_var_www_ssl_key_file: "certificate.key"
+apache_ssl_chain_base: "{{ apache_ssl_cert_base }}"
+apache_ssl_chain_file: "{{ apache_ssl_cert_file }}"
 
 # SSL settings
 apache_ssl_config_path: "{{ apache_available_configs_dir }}"
+apache_ssl_key_src: "{{ generic_ssl_key_src | default('certificates') }}"
+apache_ssl_key_base: "{{ generic_ssl_key_base | default('/etc/ssl/private') }}"  
+apache_ssl_key_file: "{{ generic_ssl_key_file | default('certificate.key') }}"
 
 apache_enable_feature_ssl_custom_dh_parameters: false
 apache_ssl_dhparam_cert_path: /etc/ssl/certs

@@ -7,6 +7,3 @@
   sudo: yes
   roles:
     - ../../../apache
-  pre_tasks:
-    - name: copy SSL certificate to SSL directory
-      copy: src="{{ generic_ssl_cert_src }}/{{ generic_ssl_cert_path }}/{{ generic_ssl_cert_file }}" dest="{{ generic_ssl_cert_base }}/{{ generic_ssl_cert_file }}"
