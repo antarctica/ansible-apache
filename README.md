@@ -23,6 +23,11 @@ This role is designed for internal use but if useful can be shared publicly.
 
 ## Usage
 
+### Deprecated features
+
+The following features are deprecated within this role. They will be removed in the next major version.
+
+* Support for 'allow overrides' (i.e. `.htaccess` files) this is mainly for compatibility with other web-servers which do not support this concept but also for performance reasons.
 ### Limitations
 
 * This role assumes you will be using, at most, a single virtual host. This role will not prevent multiple virtual hosts from being used, but you will need to configure this. For example you will need to create additional virtual host configuration files and enable them outside this role. You may wish to use the additional configuration files, such as the improvements to SSL configurations for example, but again, this is not something this role will do for you.

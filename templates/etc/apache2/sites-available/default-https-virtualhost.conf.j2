@@ -1,13 +1,15 @@
 # {{ ansible_managed }}
 
 ServerTokens ProductOnly
-UseCanonicalName {{ apache_server_use_canonical_name }}
+{% if apache_enable_feature_use_canonical_name ==  true %}
+UseCanonicalName on
+{% endif %}
 
 <IfModule mod_ssl.c>
-    <VirtualHost {{ apache_default_var_www_server_binding }}:{{ apache_default_var_www_server_https_port }}>
-        ServerName {{ apache_default_var_www_server_name }}
-        ServerAdmin {{ apache_default_var_www_server_admin }}
-        DocumentRoot {{ apache_default_var_www_document_root }}
+    <VirtualHost {{ apache_server_binding }}:{{ apache_server_https_port }}>
+        ServerName {{ apache_server_name }}
+        ServerAdmin {{ apache_server_admin }}
+        DocumentRoot {{ apache_document_root }}
 
         # Possible values include: debug, info, notice, warn, error, crit, alert, emerg.
         LogLevel warn ssl:warn
@@ -20,23 +22,23 @@ UseCanonicalName {{ apache_server_use_canonical_name }}
             AllowOverride All
         </Directory>
         
-    {% if apache_default_var_www_document_root ==  '/var/www/' %}
+    {% if apache_document_root ==  '/var/www/' %}
             <Directory /var/www/>
-    {% for option in apache_default_var_www_options %}
+    {% for option in apache_document_root_options %}
             Options {{ option }}
     {% endfor %}
-            AllowOverride {{ apache_default_var_www_allowoverride }}
+            AllowOverride {{ apache_document_root_allowoverride }}
             Order allow,deny
             # Allow access to web content
             allow from all
             Require all granted
         </Directory>
     {% else %}
-        <Directory {{ apache_default_var_www_document_root }}>
-    {% for option in apache_default_var_www_options %}
+        <Directory {{ apache_document_root }}>
+    {% for option in apache_document_root_options %}
             Options {{ option }}
     {% endfor %}
-            AllowOverride {{ apache_default_var_www_allowoverride }}
+            AllowOverride {{ apache_document_root_allowoverride }}
             Order allow,deny
             # Allow access to web content
             allow from all

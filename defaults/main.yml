@@ -5,37 +5,33 @@
 apache_app_user_username: app
 
 # Server settings
-apache_server_use_canonical_name: "off"
-
+apache_enable_feature_use_canonical_name: false
 apache_enable_feature_disable_default_configs: true
 apache_enable_feature_remove_default_document_root_content: true
+
+apache_server_binding: 0.0.0.0
+apache_server_http_port: 80
+apache_server_https_port: 443
+
+apache_server_name: "{{ ansible_fqdn }}"
+apache_server_admin: "webmaster@example.com"
+apache_document_root: "{{ generic_document_root | default('/var/www') }}"
+
+apache_document_root_options:
+  - "-Indexes"
+  - "+FollowSymLinks"
+  - "-MultiViews"
+apache_document_root_allowoverride: "All"
 
 apache_available_configs_dir: /etc/apache2/conf-available
 apache_enabled_configs_dir: /etc/apache2/conf-enabled
 apache_enabled_configs_file_selector: "*.conf"
-
 apache_default_enabled_configs:
   - "charset.conf"
   - "localized-error-pages.conf"
   - "other-vhosts-access-log.conf"
   - "security.conf"
   - "serve-cgi-bin.conf"
-
-# Virtual host settings
-apache_default_var_www_server_binding: 0.0.0.0
-apache_default_var_www_server_http_port: 80
-apache_default_var_www_server_https_port: 443
-
-apache_default_var_www_server_name: "{{ ansible_fqdn }}"
-apache_default_var_www_server_admin: "basweb@bas.ac.uk"
-
-apache_default_var_www_document_root: /var/www
-
-apache_default_var_www_options:
-  - "-Indexes"
-  - "+FollowSymLinks"
-  - "-MultiViews"
-apache_default_var_www_allowoverride: "All"
 
 # SSL settings
 apache_enable_feature_ssl: true
@@ -58,3 +54,7 @@ apache_ssl_key_file: "{{ generic_ssl_key_file | default('certificate.key') }}"
 
 apache_ssl_dhparam_cert_path: /etc/ssl/certs
 apache_ssl_dhparam_cert_file: dhparam.pem
+
+# Virtual hosts
+apache_enable_feature_default_http_virtualhost: true
+apache_enable_feature_default_https_virtualhost: "{{ apache_enable_feature_ssl }}"

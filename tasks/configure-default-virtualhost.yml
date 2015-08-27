@@ -1,7 +1,0 @@
----
-# Configure default Apache virtualhost
-
-- name: configure default apache virtual host
-  template: src=etc/apache2/sites-available/default.conf.j2 dest=/etc/apache2/sites-available/000-default.conf # no validation currently
-  notify:
-    - Restart Apache

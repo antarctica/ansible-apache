@@ -16,8 +16,8 @@
 
 - include: app-user.yml
 
-# TODO: Rename to configure-default-http-virtualhost
-- include: configure-default-virtualhost.yml
+- include: configure-default-http-virtualhost.yml
+  when: apache_enable_feature_default_http_virtualhost == true or apache_enable_feature_default_http_virtualhost == "True"
 
 - include: configure-default-https-virtualhost.yml
   when: apache_enable_feature_default_https_virtualhost == true
