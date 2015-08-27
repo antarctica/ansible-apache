@@ -6,7 +6,7 @@ Installs the Apache web-sever using default virtual hosts
 
 ## Overview
 
-* Installs Apache server and enabled mod_rewrite support
+* Installs Apache server and enables the rewrite module
 * Configures default virtual host for HTTP connections
 * Optionally configures virtual host for HTTPS connections, this is disabled by default
 * Where HTTPS connections are supported, additional configuration is applied to improve security (including HTST)

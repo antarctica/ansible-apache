@@ -3,17 +3,19 @@
 
 - include: install-apache.yml
 
-- include: app-user.yml
-
-- include: configure-ports.yml
+- include: configure-apache.yml
 
 - include: disable-default-configs.yml
   when: apache_enable_feature_disable_default_configs == true
 
-- include: configure-default-virtualhost.yml
+- include: remove-default-content.yml
+  when: apache_enable_feature_remove_default_document_root_content == true
 
 - include: configure-ssl.yml
   when: apache_default_var_www_ssl_enabled == true
 
-- include: remove-default-content.yml
-  when: apache_enable_feature_remove_default_document_root_content == true
+# TODO: Rename to configure-default-http-virtualhost
+- include: configure-default-virtualhost.yml
+
+- include: configure-default-https-virtualhost.yml
+  when: apache_enable_feature_default_https_virtualhost == true
