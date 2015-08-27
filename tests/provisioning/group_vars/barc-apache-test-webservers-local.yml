@@ -1,0 +1,8 @@
+---
+# These variables override those defined by roles
+
+# Generic
+generic_ssl_cert_path: v.m
+generic_ssl_cert_file: v.m.tls.crt
+
+generic_ssl_key_file: v.m.tls.key

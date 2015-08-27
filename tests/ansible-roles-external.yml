@@ -1,0 +1,17 @@
+---
+
+-
+    src: https://github.com/antarctica/ansible-bootstrap-vagrant
+    name: bootstrap-vagrant
+    version: v2.0.0
+-
+    src: https://github.com/antarctica/ansible-bootstrap-digitalocean
+    name: bootstrap-digitalocean
+    version: v1.0.0
+-
+    src: ANXS.hostname
+    version: v1.0.4
+-
+    src: git+ssh://git@stash.ceh.ac.uk:7999/barc/core-public.git
+    name: core
+    version: v1.0.0

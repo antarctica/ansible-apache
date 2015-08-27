@@ -1,0 +1,6 @@
+# This is an Ansible inventory file. It inherits from /etc/ansible/hosts if it exists
+# It organises hosts/nodes into logical groups which can then be used in playbooks
+
+# This inventory is for the 'local' environment which consists of the ansible host only.
+
+localhost
