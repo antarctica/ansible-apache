@@ -19,5 +19,10 @@
 - include: configure-default-http-virtualhost.yml
   when: apache_enable_feature_default_http_virtualhost == true or apache_enable_feature_default_http_virtualhost == "True"
 
+- include: disable-default-http-virtualhost.yml
+  when: apache_enable_feature_default_http_virtualhost == false or apache_enable_feature_default_http_virtualhost == "False"
+
 - include: configure-default-https-virtualhost.yml
   when: apache_enable_feature_default_https_virtualhost == true
+- include: disable-default-https-virtualhost.yml
+  when: apache_enable_feature_default_https_virtualhost == false or apache_enable_feature_default_https_virtualhost == "False"
