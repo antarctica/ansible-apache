@@ -1,5 +1,5 @@
 ---
-# Configure secure default virtual hosts and enable support for SSL connections
+# Enable support for secure connections and configure to improve the security of such connections
 
 - name: enable SSL module
   apache2_module: state=present name=ssl
@@ -24,13 +24,6 @@
 - name: copy SSL certificate private key to SSL directory
   copy: src="{{ apache_ssl_key_src }}/{{ apache_ssl_key_file }}" dest="{{ apache_ssl_key_base }}/{{ apache_ssl_key_file }}" owner=root group=root mode=600
 
-- name: configure default SSL apache virtual host
-  template: src=etc/apache2/sites-available/default-ssl.conf.j2 dest=/etc/apache2/sites-available/default-ssl.conf
 
 - name: enable additional SSL configuration
   file: src=/etc/apache2/conf-available/ssl.conf dest="{{ apache_enabled_configs_dir }}/ssl.conf" state=link
-
-- name: enable default SSL apache virtual host
-  file: src=/etc/apache2/sites-available/default-ssl.conf dest=/etc/apache2/sites-enabled/default-ssl.conf state=link
-  notify:
-    - Restart Apache

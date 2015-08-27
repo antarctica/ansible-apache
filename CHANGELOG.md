@@ -4,6 +4,7 @@
 * BREAKING CHANGE! Refactoring all variables relating to secure connections
 * Moving support for uploading a SSL private key required fro secure connections from core role
 * Adding support for uploading a SSL certificate required for secure connections
+* Separating configuration needed for secure connections and configuring the default HTTPS virtualhost
 * Refactoring tasks to be clearer and better structured
 * Removing content from the default document root is now optional, but still enabled by default
 * Significantly improving the configuration of secure connections, through the choice of supported cipher sets and protocols

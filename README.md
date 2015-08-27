@@ -29,6 +29,7 @@ The following features are deprecated within this role. They will be removed in 
 
 ### Limitations
 
+* This role assumes you will be using, at most, a single virtual host. This role will not prevent multiple virtual hosts from being used, but you will need to configure this. For example you will need to create additional virtual host configuration files and enable them outside this role. You may wish to use the additional configuration files, such as the improvements to SSL configurations for example, but again, this is not something this role will do for you.
 * This role assumes the SSL certificate chain will be contained in the same file as the SSL certificate. Whilst this role supports specifying a different path and file for the chain, this role will not upload this file. Therefore you are responsible for ensuring the chain file is available at the path you specify (i.e. by uploading it using the *copy* module).
 
 ### Requirements
