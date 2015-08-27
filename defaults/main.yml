@@ -34,10 +34,9 @@ apache_default_enabled_configs:
   - "serve-cgi-bin.conf"
 
 # SSL settings
-apache_enable_feature_ssl: true
+apache_enable_feature_ssl: "{{ generic_enable_feature_ssl | default(true) }}"
 apache_enable_feature_ssl_hsts: true
 apache_enable_feature_ssl_custom_dh_parameters: false
-apache_enable_feature_default_https_virtualhost: "{{ apache_enable_feature_ssl }}"
 
 apache_ssl_additional_config_path: "{{ apache_available_configs_dir }}"
 

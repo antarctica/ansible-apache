@@ -3,6 +3,3 @@
 
 # Generic
 generic_ssl_key_src: "{{ generic_ssl_cert_src }}"
-
-# Apache
-apache_default_var_www_ssl_enabled: true

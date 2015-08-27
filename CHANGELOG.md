@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+* BREAKING CHANGE! SSL is now assumed.
 * BREAKING CHANGE! This now assumes SSL certificates and private keys will be stored as single files inside a base directory (i.e. '/etc/ssl/private/certificate.key' not '/etc/ssl/private/certificate/certificate.key')
 * BREAKING CHANGE! Refactoring all variables relating to secure connections
 * Moving support for uploading a SSL private key required fro secure connections from core role
