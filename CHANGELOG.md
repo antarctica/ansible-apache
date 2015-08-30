@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+* BREAKING CHANGE! Support for running CGI scripts is disabled in default virtual host files
+* BREAKING CHANGE! Alias for system documentation is disabled in default virtual host files
 * Spelling virtual host properly, i.e. not virtualhost
 * Using Jinja template for virtual host files to reduce duplication
 * BREAKING CHANGE! SSL is now assumed.
