@@ -6,6 +6,8 @@ Installs the Apache web-sever using default virtual hosts
 
 ## Overview
 
+TODO: Rewrite/Update
+
 * Installs Apache server and enables the rewrite module
 * Configures default virtual host for HTTP connections
 * Optionally configures virtual host for HTTPS connections, this is disabled by default
@@ -32,14 +34,21 @@ The following features are deprecated within this role. They will be removed in 
 
 ### Limitations
 
-* This role assumes you will be using, at most, a single virtual host. This role will not prevent multiple virtual hosts from being used, but you will need to configure this. For example you will need to create additional virtual host configuration files and enable them outside this role. You may wish to use the additional configuration files, such as the improvements to SSL configurations for example, but again, this is not something this role will do for you.
-* This role assumes the SSL certificate chain will be contained in the same file as the SSL certificate. Whilst this role supports specifying a different path and file for the chain, this role will not upload this file. Therefore you are responsible for ensuring the chain file is available at the path you specify (i.e. by uploading it using the *copy* module).
+* This role assumes you will be using, at most, a single virtual host.
+
+This role will not prevent multiple virtual hosts from being used, but you will need to create additional virtual host configuration files and enable them yourself. You may find the virtual host template [1] and additional configuration files, such as the improvements to SSL configurations, useful for this.
+
+* This role assumes the SSL certificate chain will be contained in the same file as the SSL certificate.
+
+Whilst this role supports specifying a different path and file for the chain, this role will not upload this file. Therefore you are responsible for ensuring the chain file is available at the path you specify (i.e. by uploading it using the *copy* module).
+
 * This role will allow you to enable two virtual hosts that listen on port 80.
 
 Both the deprecated non-secure virtual host and the non-secure to secure redirect virtual host can be enabled independently of each other, and both listen on port 80. This will lead to the non-secure to secure redirect virtual host being ignored.
 
 To prevent or resolve this issue ensure `apache_enable_feature_upgrade_http_to_https` is set to "false" whenever `apache_enable_feature_default_http_virtualhost` is set to "true" and vice versa. See the *Virtual hosts* section for more details.
 
+[1] See the *Virtual host template* sub-section of the *virtual hosts* section.
 
 ### Requirements
 
@@ -49,14 +58,10 @@ To prevent or resolve this issue ensure `apache_enable_feature_upgrade_http_to_h
 
 #### Other
 
-* If using SSL, the certificate and private key used must be accessible on the server.
-    * Use the `apache_default_var_www_ssl_cert` and `apache_default_var_www_ssl_key` variables to point to there location
-    * It is out of scope to do this in this role (as the certificate may be used in multiple web-servers).
-* If using a non-default document root (i.e. not `/var/www`) you **MUST** ensure the Apache user has read access to this location.
+* If using SSL, which is assumed, the certificate and private key used must be accessible on the server. Use the `apache_default_var_www_ssl_cert` and `apache_default_var_www_ssl_key` variables to point to their respective locations.
+* If using a non-default document root (i.e. not `/var/www`) you **MUST** ensure the Apache user can be granted ownership of this location.
 
 ### Variables
-
-Variables used in default virtual host `/etc/apache2/sites-available/default`:
 
 * `apache_app_user_username`
 	* Username of the 'app' user, used for day to day tasks
