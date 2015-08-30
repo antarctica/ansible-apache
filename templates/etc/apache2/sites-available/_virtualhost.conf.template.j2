@@ -16,34 +16,18 @@ UseCanonicalName on
     ErrorLog ${APACHE_LOG_DIR}/error.log
     CustomLog ${APACHE_LOG_DIR}/access.log combined
 
-    <Directory />
-        Options +FollowSymLinks
-        AllowOverride All
-    </Directory>
     
-{% if apache_document_root ==  '/var/www/' %}
-        <Directory /var/www/>
-{% for option in apache_document_root_options %}
-        Options {{ option }}
-{% endfor %}
-        AllowOverride {{ apache_document_root_allowoverride }}
-        Order allow,deny
-        # Allow access to web content
-        allow from all
-        Require all granted
-    </Directory>
-{% else %}
     <Directory {{ apache_document_root }}>
 {% for option in apache_document_root_options %}
         Options {{ option }}
 {% endfor %}
-        AllowOverride {{ apache_document_root_allowoverride }}
-        Order allow,deny
-        # Allow access to web content
-        allow from all
+{% if apache_enable_feature_disable_document_root_allow_overrides ==  true %}
+        AllowOverride None
+{% else %}
+        AllowOverride All
+{% endif %}
         Require all granted
     </Directory>
-{% endif %}
 
 
     {%- block additional_config %}{% endblock %}

@@ -27,7 +27,7 @@ This role is designed for internal use but if useful can be shared publicly.
 
 The following features are deprecated within this role. They will be removed in the next major version.
 
-* Support for 'allow overrides' (i.e. `.htaccess` files) this is mainly for compatibility with other web-servers which do not support this concept but also for performance reasons.
+* Support for 'allow overrides' (i.e. `.htaccess` files) will be permanently removed, currently support is only disabled. Set `apache_enable_feature_disable_document_root_allow_overrides` to "true" to re-enable support. This is mainly for compatibility with other web-servers which do not support this concept but also for performance reasons. 
 * The default HTTP virtual host will be disabled by default as we move to a HTTPS by default approach. Redirections from HTTP to HTTPS connections will be supported in future versions of this role.
 
 ### Limitations

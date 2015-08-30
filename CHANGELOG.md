@@ -5,6 +5,9 @@
 * BREAKING CHANGE! Support for running CGI scripts is disabled in default virtual host files
 * BREAKING CHANGE! Alias for system documentation is disabled in default virtual host files
 * Spelling virtual host properly, i.e. not virtualhost
+* Deprecated - Support for HTTP virtual hosts (i.e. non-secure), currently enabled, will be disabled
+* Deprecated - Support for Allow Overrides, currently disabled, will be removed
+* BREAKING CHANGE! Support for Allow Overrides is disabled by default
 * Using Jinja template for virtual host files to reduce duplication
 * BREAKING CHANGE! SSL is now assumed.
 * BREAKING CHANGE! This now assumes SSL certificates and private keys will be stored as single files inside a base directory (i.e. '/etc/ssl/private/certificate.key' not '/etc/ssl/private/certificate/certificate.key')
