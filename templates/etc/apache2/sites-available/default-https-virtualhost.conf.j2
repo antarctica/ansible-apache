@@ -5,82 +5,85 @@ ServerTokens ProductOnly
 UseCanonicalName on
 {% endif %}
 
-<IfModule mod_ssl.c>
-    <VirtualHost {{ apache_server_binding }}:{{ apache_server_https_port }}>
-        ServerName {{ apache_server_name }}
-        ServerAdmin {{ apache_server_admin }}
-        DocumentRoot {{ apache_document_root }}
+<VirtualHost {{ apache_server_binding }}:{{ apache_server_https_port }}>
+    ServerName {{ apache_server_name }}
+    ServerAdmin {{ apache_server_admin }}
+    DocumentRoot {{ apache_document_root }}
 
-        # Possible values include: debug, info, notice, warn, error, crit, alert, emerg.
-        LogLevel warn ssl:warn
+    # Possible values include: debug, info, notice, warn, error, crit, alert, emerg.
+    LogLevel warn ssl:warn
 
-        ErrorLog ${APACHE_LOG_DIR}/error.log
-        CustomLog ${APACHE_LOG_DIR}/access.log combined
+    ErrorLog ${APACHE_LOG_DIR}/error.log
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
 
-        <Directory />
-            Options +FollowSymLinks
-            AllowOverride All
-        </Directory>
+    <Directory />
+        Options +FollowSymLinks
+        AllowOverride All
+    </Directory>
         
-    {% if apache_document_root ==  '/var/www/' %}
-            <Directory /var/www/>
-    {% for option in apache_document_root_options %}
-            Options {{ option }}
-    {% endfor %}
-            AllowOverride {{ apache_document_root_allowoverride }}
-            Order allow,deny
-            # Allow access to web content
-            allow from all
-            Require all granted
-        </Directory>
-    {% else %}
-        <Directory {{ apache_document_root }}>
-    {% for option in apache_document_root_options %}
-            Options {{ option }}
-    {% endfor %}
-            AllowOverride {{ apache_document_root_allowoverride }}
-            Order allow,deny
-            # Allow access to web content
-            allow from all
-            Require all granted
-        </Directory>
-    {% endif %}
+{% if apache_document_root ==  '/var/www/' %}
+    <Directory /var/www/>
+{% for option in apache_document_root_options %}
+        Options {{ option }}
+{% endfor %}
+        AllowOverride {{ apache_document_root_allowoverride }}
+        Order allow,deny
+        # Allow access to web content
+        allow from all
+        Require all granted
+    </Directory>
+{% else %}
+    <Directory {{ apache_document_root }}>
+{% for option in apache_document_root_options %}
+        Options {{ option }}
+{% endfor %}
+        AllowOverride {{ apache_document_root_allowoverride }}
+        Order allow,deny
+        # Allow access to web content
+        allow from all
+        Require all granted
+    </Directory>
+{% endif %}
 
-        # Enable SSL for this virtual host.
+    # Enable SSL for this virtual host.
+
+    <IfModule mod_ssl.c>
+        # Basic settings
         SSLEngine on
         SSLCertificateFile      {{ apache_ssl_cert_base }}/{{ apache_ssl_cert_file }}
         SSLCertificateChainFile {{ apache_ssl_chain_base }}/{{ apache_ssl_chain_file }}
         SSLCertificateKeyFile   {{ apache_ssl_key_base }}/{{ apache_ssl_key_file }}
 
-        # Apply SSL settings
+        # Additional settings
         <FilesMatch "\.(cgi|shtml|phtml|php)$">
                 SSLOptions +StdEnvVars
         </FilesMatch>
         <Directory /usr/lib/cgi-bin>
                 SSLOptions +StdEnvVars
         </Directory>
+    </IfModule>
 
-        # Apache defaults
+    # Apache defaults
 
-        Alias /doc/ "/usr/share/doc/"
-        <Directory "/usr/share/doc/">
-            Options Indexes MultiViews FollowSymLinks
-            AllowOverride None
-            Order deny,allow
-            Deny from all
-            Allow from 127.0.0.0/255.0.0.0 ::1/128
-        </Directory>
+    Alias /doc/ "/usr/share/doc/"
+    <Directory "/usr/share/doc/">
+        Options Indexes MultiViews FollowSymLinks
+        AllowOverride None
+        Order deny,allow
+        Deny from all
+        Allow from 127.0.0.0/255.0.0.0 ::1/128
+    </Directory>
 
-        ScriptAlias /cgi-bin/ /usr/lib/cgi-bin/
-        <Directory "/usr/lib/cgi-bin">
-            AllowOverride None
-            Options +ExecCGI -MultiViews +SymLinksIfOwnerMatch
-            Order allow,deny
-            Allow from all
-        </Directory>
+    ScriptAlias /cgi-bin/ /usr/lib/cgi-bin/
+    <Directory "/usr/lib/cgi-bin">
+        AllowOverride None
+        Options +ExecCGI -MultiViews +SymLinksIfOwnerMatch
+        Order allow,deny
+        Allow from all
+    </Directory>
 
-        # Load any additional configuration files found in this directory - including additional SSL configuration
-        Include {{ apache_enabled_configs_dir }}/{{ apache_enabled_configs_file_selector }}
-    
-    </VirtualHost>
-</IfModule>
+    # Load any additional configuration files found in this directory - including additional SSL configuration
+
+    Include {{ apache_enabled_configs_dir }}/{{ apache_enabled_configs_file_selector }}
+
+</VirtualHost>
