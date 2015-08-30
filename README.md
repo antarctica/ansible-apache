@@ -228,11 +228,46 @@ This role **MUST NOT** contain any additional Apache modules or module configura
 
 Separate roles **MUST** be used for these modules, each module **SHOULD** have a separate role with this `apache` role as a dependency (plus any other roles as needed). By convention they should be named `ansible-*` where `*` is the name of the role, e.g. `apache-some-module`. Roles **SHOULD NOT** duplicate virtualhost file templates. Doing so introduces brittleness and fragmentation between the 'upstream' `apache` role and module roles (which will typically update at much slower frequencies).
 
+### Virtual hosts
+
+This role supports creating a default HTTP and HTTPS virtual host only. Where you need to use multiple virtual hosts within a server you should:
+
+* Prevent this role creating default virtual host files by setting the `apache_enable_feature_default_http_virtualhost` and `apache_enable_feature_default_https_virtualhost` variables to "false"
+* Create required virtual host files yourself, optionally using the template provided in this role
+
+#### Virtual host template
+
+This role uses Jinja's templating features to create virtual host files with a block to include additional configuration.
+
+The base template is `_virtualhost.conf.template.j2` (the `_` prefix donates this is a template file) and contains an opinionated virtual host definition based on the default Apache virtual host.
+
+A block `additional_configuration` is provided to inject any additional configuration (e.g. enabling SSL ) within a virtual host. This block is deliberately placed before additional configuration files are included, see the *additional configuration* section for details.
+
+The default virtual host files created by this role use this template and can be used as implementation examples if needed. The default HTTPS virtual host uses the template block feature to include a partial which enables SSL within that virtual host. 
+
+##### `additional_configuration` block or *additional configuration* feature
+
+Both the `additional_configuration` block defined in this template, and the *additional configuration* feature support including additional configuration directives into a virtual host. This is deliberate and each **SHOULD** be used to load a different type of configuration.
+
+* The `additional_configuration` block **SHOULD** be used where the additional configuration applies specifically to a single virtual host
+* The *additional configuration* feature **SHOULD** be used where the additional configuration applies to one or more virtual hosts
+
+For example:
+
+* Enabling SSL is specific to each virtual host and so **SHOULD** use the `additional_configuration` block
+* SSL hardening rules however apply equally to all virtual hosts [1] and so **SHOULD** use the *additional configuration* feature
+
+[1] These hardening rules would only be used by virtual hosts that have enabled SSL so is safe to load globally.
+
 ### Additional configuration
 
-Where a module, or an application requires additional configuration within virtualhost files isolated configuration files **SHOULD** be used. These files can be templated, assembled or copied as needed, using a `.conf` file extension. They **SHOULD** be stored in the directory set by the `apache_available_configs_dir` variable (by convention this is `/etc/apache2/config-available`).
+Where a module, or an application, requires additional configuration that does not depend on a particular virtual host, isolated configuration files **SHOULD** be used.
+
+These files can be templated, assembled or copied as needed, using a `.conf` file extension. They **SHOULD** be stored in the directory set by the `apache_available_configs_dir` variable (by convention this is `/etc/apache2/config-available`).
 
 To enable these additional configuration files create a (soft) symbolic link to the directory set by the `apache_enabled_configs_dir` variable, (by convention this is `/etc/apache2/config-enabled/*.conf`). Virtualhost files created by this role are configured to include all configuration files (using the `.conf` file extension) inside the `apache_enabled_configs_dir` directory.
+
+[1] See the *additional_configuration block or additional configuration feature* sub-section of the *Virtual host template* section for more details on when to use this feature.
 
 ### DH Parameters
 
