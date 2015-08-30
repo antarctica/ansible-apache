@@ -28,12 +28,18 @@ This role is designed for internal use but if useful can be shared publicly.
 The following features are deprecated within this role. They will be removed in the next major version.
 
 * Support for 'allow overrides' (i.e. `.htaccess` files) will be permanently removed, currently support is only disabled. Set `apache_enable_feature_disable_document_root_allow_overrides` to "true" to re-enable support. This is mainly for compatibility with other web-servers which do not support this concept but also for performance reasons. 
-* The default HTTP virtual host will be disabled by default as we move to a HTTPS by default approach. Redirections from HTTP to HTTPS connections will be supported in future versions of this role.
+* Support for a stand-alone HTTP virtual host will be removed as we move to a HTTPS by default approach. Instead the `apache_enable_feature_upgrade_http_to_https` feature should be used to redirect non-secure requests to a suitably secure virtual host, this is now enabled by default.
 
 ### Limitations
 
 * This role assumes you will be using, at most, a single virtual host. This role will not prevent multiple virtual hosts from being used, but you will need to configure this. For example you will need to create additional virtual host configuration files and enable them outside this role. You may wish to use the additional configuration files, such as the improvements to SSL configurations for example, but again, this is not something this role will do for you.
 * This role assumes the SSL certificate chain will be contained in the same file as the SSL certificate. Whilst this role supports specifying a different path and file for the chain, this role will not upload this file. Therefore you are responsible for ensuring the chain file is available at the path you specify (i.e. by uploading it using the *copy* module).
+* This role will allow you to enable two virtual hosts that listen on port 80.
+
+Both the deprecated non-secure virtual host and the non-secure to secure redirect virtual host can be enabled independently of each other, and both listen on port 80. This will lead to the non-secure to secure redirect virtual host being ignored.
+
+To prevent or resolve this issue ensure `apache_enable_feature_upgrade_http_to_https` is set to "false" whenever `apache_enable_feature_default_http_virtualhost` is set to "true" and vice versa. See the *Virtual hosts* section for more details.
+
 
 ### Requirements
 
@@ -230,12 +236,18 @@ Separate roles **MUST** be used for these modules, each module **SHOULD** have a
 
 ### Virtual hosts
 
-This role supports creating a default HTTP and HTTPS virtual host only. Where you need to use multiple virtual hosts within a server you should:
+This role supports creating three virtual hosts:
 
-* Prevent this role creating default virtual host files by setting the `apache_enable_feature_default_http_virtualhost` and `apache_enable_feature_default_https_virtualhost` variables to "false"
+* A non-secure (HTTP) default virtual host
+* A secure (HTTPS) default virtual host
+* A non-secure to secure redirect virtual host
+
+If you need to additional virtual hosts, or to significantly change the virtual hosts provided by this role, you **SHOULD**:
+
+* Prevent this role creating default virtual host files by setting the `apache_enable_feature_default_http_virtualhost`, `apache_enable_feature_default_https_virtualhost`  and `apache_enable_feature_upgrade_http_to_https` variables to "false"
 * Create required virtual host files yourself, optionally using the template provided in this role
 
-These default virtual hosts are based on the default Apache virtual host files but with the following major differences:
+The secure and non-secure virtual hosts are based on the default Apache virtual host files but with the following major differences:
 
 * Support for running CGI scripts is disabled via the removal of `ScriptAlias /cgi-bin/ /usr/lib/cgi-bin/` and associated directives
 * Support for accessing system documentation is disabled via the removal of the `/usr/share/doc` alias and associated directives
@@ -244,7 +256,25 @@ These default virtual hosts are based on the default Apache virtual host files b
 * Access to the document root is granted to all (i.e. `Allow from all`)
 * Support for `.htaccess` files is enabled within the document root [1]
 
+The non-secure to secure redirect virtual host is based on the Apache example [2].
+
+These virtual hosts are enabled or disabled, independently, using their respective variables (see the *Variables* section).
+
+The table below shows, for different scenarios, how to set these variables:
+
+|                                                   | Non-secure only | Secure only | Non-secure redirecting to secure |
+|---------------------------------------------------|-----------------|-------------|----------------------------------|
+| `apache_enable_feature_default_http_virtualhost`  | True            | False       | False                            |
+| `apache_enable_feature_default_https_virtualhost` | False           | True        | True                             |
+| `apache_enable_feature_upgrade_http_to_https`     | False           | False       | True                             |
+
+By default this role will use the *Non-secure redirecting to secure* scenario.
+
+**Note**: As the non-secure and non-secure to secure redirect virtual host both listen on port 80 it is possible to cause to a conflict between these virtual host. See the *Limitations* section for how to resolve this.
+
 [1] Support for `.htaccess` files is deprecated. See the *deprecated features* section for more information.
+
+[2] https://wiki.apache.org/httpd/RedirectSSL
 
 #### Virtual host template
 

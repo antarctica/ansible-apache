@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+* Added support for upgrading non-secure to secure requests using a specialist, minimal, virtual host
 * Deprecated - Support for HTTP virtual hosts (i.e. non-secure), currently enabled, will be disabled
 * Deprecated - Support for Allow Overrides, currently disabled, will be removed
 * BREAKING CHANGE! Support for Allow Overrides is disabled by default
