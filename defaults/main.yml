@@ -22,7 +22,6 @@ apache_document_root_options:
   - "-Indexes"
   - "+FollowSymLinks"
   - "-MultiViews"
-apache_document_root_allowoverride: "All"
 
 apache_available_configs_dir: /etc/apache2/conf-available
 apache_enabled_configs_dir: /etc/apache2/conf-enabled
@@ -33,6 +32,10 @@ apache_default_enabled_configs:
   - "other-vhosts-access-log.conf"
   - "security.conf"
   - "serve-cgi-bin.conf"
+
+# Virtual hosts
+apache_enable_feature_default_http_virtualhost: true
+apache_enable_feature_default_https_virtualhost: "{{ apache_enable_feature_ssl }}"
 
 # SSL settings
 apache_enable_feature_ssl: "{{ generic_enable_feature_ssl | default(true) }}"
@@ -54,7 +57,3 @@ apache_ssl_key_file: "{{ generic_ssl_key_file | default('certificate.key') }}"
 
 apache_ssl_dhparam_cert_path: /etc/ssl/certs
 apache_ssl_dhparam_cert_file: dhparam.pem
-
-# Virtual hosts
-apache_enable_feature_default_http_virtualhost: true
-apache_enable_feature_default_https_virtualhost: "{{ apache_enable_feature_ssl }}"

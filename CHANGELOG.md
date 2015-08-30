@@ -2,38 +2,38 @@
 
 ## Unreleased
 
-* BREAKING CHANGE! Support for running CGI scripts is disabled in default virtual host files
-* BREAKING CHANGE! Alias for system documentation is disabled in default virtual host files
-* Spelling virtual host properly, i.e. not virtualhost
 * Deprecated - Support for HTTP virtual hosts (i.e. non-secure), currently enabled, will be disabled
 * Deprecated - Support for Allow Overrides, currently disabled, will be removed
 * BREAKING CHANGE! Support for Allow Overrides is disabled by default
+* BREAKING CHANGE! Support for running CGI scripts is removed in default virtual host files
+* BREAKING CHANGE! Alias for system documentation is removed in default virtual host files
+* Spelling virtual host properly, i.e. not virtual host
 * Using Jinja template for virtual host files to reduce duplication
 * BREAKING CHANGE! SSL is now assumed.
 * BREAKING CHANGE! This now assumes SSL certificates and private keys will be stored as single files inside a base directory (i.e. '/etc/ssl/private/certificate.key' not '/etc/ssl/private/certificate/certificate.key')
 * BREAKING CHANGE! Refactoring all variables relating to secure connections
 * Moving support for uploading a SSL private key required fro secure connections from core role
 * Adding support for uploading a SSL certificate required for secure connections
-* Separating configuration needed for secure connections and configuring the default HTTPS virtualhost
+* Separating configuration needed for secure connections and configuring the default HTTPS virtual host
 * Refactoring tasks to be clearer and better structured
 * Removing content from the default document root is now optional, but still enabled by default
 * Significantly improving the configuration of secure connections, through the choice of supported cipher sets and protocols
 * Providing future support for custom DH parameters for secure connections, for when this is available with operating systems
-* BREAKING CHANGE! Removing support for aliases within virtualhosts
+* BREAKING CHANGE! Removing support for aliases within virtual hosts
 * Fixing setting of default variable values, which were previously defined within core role
 * BREAKING CHANGE! Removing support for Ubuntu versions before 14.04
-* BREAKING CHANGE! Removing markers for including module and custom virtualhost configuration details, 
+* BREAKING CHANGE! Removing markers for including module and custom virtual host configuration details, 
 in favour of loading al such configuration files from a directory
 
 ## 0.5.1 - May 2015
 
 * Changing the Apache serverName property to use the FQDN by default, rather than the hostname 
-* Fixing names of virtualhost template files
+* Fixing names of virtual host template files
 * Deprecating support for aliases and Ubuntu versions before 14.04
 
 ## 0.5.0 - March 2015
 
-* Adding markers for including module and custom configuration within virtualhost configuration files
+* Adding markers for including module and custom configuration within virtual host configuration files
 
 ## 0.4.2 - March 2015
 
@@ -68,11 +68,11 @@ in favour of loading al such configuration files from a directory
 ## 0.2.2 - October 2014
 
 * Adjusting role for inclusion in BARC
-* Tasks cleanup
+* Tasks clean-up
 
 ## 0.2.1 - September 2014
 
-* Disabling reporting of apache version
+* Disabling reporting of Apache version
 
 ## 0.2.0 - September 2014
 
@@ -81,22 +81,22 @@ in favour of loading al such configuration files from a directory
 ## 0.1.4 - September 2014
 
 * Fixing 'Could not reliably determine the server's fully qualified domain name' error
-* Fixing incorrect server admin address
+* Fixing incorrect server administrator address
 
 ## 0.1.3 - September 2014
 
-* Fixing hardcoded non-standard document root
+* Fixing hard-coded non-standard document root
 * Minor template refactoring
 
 ## 0.1.2 - July 2014
 
-* Making compatible with apache 2.4
-* If a non-standard document root is used apache file configured to allow access to this directory automatically
+* Making compatible with Apache 2.4
+* If a non-standard document root is used Apache file configured to allow access to this directory automatically
 
 ## 0.1.1 - July 2014
 
-* Making compatible with ubuntu 14.04
-* Adding new variables for document root and server admin
+* Making compatible with Ubuntu 14.04
+* Adding new variables for document root and server administrator
 
 ## 0.1.0 - June 2014
 

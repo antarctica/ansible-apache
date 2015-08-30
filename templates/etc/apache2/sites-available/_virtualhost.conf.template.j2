@@ -1,14 +1,21 @@
 # {{ ansible_managed }}
 
+# Server wide settings
+
 ServerTokens ProductOnly
 {% if apache_enable_feature_use_canonical_name ==  true %}
 UseCanonicalName on
 {% endif %}
 
 <VirtualHost {{ apache_server_binding }}:{%- block listen_port %}{% endblock %} >
+    
+    # Basic virtual host settings
+
     ServerName {{ apache_server_name }}
     ServerAdmin {{ apache_server_admin }}
     DocumentRoot {{ apache_document_root }}
+
+    # Virtual host logging
 
     # Possible values include: debug, info, notice, warn, error, crit, alert, emerg.
     LogLevel warn
@@ -16,6 +23,7 @@ UseCanonicalName on
     ErrorLog ${APACHE_LOG_DIR}/error.log
     CustomLog ${APACHE_LOG_DIR}/access.log combined
 
+    # Document root access and display settings
     
     <Directory {{ apache_document_root }}>
 {% for option in apache_document_root_options %}
@@ -29,6 +37,7 @@ UseCanonicalName on
         Require all granted
     </Directory>
 
+    # Additional virtual host configuration
 
     {%- block additional_config %}{% endblock %}
 

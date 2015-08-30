@@ -235,6 +235,17 @@ This role supports creating a default HTTP and HTTPS virtual host only. Where yo
 * Prevent this role creating default virtual host files by setting the `apache_enable_feature_default_http_virtualhost` and `apache_enable_feature_default_https_virtualhost` variables to "false"
 * Create required virtual host files yourself, optionally using the template provided in this role
 
+These default virtual hosts are based on the default Apache virtual host files but with the following major differences:
+
+* Support for running CGI scripts is disabled via the removal of `ScriptAlias /cgi-bin/ /usr/lib/cgi-bin/` and associated directives
+* Support for accessing system documentation is disabled via the removal of the `/usr/share/doc` alias and associated directives
+* For security reasons the `ServerTokens` directive is set to least informative setting
+* The `ServerName` directive is always set
+* Access to the document root is granted to all (i.e. `Allow from all`)
+* Support for `.htaccess` files is enabled within the document root [1]
+
+[1] Support for `.htaccess` files is deprecated. See the *deprecated features* section for more information.
+
 #### Virtual host template
 
 This role uses Jinja's templating features to create virtual host files with a block to include additional configuration.
