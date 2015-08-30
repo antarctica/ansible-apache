@@ -1,6 +1,6 @@
 ---
 galaxy_info:
-  description: Installs the Apache web-sever using default virtual hosts
+  description: Installs the Apache web-sever and optionally setup a default virtual host
   author: British Antarctic Survey - Web and Applications Team
   company: British Antarctic Survey
   license: MIT
