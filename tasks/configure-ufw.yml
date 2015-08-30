@@ -1,0 +1,11 @@
+---
+# Configure UFW to recognise and control Apache connections
+
+- name: create UFW definitions file for apache
+  template: src=etc/ufw/applications.d/BARC-apache.ufw.profile.j2 dest=/etc/ufw/applications.d/BARC-apache.ufw.profile
+
+- name: replace default apache UFW definitions file with commented version
+  copy: src=etc/ufw/applications.d/apache2-utils.ufw.profile dest=/etc/ufw/applications.d/apache2-utils.ufw.profile
+
+- name: remove dummy apache UFW definitions file directory
+  file: path=/etc/ufw/applications.d/apache2 state=absent

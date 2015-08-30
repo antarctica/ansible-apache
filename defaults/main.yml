@@ -58,3 +58,6 @@ apache_ssl_key_file: "{{ generic_ssl_key_file | default('certificate.key') }}"
 
 apache_ssl_dhparam_cert_path: /etc/ssl/certs
 apache_ssl_dhparam_cert_file: dhparam.pem
+
+# UFW settings
+apache_enable_feature_configure_ufw: true

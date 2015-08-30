@@ -5,3 +5,7 @@
   file: path=/etc/apache2/sites-enabled/default.conf state=absent
   notify:
     - Restart Apache
+
+- name: remove rule to allow non-secure connections to apache
+  ufw: rule=allow name=Apache-Non-Secure delete=yes
+  when: apache_enable_feature_disable_default_apache_virtual_host == true or apache_enable_feature_disable_default_apache_virtual_host == "True"

@@ -10,3 +10,7 @@
   file: src=/etc/apache2/sites-available/default-ssl.conf dest=/etc/apache2/sites-enabled/default-ssl.conf state=link
   notify:
     - Restart Apache
+
+- name: allow secure connections to apache
+  ufw: rule=allow name=Apache-Secure
+  when: apache_enable_feature_disable_default_apache_virtual_host == true or apache_enable_feature_disable_default_apache_virtual_host == "True"

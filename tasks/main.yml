@@ -22,6 +22,9 @@
 
 # Virtual hosts
 
+- include: disable-default-apache-virtualhost.yml
+  when: apache_enable_feature_disable_default_apache_virtual_host == true or apache_enable_feature_disable_default_apache_virtual_host == "True"
+
 - include: configure-default-http-virtualhost.yml
   when: apache_enable_feature_default_http_virtualhost == true or apache_enable_feature_default_http_virtualhost == "True"
 
@@ -41,3 +44,8 @@
 
 - include: disable-redirect-http-https-virtualhost.yml
   when: apache_enable_feature_upgrade_http_to_https == false or apache_enable_feature_upgrade_http_to_https == "False"
+
+# Security
+
+- include: configure-ufw.yml
+  when: apache_enable_feature_configure_ufw == true

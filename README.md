@@ -331,6 +331,35 @@ $ openssl dhparam -out dhparam.pem 4096
 
 Note: Using a custom DH parameters file requires OpenSSL version 1.0.2 or higher. This version is not available in Ubuntu 14.04 and so this feature is disabled by default. When this changes this role will be updated to enable this feature by default (requiring a new major version). This change can be tracked in the issue [BARC-35](https://jira.ceh.ac.uk/browse/BARC-35).
 
+### Compatibility with Uncomplicated Firewall
+
+This role assumes Ubuntu's Uncomplicated FireWall (UFW) is used [1]. This role will create application definitions for non-secure and secure connections to Apache [2] and rules will to allow incoming connections to these services.
+
+See the [Security role]() within the BARC for more details on using UFW.
+
+See the *variables* section for details on the variables this role offers to control the application definitions and rules this role will make.
+
+For reference the application definitions this role creates [3] are:
+
+| Name                 | Title                          | Ports                                                                 | Notes                        |
+| -------------------- | ------------------------------ | --------------------------------------------------------------------- | ---------------------------- |
+| `Apache-Non-Section` | Apache Web Server (HTTP)       | TCP `{{ apache_server_http_port }}`                                   | Port is based on variable    |
+| `Apache-Section`     | Apache Web Server (HTTPS)      | TCP `{{ apache_server_https_port }}`                                  | Port is based on variable    |
+| `Apache-Full`        | Apache Web Server (HTTP/HTTPS) | TCP `{{ apache_server_http_port }}`, `{{ apache_server_https_port }}` | Ports are based on variables |
+
+For reference the rules this role creates (using application definitions) are:
+
+| From     | Action   | To (`Application Definition`)         | Notes |
+|----------|----------|---------------------------------------| ----- |
+| Anywhere | Allow In | Apache Non-Secure `Apache-Non-Secure` |       |
+| Anywhere | Allow In | Apache Secure `Apache-Secure`         |       |
+
+[1] Unless the UFW is enabled the rules this role creates will not be enforced, therefore you do not necessarily need to its support within this role. By doing so it would be harder to enable the UFW later without reapplying this role with UFW support enabled.
+
+[2] Apache includes an application definitions file, but the ports for secure and non-secure connections are hard-coded. To support custom ports (though you **SHOULD NOT** do so), a similar definition file is created by this role.
+
+[3] In `/etc/ufw/applications.d/BARC-apache.ufw.profile`.
+
 ### Committing changes
 
 The [Git flow](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow/) workflow is used to manage development of this package.
