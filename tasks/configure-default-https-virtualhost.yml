@@ -3,6 +3,8 @@
 
 - name: configure default secure virtual host
   template: src=etc/apache2/sites-available/default-https-virtualhost.conf.j2 dest=/etc/apache2/sites-available/default-ssl.conf
+  notify:
+    - Restart Apache
 
 - name: enable default secure virtual host
   file: src=/etc/apache2/sites-available/default-ssl.conf dest=/etc/apache2/sites-enabled/default-ssl.conf state=link
