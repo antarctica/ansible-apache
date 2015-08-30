@@ -5,7 +5,7 @@ ServerTokens ProductOnly
 UseCanonicalName on
 {% endif %}
 
-<VirtualHost {{ apache_server_binding }}:{{ apache_server_http_port }} >
+<VirtualHost {{ apache_server_binding }}:{%- block listen_port %}{% endblock %} >
     ServerName {{ apache_server_name }}
     ServerAdmin {{ apache_server_admin }}
     DocumentRoot {{ apache_document_root }}
