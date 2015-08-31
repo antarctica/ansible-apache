@@ -6,7 +6,7 @@
 # It is best practice to group hosts by location and purpose like so:
 
 [vagrant-test]
-barc-apache-test-web1.v.m
+barc-apache-test-bare.v.m
 
 [vagrant:children]
 vagrant-test
@@ -16,7 +16,7 @@ vagrant
 
 
 [barc-apache-test-webservers-local]
-barc-apache-test-web1.v.m
+barc-apache-test-bare.v.m
 
 [barc-apache-test-webservers:children]
 barc-apache-test-webservers-local

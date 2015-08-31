@@ -3,11 +3,13 @@
 [Apache-Non-Secure]
 title=Apache Web Server (HTTP)
 description=Port configured for Apache non-secure connections (usually 80).
+# HTTP port
 ports={{ apache_server_http_port }}/tcp
 
 [Apache-Secure]
 title=Apache Web Server (HTTPS)
 description=Port configured for Apache secure connections (usually 443)
+# HTTPS port
 ports={{ apache_server_https_port }}/tcp
 
 [Apache-Full]

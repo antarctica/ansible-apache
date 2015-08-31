@@ -1,6 +1,9 @@
 ---
 # Setup infrastructure for testing role
 
+# Apply role to test VMs,
+# host-vars are used to control which features of the role are applied to each VM.
+
 - name: setup apache web-server
   hosts: barc-apache-test-webservers
   remote_user: controller
@@ -8,3 +11,8 @@
   roles:
     - security
     - ../../../apache
+
+# Test case playbooks,
+# for each test a set of tasks will be run to check the selected features of roles are applied.
+
+- include: host_playbooks/bare.yml

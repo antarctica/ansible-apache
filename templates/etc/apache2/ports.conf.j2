@@ -4,10 +4,10 @@
 # have to change the VirtualHost statement in
 # /etc/apache2/sites-enabled/000-default.conf
 
-Listen {{ apache_server_http_port }}
+Listen {{ apache_server_http_port }}  # HTTP port
 
 <IfModule ssl_module>
-        Listen {{ apache_server_https_port }}
+        Listen {{ apache_server_https_port }}  # HTTPS port
 </IfModule>
 
 <IfModule mod_gnutls.c>
