@@ -494,6 +494,14 @@ $ ansible-playbook -i provisioning/testing-remote provisioning/bootstrap-digital
 
 ##### Testing - local
 
+Use this shell script to run all test phases automatically:
+
+```shell
+$ ./tests/run-local-tests.sh
+```
+
+Alternatively run each phase separately:
+
 ```shell
 # Check syntax:
 $ ansible-playbook -i provisioning/testing-local provisioning/site-test.yml --syntax-check
@@ -508,6 +516,14 @@ $ ansible-playbook -i provisioning/testing-local provisioning/site-test.yml
 Note: The use of `#` in the above indicates a comment, not a root shell.
 
 ##### Testing - remote
+
+Use this shell script to run all test phases automatically:
+
+```shell
+$ ./tests/run-remote-tests.sh
+```
+
+Alternatively run each phase separately:
 
 ```shell
 # Check syntax:
