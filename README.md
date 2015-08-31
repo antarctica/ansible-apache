@@ -23,6 +23,12 @@ TODO: Rewrite/Update
 
 This role is designed for internal use but if useful can be shared publicly.
 
+## Quality Assurance
+
+This role uses manual and automated testing to ensure the features offered by this role work as advertised. See the *testing* section for more information.
+
+Using automated testing this role is: [![Build Status](https://semaphoreci.com/api/v1/projects/9fd776a8-8f74-4e82-a2e0-bce17fcacdf3/526947/badge.svg)](https://semaphoreci.com/antarctica/ansible-apache)
+
 ## Usage
 
 ### Deprecated features
@@ -62,6 +68,8 @@ To prevent or resolve this issue ensure `apache_enable_feature_upgrade_http_to_h
 * If using a non-default document root (i.e. not `/var/www`) you **MUST** ensure the Apache user can be granted ownership of this location.
 
 ### Variables
+
+TODO: Rewrite/Update
 
 * `apache_app_user_username`
 	* Username of the 'app' user, used for day to day tasks
@@ -360,30 +368,50 @@ Roles **SHOULD NOT** duplicate virtual host file templates. Doing so introduces 
 
 ### Testing
 
-Note: These tests are proof-of-concept and may change significantly, report all feedback via the role issue tracker as normal.
+Note: Role testing is currently a proof-of-concept and may change significantly.
 
-To ensure this role works correctly tests **MUST** be written for any role changes, and tested before new versions are released.
+To ensure this role works correctly tests **MUST** be written for any role changes, and tested before new versions are released. Both manual and automated methods are used to test this role.
 
-Tests cover test three main aspects of a role:
+Three aspects of this role are tested:
 
-1. It's syntax is correct (using `ansible-playbook --syntax-check`)
-2. It's functionality works as advertised
-3. It's idempotency, i.e. that the second time the role is applied all tasks are green or blue
+1. **Valid role syntax** - as determined by `ansible-playbook --syntax-check`
+2. **Functionality** - i.e. does this role do what it claims to 
+3. **Idempotency** - i.e. do any changes occur if this role is applied a second time
 
-This is achieved using:
+Tests for these aspects can be split into:
 
 * **Test tasks** - tests each task to ensure it functions correctly, act like unit tests
 * **Test playbooks** - combine test tasks for various scenarios, act like integration tests
 
 Test tasks are kept in the `test-takes` directory, mirroring the structure of the `tasks` directory.
 
-Test playbooks aim mainly to cover the most frequent ways a role is used, in an environment designed to replicate that in which this role will be used [1]. They also try to cover all the features of a role, wherever practical. Playbooks and support files are kept in the `tests` directory.
+Test playbooks aim mainly to cover the most frequent ways a role is used, in an environment designed to replicate that in which this role will be used. They also try to cover all the features of a role, wherever practical. Playbooks and support files are kept in the `tests` directory.
 
-[1] Two environments, local and remote are available as needed. For example testing SSL with tools such as SSL Labs will require the remote environment.
+Both manual and automated test methods use these playbooks and test tasks, reducing the need for duplication and ensuring both types of test are as similar as possible.
 
-#### Requirements
+#### Automated tests
 
-##### All environments
+Currently [Semaphore CI](https://semaphoreci.com/) is used for automated testing of this role. It is linked to this role's repository and will trigger on each commit to configured branches, which are currently:
+
+* [Develop](https://semaphoreci.com/antarctica/ansible-apache/branches/develop)
+
+When triggered a single test playbook will be executed to test this role. It is currently only possible to run a single playbook, as we cannot wipe the test VM during the test process. Because of this automated tests are not as through as manual testing, but requires significantly less effort to run.
+
+For these reasons the testing playbook used in these tests is designed to test the most typical useage of this role.
+
+The current status of these automated tests is: [![Build Status](https://semaphoreci.com/api/v1/projects/9fd776a8-8f74-4e82-a2e0-bce17fcacdf3/526947/badge.svg)](https://semaphoreci.com/antarctica/ansible-apache)
+
+See the [automated testing environment](https://semaphoreci.com/antarctica/ansible-apache) for test history, configuration and documentation.
+
+#### Manual tests
+
+Manual tests are more complete than the automated tests, testing many different combinations of how this role can be used. Consequently, these tests are slower and more time consuming to run. The use of Ansible and simple shell scripts aims to reduce this effort/complexity as far as is practical.
+
+Two environments, local and remote, are available for manual testing. Some types of test, for example testing SSL with tools such as SSL Labs, can only be performed using the remote environment.
+
+##### Requirements
+
+###### All environments
 
 * [Mac OS X](https://www.apple.com/uk/osx/)
 * [NMap](http://nmap.org/) `brew cask install nmap` [1]
@@ -394,7 +422,7 @@ and [public key](https://help.github.com/articles/generating-ssh-keys/) `id_rsa.
 
 [1] `nmap` is needed to determine if you access internal resources (such as Stash).
 
-##### Testing - local
+###### Manual testing - local
 
 * [VMware Fusion](http://vmware.com/fusion) `brew cask install vmware-fusion`
 * [Vagrant](http://vagrantup.com) `brew cask install vagrant`
@@ -416,7 +444,7 @@ Host *.v.m
     Port 22
 ```
 
-##### Testing - remote
+###### Manual testing - remote
 
 * [Terraform](terraform.io) `brew cask install terraform` (minimum version: 6.0)
 * [Rsync](https://rsync.samba.org/) `brew install rsync`
@@ -438,9 +466,9 @@ Host *.web.nerc-bas.ac.uk
     Port 22
 ```
 
-#### Setup
+##### Setup
 
-##### All environments
+###### All environments
 
 It is assumed you are in the root of this role.
 
@@ -448,7 +476,7 @@ It is assumed you are in the root of this role.
 cd tests
 ```
 
-##### Testing - local
+###### Manual testing - local
 
 VMs are powered by VMware, managed using Vagrant and configured by Ansible.
 
@@ -464,7 +492,7 @@ Vagrant will automatically configure the localhost hosts file for infrastructure
 
 Note: Vagrant managed VMs also have a second, host-guest only, network for management purposes not documented here.
 
-##### Testing - remote
+###### Manual testing - remote
 
 VMs are powered by DigitalOcean, managed using Terraform and configured by Ansible.
 
@@ -490,9 +518,9 @@ $ ansible-playbook -i provisioning/local provisioning/prelude.yml
 $ ansible-playbook -i provisioning/testing-remote provisioning/bootstrap-digitalocean.yml
 ```
 
-#### Usage
+##### Usage
 
-##### Testing - local
+###### Manual testing - local
 
 Use this shell script to run all test phases automatically:
 
@@ -515,7 +543,7 @@ $ ansible-playbook -i provisioning/testing-local provisioning/site-test.yml
 
 Note: The use of `#` in the above indicates a comment, not a root shell.
 
-##### Testing - remote
+###### Manual testing - remote
 
 Use this shell script to run all test phases automatically:
 
@@ -538,15 +566,15 @@ $ ansible-playbook -i provisioning/testing-remote provisioning/site-test.yml
 
 Note: The use of `#` in the above indicates a comment, not a root shell.
 
-#### Clean up
+##### Clean up
 
-##### Testing - local
+###### Manual testing - local
 
 ```shell
 $ vagrant destroy
 ```
 
-##### Testing - remote
+###### Manual testing - remote
 
 ```shell
 $ terraform destroy
