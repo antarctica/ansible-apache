@@ -34,7 +34,7 @@
   when: apache_enable_feature_default_http_virtualhost == true or apache_enable_feature_default_http_virtualhost == "True"
 
 - include: disable-default-http-virtualhost.yml
-  when: apache_enable_feature_default_http_virtualhost == false or apache_enable_feature_default_http_virtualhost == "False"
+  when: (apache_enable_feature_default_http_virtualhost == false or apache_enable_feature_default_http_virtualhost == "False")
 
 
 - include: configure-default-https-virtualhost.yml
@@ -48,5 +48,4 @@
   when: apache_enable_feature_upgrade_http_to_https == true or apache_enable_feature_upgrade_http_to_https == "True"
 
 - include: disable-redirect-http-https-virtualhost.yml
-  when: apache_enable_feature_upgrade_http_to_https == false or apache_enable_feature_upgrade_http_to_https == "False"
-
+  when: (apache_enable_feature_upgrade_http_to_https == false or apache_enable_feature_upgrade_http_to_https == "False")

@@ -8,3 +8,4 @@
 
 - name: remove rule to allow non-secure connections to apache
   ufw: rule=allow name=Apache-Non-Secure delete=yes
+  when: (apache_enable_feature_default_http_virtualhost == false or apache_enable_feature_default_http_virtualhost == "False")
