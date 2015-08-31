@@ -12,6 +12,10 @@
     src: ANXS.hostname
     version: v1.0.4
 -
-    src: git+ssh://git@stash.ceh.ac.uk:7999/barc/core-public.git
+    src: https://github.com/antarctica/ansible-core-public
     name: core
     version: v1.0.0
+-
+    src: https://github.com/antarctica/ansible-security
+    name: security
+    version: v0.1.0
