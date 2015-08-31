@@ -488,7 +488,7 @@ therefore these tasks need to be performed manually:
 ```shell
 $ ansible-galaxy install https://github.com/antarctica/ansible-prelude,v0.1.2 --roles-path=provisioning/roles_bootstrap  --no-deps --force
 $ ansible-playbook -i provisioning/local provisioning/prelude.yml
-$ ansible-playbook -i provisioning/testing provisioning/bootstrap-digitalocean.yml
+$ ansible-playbook -i provisioning/testing-remote provisioning/bootstrap-digitalocean.yml
 ```
 
 #### Usage
@@ -496,21 +496,21 @@ $ ansible-playbook -i provisioning/testing provisioning/bootstrap-digitalocean.y
 Currently testing is limited to building a server, installing Apache and configuring it to use SSL.
 
 It is assumed that getting to the to that point indicates this role is working correctly, however manual testing will be needed to confirm this.
+$ ansible-playbook -i provisioning/testing-local provisioning/site-test.yml
 
 In the future these checks will be made automatically, and more scenarios will be tested to more systematically test the different features of this role.
 
 **Note:** Role tests are currently proof-of-concept and may change significantly during development. If practical and useful tests will be added to all BARC roles. Please report all feedback via the issue tracker mentioned previously. 
+$ ansible-playbook -i provisioning/testing-remote provisioning/site-test.yml
 
 ##### Testing - local
 
 ```shell
-$ ansible-playbook -i provisioning/testing provisioning/site-test-local.yml
 ```
 
 ##### Testing - remote
 
 ```shell
-$ ansible-playbook -i provisioning/testing provisioning/site-test-remote.yml
 ```
 
 ## License

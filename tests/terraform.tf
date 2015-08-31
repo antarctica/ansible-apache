@@ -58,6 +58,6 @@ module "barc-apache-test-web2-records" {
 #        command = "ansible-playbook -i provisioning/local provisioning/prelude.yml"
 #    }
 #    provisioner "local-exec" {
-#        command = "ansible-playbook -i provisioning/testing provisioning/bootstrap-digitalocean.yml"
+#        command = "ansible-playbook -i provisioning/testing-remote provisioning/bootstrap-digitalocean.yml"
 #    }
 #}

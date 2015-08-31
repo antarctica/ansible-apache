@@ -2,8 +2,9 @@
 # Setup infrastructure for testing role
 
 - name: setup apache web-server
-  hosts: barc-apache-test-webservers-remote
+  hosts: barc-apache-test-webservers
   remote_user: controller
   sudo: yes
   roles:
+    - security
     - ../../../apache
