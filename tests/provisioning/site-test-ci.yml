@@ -1,0 +1,21 @@
+---
+# Setup infrastructure for testing role
+
+# Apply role to test VMs,
+# host-vars are used to control which features of the role are applied to each VM.
+# For each test a set of tasks will be run to check the selected features of roles are correctly applied.
+
+- name: setup and test the apache web-server role
+  hosts: all
+  remote_user: controller
+  sudo: yes
+  roles:
+    - security
+    - ../../../apache
+  tasks:
+    - meta: flush_handlers
+    - include: ../../../apache/test-tasks/main.yml
+
+# TODO:
+#- include: host_playbooks/http.yml
+#- include: host_playbooks/https.yml
