@@ -364,15 +364,22 @@ Note: These tests are proof-of-concept and may change significantly, report all 
 
 To ensure this role provides its stated functionality tests **MUST** be performed before releasing new versions of this role.
 
-To assist with this a testing environment is provided within the `tests` directory of this role.
+Tests cover test three main aspects of a role:
 
-Two environments, local and remote [1], are available configured by Ansible, the aim being to replicate, as far as possible, the same workflow and environment in which this role will be used.
+1. It's syntax is correct (using `ansible-playbook --syntax-check`)
+2. It's functionality works as advertised
+3. It's idempotency, i.e. that the second time the role is applied all tasks are green or blue
 
-Currently testing is limited to building a server, installing Apache and configuring it to use SSL.
+This is achieved using:
 
-It is assumed that getting to the to that point indicates this role is working correctly, however manual testing will be needed to confirm this. In the future these checks will be made automatically, and more scenarios will be tested to more systematically test the different features of this role.
+* **Test tasks** - tests each task to ensure it functions correctly, act like unit tests
+* **Test playbooks** - combine test tasks for various scenarios, act like integration tests
 
-[1] A remote environment is provided for testing SSL with tools such as SSL Labs.
+Test tasks are kept in the `test-takes` directory, mirroring the structure of the `tasks` directory.
+
+Test playbooks aim mainly to cover the most frequent ways a role is used, in an environment designed to replicate that in which this role will be used [1]. They also try to cover all the features of a role, wherever practical. Playbooks and support files are kept in the `tests` directory.
+
+[1] Two environments, local and remote are available as needed. For example testing SSL with tools such as SSL Labs will require the remote environment.
 
 #### Requirements
 
@@ -488,14 +495,32 @@ $ ansible-playbook -i provisioning/testing-remote provisioning/bootstrap-digital
 ##### Testing - local
 
 ```shell
+# Check syntax:
+$ ansible-playbook -i provisioning/testing-local provisioning/site-test.yml --syntax-check
+
+# Apply playbook:
+$ ansible-playbook -i provisioning/testing-local provisioning/site-test.yml
+
+# Apply again to check idempotency:
 $ ansible-playbook -i provisioning/testing-local provisioning/site-test.yml
 ```
+
+Note: The use of `#` in the above indicates a comment, not a root shell.
 
 ##### Testing - remote
 
 ```shell
+# Check syntax:
+$ ansible-playbook -i provisioning/testing-remote provisioning/site-test.yml --syntax-check
+
+# Apply playbook:
+$ ansible-playbook -i provisioning/testing-remote provisioning/site-test.yml
+
+# Apply again to check idempotency:
 $ ansible-playbook -i provisioning/testing-remote provisioning/site-test.yml
 ```
+
+Note: The use of `#` in the above indicates a comment, not a root shell.
 
 #### Clean up
 

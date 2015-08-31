@@ -1,0 +1,11 @@
+---
+# Remove default Apache content
+
+- name: determine if default content is absent
+  stat: path=/var/www/html
+  changed_when: False
+  register: apache_fact_default_content_is_removed
+- name: assert default content is absent
+  assert:
+    that:
+      - "apache_fact_default_content_is_removed.stat.exists == False"

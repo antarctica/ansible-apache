@@ -3,16 +3,16 @@
 
 # Apply role to test VMs,
 # host-vars are used to control which features of the role are applied to each VM.
+# For each test a set of tasks will be run to check the selected features of roles are correctly applied.
 
-- name: setup apache web-server
+- name: setup and test the apache web-server role
   hosts: barc-apache-test-webservers
   remote_user: controller
   sudo: yes
   roles:
     - security
     - ../../../apache
+  tasks:
+    - meta: flush_handlers
+    - include: ../../../apache/test-tasks/main.yml
 
-# Test case playbooks,
-# for each test a set of tasks will be run to check the selected features of roles are applied.
-
-- include: host_playbooks/bare.yml

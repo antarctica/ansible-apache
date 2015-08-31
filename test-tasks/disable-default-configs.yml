@@ -1,0 +1,9 @@
+---
+
+- name: determine if default apache additional configuration files are disabled
+  stat: path="{{ apache_enabled_configs_dir }}/{{ item }}"
+  with_items: "{{ apache_default_enabled_configs }}" 
+  register: apache_fact_default_apache_additional_configurations_are_disabled
+- name: assert default apache additional configuration files are disabled
+  assert: { that: "item.stat.exists == False" }
+  with_items: "{{ apache_fact_default_apache_additional_configurations_are_disabled.results }}"
