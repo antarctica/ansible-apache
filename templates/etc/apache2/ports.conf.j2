@@ -4,14 +4,16 @@
 # have to change the VirtualHost statement in
 # /etc/apache2/sites-enabled/000-default.conf
 
-Listen {{ apache_server_http_port }}  # HTTP port
+# HTTP port
+Listen {{ apache_server_http_port }}
 
 <IfModule ssl_module>
-        Listen {{ apache_server_https_port }}  # HTTPS port
+	# HTTPS port
+	Listen {{ apache_server_https_port }}
 </IfModule>
 
 <IfModule mod_gnutls.c>
-        Listen {{ apache_server_https_port }}
+	Listen {{ apache_server_https_port }}
 </IfModule>
 
 # vim: syntax=apache ts=4 sw=4 sts=4 sr noet
