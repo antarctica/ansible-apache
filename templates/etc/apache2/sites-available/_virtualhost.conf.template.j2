@@ -41,7 +41,7 @@ UseCanonicalName on
 
     {%- block additional_config %}{% endblock %}
 
-    # Load any additional configuration files found in this directory
-    Include {{ apache_enabled_configs_dir }}/{{ apache_enabled_configs_file_selector }}
+    # Load any additional configuration files if found in this directory
+    IncludeOptional {{ apache_enabled_configs_dir }}/{{ apache_enabled_configs_file_selector }}
 
 </VirtualHost>
