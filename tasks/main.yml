@@ -7,6 +7,11 @@
 
 - include: configure-apache.yml
 
+# Security
+
+- include: configure-ufw.yml
+  when: apache_enable_feature_configure_ufw == true
+
 # Additional configuration
 
 - include: disable-default-configs.yml
