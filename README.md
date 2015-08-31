@@ -227,18 +227,6 @@ To prevent or resolve this issue ensure `apache_enable_feature_upgrade_http_to_h
     * This is a binary variable and MUST be set to either "true" or "false" (without quotes).
     * Default: "true"
 
-## Contributing
-
-This project welcomes contributions, see `CONTRIBUTING` for our general policy.
-
-## Developing
-
-### Apache modules
-
-This role **MUST NOT** contain any additional Apache modules or module configuration, except for modules available in Apache by default.
-
-Separate roles **MUST** be used for these modules, each module **SHOULD** have a separate role with this `apache` role as a dependency (plus any other roles as needed). By convention they should be named `ansible-*` where `*` is the name of the role, e.g. `apache-some-module`. Roles **SHOULD NOT** duplicate virtual host file templates. Doing so introduces brittleness and fragmentation between the 'upstream' `apache` role and module roles (which will typically update at much slower frequencies).
-
 ### Virtual hosts
 
 This role supports creating three virtual hosts:
@@ -335,7 +323,7 @@ Note: Using a custom DH parameters file requires OpenSSL version 1.0.2 or higher
 
 This role assumes Ubuntu's Uncomplicated FireWall (UFW) is used [1]. This role will create application definitions for non-secure and secure connections to Apache [2] and rules will to allow incoming connections to these services.
 
-See the [Security role]() within the BARC for more details on using UFW.
+See the [Security role](https://github.com/antarctica/ansible-security) within the BARC for more details on using UFW.
 
 See the *variables* section for details on the variables this role offers to control the application definitions and rules this role will make.
 
@@ -360,27 +348,31 @@ For reference the rules this role creates (using application definitions) are:
 
 [3] In `/etc/ufw/applications.d/BARC-apache.ufw.profile`.
 
-### Committing changes
+## Developing
 
-The [Git flow](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow/) workflow is used to manage development of this package.
+### Apache modules
 
-Discrete changes should be made within *feature* branches, created from and merged back into *develop* (where small one-line changes may be made directly).
+This role **MUST NOT** contain any additional Apache modules or module configuration, except for modules available in Apache by default.
 
-When ready to release a set of features/changes create a *release* branch from *develop*, update documentation as required and merge into *master* with a tagged, [semantic version](http://semver.org/) (e.g. `v1.2.3`).
+Separate roles **MUST** be used for these modules, each module **SHOULD** have a separate role with this `apache` role as a dependency (plus any other roles as needed). By convention they should be named `ansible-*` where `*` is the name of the role, e.g. `apache-some-module`.
 
-After releases the *master* branch should be merged with *develop* to restart the process. High impact bugs can be addressed in *hotfix* branches, created from and merged into *master* directly (and then into *develop*).
-
-### Issue tracking
-
-Issues, bugs, improvements, questions, suggestions and other tasks related to this package are managed through the BAS Web & Applications Team Jira project ([BASWEB](https://jira.ceh.ac.uk/browse/BASWEB)).
+Roles **SHOULD NOT** duplicate virtual host file templates. Doing so introduces brittleness and fragmentation between the 'upstream' `apache` role and module roles (which will typically update at much slower frequencies).
 
 ### Testing
 
+Note: These tests are proof-of-concept and may change significantly, report all feedback via the role issue tracker as normal. 
+
 To ensure this role provides its stated functionality tests **MUST** be performed before releasing new versions of this role.
 
-To assist with this a testing environment is provided within this role, through the `tests` directory.
+To assist with this a testing environment is provided within the `tests` directory of this role.
 
-It includes two environments, local and remote for testing changes (a remote environment is provided fro testing SSL configurations with SSL Labs and other similar tools). Ansible is used to configure these environments, the aim being to replicate, as far as possible, the same workflow and environment in which this role will be used.
+Two environments, local and remote [1], are available configured by Ansible, the aim being to replicate, as far as possible, the same workflow and environment in which this role will be used.
+
+Currently testing is limited to building a server, installing Apache and configuring it to use SSL.
+
+It is assumed that getting to the to that point indicates this role is working correctly, however manual testing will be needed to confirm this. In the future these checks will be made automatically, and more scenarios will be tested to more systematically test the different features of this role.
+
+[1] A remote environment is provided for testing SSL with tools such as SSL Labs.
 
 #### Requirements
 
@@ -493,25 +485,49 @@ $ ansible-playbook -i provisioning/testing-remote provisioning/bootstrap-digital
 
 #### Usage
 
-Currently testing is limited to building a server, installing Apache and configuring it to use SSL.
-
-It is assumed that getting to the to that point indicates this role is working correctly, however manual testing will be needed to confirm this.
-$ ansible-playbook -i provisioning/testing-local provisioning/site-test.yml
-
-In the future these checks will be made automatically, and more scenarios will be tested to more systematically test the different features of this role.
-
-**Note:** Role tests are currently proof-of-concept and may change significantly during development. If practical and useful tests will be added to all BARC roles. Please report all feedback via the issue tracker mentioned previously. 
-$ ansible-playbook -i provisioning/testing-remote provisioning/site-test.yml
-
 ##### Testing - local
 
 ```shell
+$ ansible-playbook -i provisioning/testing-local provisioning/site-test.yml
 ```
 
 ##### Testing - remote
 
 ```shell
+$ ansible-playbook -i provisioning/testing-remote provisioning/site-test.yml
 ```
+
+#### Clean up
+
+##### Testing - local
+
+```shell
+$ vagrant destroy
+```
+
+##### Testing - remote
+
+```shell
+$ terraform destroy
+```
+
+### Issue tracking
+
+Issues, bugs, improvements, questions, suggestions and other tasks related to this package are managed through the BAS Web & Applications Team Jira project ([BASWEB](https://jira.ceh.ac.uk/browse/BASWEB)).
+
+### Committing changes
+
+The [Git flow](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow/) workflow is used to manage development of this package.
+
+Discrete changes should be made within *feature* branches, created from and merged back into *develop* (where small one-line changes may be made directly).
+
+When ready to release a set of features/changes create a *release* branch from *develop*, update documentation as required and merge into *master* with a tagged, [semantic version](http://semver.org/) (e.g. `v1.2.3`).
+
+After releases the *master* branch should be merged with *develop* to restart the process. High impact bugs can be addressed in *hotfix* branches, created from and merged into *master* directly (and then into *develop*).
+
+## Contributing
+
+This project welcomes contributions, see `CONTRIBUTING` for our general policy.
 
 ## License
 
