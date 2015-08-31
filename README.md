@@ -360,9 +360,9 @@ Roles **SHOULD NOT** duplicate virtual host file templates. Doing so introduces 
 
 ### Testing
 
-Note: These tests are proof-of-concept and may change significantly, report all feedback via the role issue tracker as normal. 
+Note: These tests are proof-of-concept and may change significantly, report all feedback via the role issue tracker as normal.
 
-To ensure this role provides its stated functionality tests **MUST** be performed before releasing new versions of this role.
+To ensure this role works correctly tests **MUST** be written for any role changes, and tested before new versions are released.
 
 Tests cover test three main aspects of a role:
 
