@@ -50,7 +50,3 @@
 - include: disable-redirect-http-https-virtualhost.yml
   when: apache_enable_feature_upgrade_http_to_https == false or apache_enable_feature_upgrade_http_to_https == "False"
 
-# Security
-
-- include: configure-ufw.yml
-  when: apache_enable_feature_configure_ufw == true
