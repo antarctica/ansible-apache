@@ -11,7 +11,7 @@
   sudo: yes
   roles:
     - security
-    - ../../../apache
+    - ~/apache
   tasks:
     - meta: flush_handlers
     - include: ../../../apache/test-tasks/main.yml
