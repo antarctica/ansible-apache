@@ -11,10 +11,10 @@
   sudo: yes
   roles:
     - security
-    - ../../../apache
+    - ~/apache
   tasks:
     - meta: flush_handlers
-    - include: ../../../apache/test-tasks/main.yml
+    - include: ~/apache/test-tasks/main.yml
 
 # TODO:
 #- include: host_playbooks/http.yml
