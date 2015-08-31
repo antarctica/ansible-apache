@@ -13,4 +13,3 @@
 
 - name: allow secure connections to apache
   ufw: rule=allow name=Apache-Secure
-  when: apache_enable_feature_disable_default_apache_virtual_host == true or apache_enable_feature_disable_default_apache_virtual_host == "True"
