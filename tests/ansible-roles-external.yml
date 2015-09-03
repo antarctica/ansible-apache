@@ -21,7 +21,9 @@
     version: v0.1.0
 -
     src: https://github.com/antarctica/ansible-python-2
+    name: python-2
     version: v0.1.0
 -
     src: https://github.com/antarctica/ansible-python-2-pip
+    name: python-2-pip
     version: v0.1.1
