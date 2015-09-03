@@ -66,3 +66,6 @@
 
 - include: test-default-https-virtualhost.yml
   when: apache_enable_feature_default_https_virtualhost == true or apache_enable_feature_default_https_virtualhost == "True"
+
+- include: test-redirect-http-https-virtualhost.yml
+  when: apache_enable_feature_upgrade_http_to_https == true or apache_enable_feature_upgrade_http_to_https == "True"
