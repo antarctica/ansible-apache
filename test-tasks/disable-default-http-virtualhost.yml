@@ -9,3 +9,22 @@
 # - name: remove rule to allow non-secure connections to apache
 #   ufw: rule=allow name=Apache-Non-Secure delete=yes
 #   when: (apache_enable_feature_upgrade_http_to_https == false or apache_enable_feature_upgrade_http_to_https == "False")
+
+- name: determine if default non-secure virtual host is disabled
+  stat: path=/etc/apache2/sites-enabled/default.conf
+  changed_when: False
+  register: apache_fact_default_non_secure_virtual_host_is_disabled
+- name: assert default non-secure virtual host is disabled
+  assert:
+    that:
+      - "apache_fact_default_non_secure_virtual_host_is_disabled.stat.exists == False"
+
+- name: get active firewall rules
+  command: ufw status
+  changed_when: False
+  register: apache_fact_active_firewall_rules
+- name: assert rules to allow non-secure connections to apache are absent
+  assert:
+    that:
+      - "'Apache-Non-Secure          ALLOW       Anywhere' not in apache_fact_active_firewall_rules.stdout"
+      - "'Apache-Non-Secure (v6)     ALLOW       Anywhere (v6)' not in apache_fact_active_firewall_rules.stdout"
