@@ -6,7 +6,10 @@
 # It is best practice to group hosts by location and purpose like so:
 
 [digitalocean-test]
-barc-apache-test-web2.web.nerc-bas.ac.uk
+barc-apache-test-bare.web.nerc-bas.ac.uk
+barc-apache-test-http-only.web.nerc-bas.ac.uk
+barc-apache-test-https-only.web.nerc-bas.ac.uk
+barc-apache-test-http-to-https.web.nerc-bas.ac.uk
 
 [digitalocean:children]
 digitalocean-test
@@ -16,7 +19,10 @@ digitalocean
 
 
 [barc-apache-test-webservers-remote]
-barc-apache-test-web2.web.nerc-bas.ac.uk
+barc-apache-test-bare.web.nerc-bas.ac.uk
+barc-apache-test-http-only.web.nerc-bas.ac.uk
+barc-apache-test-https-only.web.nerc-bas.ac.uk
+barc-apache-test-http-to-https.web.nerc-bas.ac.uk
 
 [barc-apache-test-webservers:children]
 barc-apache-test-webservers-remote

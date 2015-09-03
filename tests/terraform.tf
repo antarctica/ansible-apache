@@ -21,24 +21,84 @@ provider "digitalocean" {
 
 # TODO: Add Atlas artefact for DigitalOcean droplet image
 
-# 'barc-apache-test-web2' resource
+# 'barc-apache-test-bare' resource
 
 # VM
 
-module "barc-apache-test-web2-droplet" {
+module "barc-apache-test-bare-droplet" {
   source = "github.com/antarctica/terraform-module-digital-ocean-droplet?ref=v1.1.0"
-  hostname = "barc-apache-test-web2"
+  hostname = "barc-apache-test-bare"
   ssh_fingerprint = "${var.ssh_fingerprint}"
   image = 13126041  # Update to use Atlas resource
 }
 
 # DNS records (public, private and default [which is an APEX record and points to public])
 
-module "barc-apache-test-web2-records" {
+module "barc-apache-test-bare-records" {
   source = "github.com/antarctica/terraform-module-digital-ocean-records?ref=v1.0.2"
-  hostname = "barc-apache-test-web2"
-  machine_interface_ipv4_public = "${module.barc-apache-test-web2-droplet.ip_v4_address_public}"
-  machine_interface_ipv4_private = "${module.barc-apache-test-web2-droplet.ip_v4_address_private}"
+  hostname = "barc-apache-test-bare"
+  machine_interface_ipv4_public = "${module.barc-apache-test-bare-droplet.ip_v4_address_public}"
+  machine_interface_ipv4_private = "${module.barc-apache-test-bare-droplet.ip_v4_address_private}"
+}
+
+# 'barc-apache-test-http-only' resource
+
+# VM
+
+module "barc-apache-test-http-only-droplet" {
+  source = "github.com/antarctica/terraform-module-digital-ocean-droplet?ref=v1.1.0"
+  hostname = "barc-apache-test-http-only"
+  ssh_fingerprint = "${var.ssh_fingerprint}"
+  image = 13126041  # Update to use Atlas resource
+}
+
+# DNS records (public, private and default [which is an APEX record and points to public])
+
+module "barc-apache-test-http-only-records" {
+  source = "github.com/antarctica/terraform-module-digital-ocean-records?ref=v1.0.2"
+  hostname = "barc-apache-test-http-only"
+  machine_interface_ipv4_public = "${module.barc-apache-test-http-only-droplet.ip_v4_address_public}"
+  machine_interface_ipv4_private = "${module.barc-apache-test-http-only-droplet.ip_v4_address_private}"
+}
+
+# 'barc-apache-test-https-only' resource
+
+# VM
+
+module "barc-apache-test-https-only-droplet" {
+  source = "github.com/antarctica/terraform-module-digital-ocean-droplet?ref=v1.1.0"
+  hostname = "barc-apache-test-https-only"
+  ssh_fingerprint = "${var.ssh_fingerprint}"
+  image = 13126041  # Update to use Atlas resource
+}
+
+# DNS records (public, private and default [which is an APEX record and points to public])
+
+module "barc-apache-test-https-only-records" {
+  source = "github.com/antarctica/terraform-module-digital-ocean-records?ref=v1.0.2"
+  hostname = "barc-apache-test-https-only"
+  machine_interface_ipv4_public = "${module.barc-apache-test-https-only-droplet.ip_v4_address_public}"
+  machine_interface_ipv4_private = "${module.barc-apache-test-https-only-droplet.ip_v4_address_private}"
+}
+
+# 'barc-apache-test-http-to-https' resource
+
+# VM
+
+module "barc-apache-test-http-to-https-droplet" {
+  source = "github.com/antarctica/terraform-module-digital-ocean-droplet?ref=v1.1.0"
+  hostname = "barc-apache-test-http-to-https"
+  ssh_fingerprint = "${var.ssh_fingerprint}"
+  image = 13126041  # Update to use Atlas resource
+}
+
+# DNS records (public, private and default [which is an APEX record and points to public])
+
+module "barc-apache-test-http-to-https-records" {
+  source = "github.com/antarctica/terraform-module-digital-ocean-records?ref=v1.0.2"
+  hostname = "barc-apache-test-http-to-https"
+  machine_interface_ipv4_public = "${module.barc-apache-test-http-to-https-droplet.ip_v4_address_public}"
+  machine_interface_ipv4_private = "${module.barc-apache-test-http-to-https-droplet.ip_v4_address_private}"
 }
 
 # Provisioning (using a fake resource as provisioners can't be first class objects)
@@ -48,7 +108,7 @@ module "barc-apache-test-web2-records" {
 
 #resource "null_resource" "provisioning" {
 #
-#    depends_on = ["module.barc-apache-test-web2-records"]
+#    depends_on = ["module.barc-apache-test-http-to-https-records"]
 #
 #    # This replicates the provisioning steps performed by Vagrant
 #    provisioner "local-exec" {

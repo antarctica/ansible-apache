@@ -1,0 +1,7 @@
+---
+# These variables override those defined by roles and groups
+
+# Apache
+apache_enable_feature_default_http_virtualhost: true
+apache_enable_feature_upgrade_http_to_https: false
+apache_enable_feature_ssl: false
