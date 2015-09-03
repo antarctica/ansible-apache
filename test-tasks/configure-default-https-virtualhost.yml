@@ -49,7 +49,7 @@
   command: ufw status
   changed_when: False
   register: apache_fact_active_firewall_rules
-- name: assert rule to allow non-secure connections to apache is present
+- name: assert rules to allow secure connections to apache are present
   assert:
     that:
       - "'Apache-Secure              ALLOW       Anywhere' in apache_fact_active_firewall_rules.stdout"
