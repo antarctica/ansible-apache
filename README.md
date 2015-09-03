@@ -1,4 +1,6 @@
-# Apache ('apache')
+# Apache (`apache`)
+
+[![Build Status](https://semaphoreci.com/api/v1/projects/9fd776a8-8f74-4e82-a2e0-bce17fcacdf3/526947/badge.svg)](https://semaphoreci.com/antarctica/ansible-apache)
 
 **Part of the BAS Ansible Role Collection (BARC)**
 
@@ -26,8 +28,6 @@ This role is designed for internal use but if useful can be shared publicly.
 ## Quality Assurance
 
 This role uses manual and automated testing to ensure the features offered by this role work as advertised. See the *testing* section for more information.
-
-Using automated testing this role is: [![Build Status](https://semaphoreci.com/api/v1/projects/9fd776a8-8f74-4e82-a2e0-bce17fcacdf3/526947/badge.svg)](https://semaphoreci.com/antarctica/ansible-apache)
 
 ## Usage
 
@@ -263,7 +263,7 @@ These virtual hosts are enabled or disabled, independently, using their respecti
 
 The table below shows, for different scenarios, how to set these variables:
 
-|                                                   | Non-secure only | Secure only | Non-secure redirecting to secure |
+| Variable                                          | Non-secure only | Secure only | Non-secure redirecting to secure |
 |---------------------------------------------------|-----------------|-------------|----------------------------------|
 | `apache_enable_feature_default_http_virtualhost`  | True            | False       | False                            |
 | `apache_enable_feature_default_https_virtualhost` | False           | True        | True                             |
@@ -385,9 +385,16 @@ Tests for these aspects can be split into:
 
 Test tasks are kept in the `test-takes` directory, mirroring the structure of the `tasks` directory.
 
-Test playbooks aim mainly to cover the most frequent ways a role is used, in an environment designed to replicate that in which this role will be used. They also try to cover all the features of a role, wherever practical. Playbooks and support files are kept in the `tests` directory.
+A test playbook is used to run these test tasks. This playbook is applied to a number of test VMs, with host variables used to control which features each VM tests.
 
-Both manual and automated test methods use these playbooks and test tasks, reducing the need for duplication and ensuring both types of test are as similar as possible.
+These tests, and their different configurations aim to cover the most frequent ways a role is used, in an environment designed to replicate that in which this role will be used. They also try to cover all the features of a role, wherever practical. Playbooks, host variables and other support files are kept in the `tests` directory. Both manual and automated test methods use these playbooks and test tasks, reducing the need for duplication and ensuring both types of test are as similar as possible.
+
+The following configurations are tested:
+
+* An Apache server with no virtual hosts
+* An Apache server with a non-secure (HTTP) virtual host only [1]
+
+[1] This configuration is also used in automated tests, as discussed in the *automated tests* section.
 
 #### Automated tests
 
@@ -395,19 +402,24 @@ Currently [Semaphore CI](https://semaphoreci.com/) is used for automated testing
 
 * [Develop](https://semaphoreci.com/antarctica/ansible-apache/branches/develop)
 
-When triggered a single test playbook will be executed to test this role. It is currently only possible to run a single playbook, as we cannot wipe the test VM during the test process. Because of this automated tests are not as through as manual testing, but requires significantly less effort to run.
+When triggered a single test configuration [1] will be run [2].
 
-For these reasons the testing playbook used in these tests is designed to test the most typical useage of this role.
+Current automated test status:
 
-The current status of these automated tests is: [![Build Status](https://semaphoreci.com/api/v1/projects/9fd776a8-8f74-4e82-a2e0-bce17fcacdf3/526947/badge.svg)](https://semaphoreci.com/antarctica/ansible-apache)
+[![Build Status](https://semaphoreci.com/api/v1/projects/9fd776a8-8f74-4e82-a2e0-bce17fcacdf3/526947/badge.svg)](https://semaphoreci.com/antarctica/ansible-apache)
 
 See the [automated testing environment](https://semaphoreci.com/antarctica/ansible-apache) for test history, configuration and documentation.
 
+[1] It is currently only possible to test a single configuration, as we cannot wipe the test VM during the test process.
+[2] This configuration is indicated and described in the main *testing* section.
+
 #### Manual tests
 
-Manual tests are more complete than the automated tests, testing many different combinations of how this role can be used. Consequently, these tests are slower and more time consuming to run. The use of Ansible and simple shell scripts aims to reduce this effort/complexity as far as is practical.
+Manual tests are more complete than the automated tests, testing all the test configurations [1]. Consequently, these tests are slower and more time consuming to run than automated tests. The use of Ansible and simple shell scripts aims to reduce this effort/complexity as far as is practical.
 
 Two environments, local and remote, are available for manual testing. Some types of test, for example testing SSL with tools such as SSL Labs, can only be performed using the remote environment.
+
+[1] These configurations are described in the main *testing* section.
 
 ##### Requirements
 

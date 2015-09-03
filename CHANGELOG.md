@@ -3,6 +3,8 @@
 ## Unreleased
 
 * Added testing support for default http virtual host
+* Added base support for automated testing
+* Added base support for manual testing
 * Added support for UFW by creating application definitions and rules
 * Added support for upgrading non-secure to secure requests using a specialist, minimal, virtual host
 * Deprecated - Support for HTTP virtual hosts (i.e. non-secure), currently enabled, will be disabled
