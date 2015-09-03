@@ -1,15 +1,52 @@
 ---
 # Configure and enable the default virtual host for non-secure connections
 
-# - name: configure default non-secure virtual host
-#   template: src=etc/apache2/sites-available/default-http-virtualhost.conf.j2 dest=/etc/apache2/sites-available/default.conf
-#   notify:
-#     - Restart Apache
+- name: determine if default non-secure virtual host is present
+  stat: path=/etc/apache2/sites-available/default.conf
+  changed_when: False
+  register: apache_fact_default_non_secure_virtual_host_is_present
+- name: assert default non-secure virtual host is present
+  assert:
+    that:
+      - "apache_fact_default_non_secure_virtual_host_is_present.stat.exists == True"
 
-# - name: enable default non-secure virtual host
-#   file: src=/etc/apache2/sites-available/default.conf dest=/etc/apache2/sites-enabled/default.conf state=link
-#   notify:
-#     - Restart Apache
+- name: get non-secure virtual host configuration file contents
+  command: cat /etc/apache2/sites-available/default.conf
+  changed_when: False
+  register: apache_fact_default_non_secure_virtual_host_contents
+- name: assert variables are correctly set within default non-secure virtual host
+  assert:
+    that:
+      - "'<VirtualHost {{ apache_server_binding }}:{{ apache_server_http_port }} >' in apache_fact_default_non_secure_virtual_host_contents.stdout"
+      - "'    ServerName {{ apache_server_name }}' in apache_fact_default_non_secure_virtual_host_contents.stdout"
+      - "'    IncludeOptional {{ apache_enabled_configs_dir }}/{{ apache_enabled_configs_file_selector }}' in apache_fact_default_non_secure_virtual_host_contents.stdout"
+- name: assert allow overrides has been set to none where this option has been set
+  assert:
+    that:
+      - "'        AllowOverride None' in apache_fact_default_non_secure_virtual_host_contents.stdout"
+  when: apache_enable_feature_disable_document_root_allow_overrides == True
+- name: assert allow overrides has been set to all where this option has been set
+  assert:
+    that:
+      - "'        AllowOverride All' in apache_fact_default_non_secure_virtual_host_contents.stdout"
+  when: apache_enable_feature_disable_document_root_allow_overrides == False
 
-# - name: allow non-secure connections to apache
-#   ufw: rule=allow name=Apache-Non-Secure
+- name: determine if default non-secure virtual host is enabled using symbolic link
+  stat: path=/etc/apache2/sites-enabled/default.conf
+  changed_when: False
+  register: apache_fact_default_non_secure_virtual_host_is_enabled
+- name: assert default non-secure virtual host is enabled
+  assert:
+    that:
+      - "apache_fact_default_non_secure_virtual_host_is_enabled.stat.exists == True"
+      - "apache_fact_default_non_secure_virtual_host_is_enabled.stat.islnk == True"
+
+- name: get active firewall rules
+  command: ufw status
+  changed_when: False
+  register: apache_fact_active_firewall_rules
+- name: assert rule to allow non-secure connections to apache is present
+  assert:
+    that:
+      - "'Apache-Non-Secure          ALLOW       Anywhere' in apache_fact_active_firewall_rules.stdout"
+      - "'Apache-Non-Secure (v6)     ALLOW       Anywhere (v6)' in apache_fact_active_firewall_rules.stdout"

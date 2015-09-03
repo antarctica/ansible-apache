@@ -40,8 +40,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.define hostname_project + "-" + hostname_environment + "-" + "bare" + "." + domain_name do |node|
 
     node.vm.hostname = hostname_project + "-" + hostname_environment + "-" + "bare" + "." + domain_name  # Define hostname
-
   end
+
+  config.vm.define hostname_project + "-" + hostname_environment + "-" + "http-only" + "." + domain_name do |node|
+
+    node.vm.hostname = hostname_project + "-" + hostname_environment + "-" + "http-only" + "." + domain_name  # Define hostname
 
     # Provision using ansible
       # Due to bug[1] in Vagrant this block MUST be in the LAST VM specified in this Vagrantfile
@@ -60,33 +63,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
         # Bootstrap - adds controller user with public keys
         node.vm.provision "ansible" do |ansible|
-
-          # Standard configuration
-            ansible.limit = 'all'
-
-          # Playbook specific configuration
-            ansible.playbook = 'provisioning/bootstrap-vagrant.yml'
-        end
-
-  end
-
-    # Provision using ansible
-      # Due to bug[1] in Vagrant this block MUST be in the LAST VM specified in this Vagrantfile
-      # [1] https://github.com/mitchellh/vagrant/issues/1784
-
-        # Prelude - perform project setup on local machine
-          vm1.vm.provision "ansible" do |ansible|
-
-            # Standard configuration
-              ansible.inventory_path = 'provisioning/local'
-              ansible.limit = 'all'
-
-            # Playbook specific configuration
-              ansible.playbook = 'provisioning/prelude.yml'
-          end
-
-        # Bootstrap - adds controller user with public keys
-        vm1.vm.provision "ansible" do |ansible|
 
           # Standard configuration
             ansible.limit = 'all'

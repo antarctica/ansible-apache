@@ -10,9 +10,12 @@
   remote_user: controller
   sudo: yes
   roles:
-    - security
+    - security  # required to ensure firewall is setup so firewall changes made by this role can be tested
+    - python-2-pip  # required so the Ansible URI module can be used
     - ../../../apache
   tasks:
     - meta: flush_handlers
     - include: ../../../apache/test-tasks/main.yml
 
+# TODO:
+#- include: host_playbooks/https.yml

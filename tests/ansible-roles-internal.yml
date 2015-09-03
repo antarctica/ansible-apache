@@ -15,3 +15,9 @@
 -
     src: git+ssh://git@stash.ceh.ac.uk:7999/barc/security.git
     version: v0.1.0
+-
+    src: git+ssh://git@stash.ceh.ac.uk:7999/barc/python-2.git
+    version: v0.1.0
+-
+    src: git+ssh://git@stash.ceh.ac.uk:7999/barc/python-2-pip.git
+    version: v0.1.1

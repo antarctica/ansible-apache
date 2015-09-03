@@ -1,5 +1,8 @@
 ---
-# Tests the installation and configuration of the Apache web server and default virtual hosts
+# Tests the installation, configuration and functionality of the Apache web server and default virtual hosts
+
+# Installation and configuration checks
+# These checks mirror individual tasks to ensure they execute correctly (i.e. that they install the right package or create the correct config file)
 
 # Core configuration
 
@@ -50,3 +53,13 @@
 
 - include: disable-redirect-http-https-virtualhost.yml
   when: (apache_enable_feature_upgrade_http_to_https == false or apache_enable_feature_upgrade_http_to_https == "False")
+
+
+# Functionality checks
+# These checks need to run after the package or service has been configured to ensure it is working correctly,
+# using an configuration that may have been set by this role.
+
+- include: test-apache-service.yml
+
+- include: test-default-http-virtualhost.yml
+  when: apache_enable_feature_default_http_virtualhost == true or apache_enable_feature_default_http_virtualhost == "True"
