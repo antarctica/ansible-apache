@@ -1,29 +1,74 @@
 ---
 # Enable support for secure connections and configure to improve the security of such connections
 
-# - name: enable SSL module
-#   apache2_module: state=present name=ssl
-#   notify:
-#     - Restart Apache
+- name: determine if apache SSL module is enabled
+  stat: path=/etc/apache2/mods-enabled/ssl.load
+  register: apache_fact_module_ssl_is_enabled
+- name: assert apache SSL module is enabled
+  assert:
+    that:
+      - "apache_fact_module_ssl_is_enabled.stat.exists == True"
+      - "apache_fact_module_ssl_is_enabled.stat.islnk == True"
 
-# - name: enable headers module for setting HSTS headers if enabled
-#   apache2_module: state=present name=headers
-#   notify:
-#     - Restart Apache
-#   when: apache_enable_feature_ssl_hsts == true
+- name: determine if apache headers module is enabled if HSTS headers are enabled
+  stat: path=/etc/apache2/mods-enabled/headers.load
+  register: apache_fact_module_headers_is_enabled
+  when: apache_enable_feature_ssl_hsts == true
+- name: assert apache headers module is enabled
+  assert:
+    that:
+      - "apache_fact_module_headers_is_enabled.stat.exists == True"
+      - "apache_fact_module_headers_is_enabled.stat.islnk == True"
+  when: apache_enable_feature_ssl_hsts == true
 
-# - name: copy stronger DH parameters file
-#   copy: src=etc/ssl/certs/dhparam.pem dest="{{ apache_ssl_dhparam_cert_path }}/{{ apache_ssl_dhparam_cert_file }}" owner=root group=root mode=0444
-#   when: apache_enable_feature_ssl_custom_dh_parameters == true
+- name: determine if stronger DH parameters file has been copied if enabled
+  stat: path="{{ apache_ssl_dhparam_cert_path }}/{{ apache_ssl_dhparam_cert_file }}"
+  changed_when: False
+  register: apache_fact_stronger_dh_parameters_file_is_present
+  when: apache_enable_feature_ssl_custom_dh_parameters == true
+- name: assert stronger DH parameters file is present
+  assert:
+    that:
+      - "apache_fact_stronger_dh_parameters_file_is_present.stat.exists == True"
+  when: apache_enable_feature_ssl_custom_dh_parameters == true
 
-# - name: copy SSL certificate to SSL directory
-#   copy: src="{{ apache_ssl_cert_src }}/{{ apache_ssl_cert_file }}" dest="{{ apache_ssl_cert_base }}/{{ apache_ssl_cert_file }}"
+- name: determine if SSL certificate has been copied to SSL directory
+  stat: path="{{ apache_ssl_cert_base }}/{{ apache_ssl_cert_file }}"
+  changed_when: False
+  register: apache_fact_ssl_certificate_is_present
+  when: apache_enable_feature_ssl_copy_cert == true or apache_enable_feature_ssl_copy_cert == "True"
+- name: assert SSL certificate is present
+  assert:
+    that:
+      - "apache_fact_ssl_certificate_is_present.stat.exists == True"
+  when: apache_enable_feature_ssl_copy_cert == true or apache_enable_feature_ssl_copy_cert == "True"
 
-# - name: copy SSL certificate private key to SSL directory
-#   copy: src="{{ apache_ssl_key_src }}/{{ apache_ssl_key_file }}" dest="{{ apache_ssl_key_base }}/{{ apache_ssl_key_file }}" owner=root group=root mode=600
+- name: determine if SSL certificate private key has been copied to SSL directory
+  stat: path="{{ apache_ssl_key_base }}/{{ apache_ssl_key_file }}"
+  changed_when: False
+  register: apache_fact_ssl_certificate_key_is_present
+  when: apache_enable_feature_ssl_copy_key == true or apache_enable_feature_ssl_copy_key == "True"
+- name: assert SSL certificate private key is present
+  assert:
+    that:
+      - "apache_fact_ssl_certificate_key_is_present.stat.exists == True"
+  when: apache_enable_feature_ssl_copy_key == true or apache_enable_feature_ssl_copy_key == "True"
 
-# - name: configure additional SSL configuration
-#   template: src=etc/apache2/conf-available/ssl.conf.j2 dest="{{ apache_ssl_additional_config_path }}/ssl.conf"
+- name: determine if additional SSL configuration is present
+  stat: path="{{ apache_ssl_additional_config_path }}/ssl.conf"
+  changed_when: False
+  register: apache_fact_additional_ssl_configuration_is_present
+- name: assert additional SSL configuration is present
+  assert:
+    that:
+      - "apache_fact_additional_ssl_configuration_is_present.stat.exists == True"
 
-# - name: enable additional SSL configuration
-#   file: src=/etc/apache2/conf-available/ssl.conf dest="{{ apache_enabled_configs_dir }}/ssl.conf" state=link
+- name: determine if additional SSL configuration is enabled using symbolic link
+  stat: path="{{ apache_enabled_configs_dir }}/ssl.conf"
+  changed_when: False
+  register: apache_fact_additional_ssl_configuration_is_enabled
+- name: assert additional SSL configuration is enabled
+  assert:
+    that:
+      - "apache_fact_additional_ssl_configuration_is_enabled.stat.exists == True"
+      - "apache_fact_additional_ssl_configuration_is_enabled.stat.islnk == True"

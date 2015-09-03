@@ -8,6 +8,7 @@
 [vagrant-test]
 barc-apache-test-bare.v.m
 barc-apache-test-http-only.v.m
+barc-apache-test-https-only.v.m
 
 [vagrant:children]
 vagrant-test
@@ -19,6 +20,7 @@ vagrant
 [barc-apache-test-webservers-local]
 barc-apache-test-bare.v.m
 barc-apache-test-http-only.v.m
+barc-apache-test-https-only.v.m
 
 [barc-apache-test-webservers:children]
 barc-apache-test-webservers-local

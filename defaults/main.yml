@@ -39,6 +39,8 @@ apache_default_enabled_configs:
 
 # SSL settings
 apache_enable_feature_ssl: "{{ generic_enable_feature_ssl | default(true) }}"
+apache_enable_feature_ssl_copy_cert: "{{ generic_enable_feature_ssl_copy_cert | default(true) }}"
+apache_enable_feature_ssl_copy_key: "{{ generic_enable_feature_ssl_copy_key | default(true) }}"
 apache_enable_feature_ssl_hsts: true
 apache_enable_feature_ssl_custom_dh_parameters: false
 

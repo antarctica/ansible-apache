@@ -1,8 +1,5 @@
 ---
 # These variables override those defined by roles
 
-# Generic
-generic_ssl_key_src: "{{ generic_ssl_cert_src }}"
-
 # Security
 security_ufw_allowed_incoming_tcp_ports: []  # Ensures rules created by roles are tested

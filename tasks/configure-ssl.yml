@@ -18,9 +18,11 @@
 
 - name: copy SSL certificate to SSL directory
   copy: src="{{ apache_ssl_cert_src }}/{{ apache_ssl_cert_file }}" dest="{{ apache_ssl_cert_base }}/{{ apache_ssl_cert_file }}"
+  when: apache_enable_feature_ssl_copy_cert == true or apache_enable_feature_ssl_copy_cert == "True"
 
 - name: copy SSL certificate private key to SSL directory
   copy: src="{{ apache_ssl_key_src }}/{{ apache_ssl_key_file }}" dest="{{ apache_ssl_key_base }}/{{ apache_ssl_key_file }}" owner=root group=root mode=600
+  when: apache_enable_feature_ssl_copy_key == true or apache_enable_feature_ssl_copy_key == "True"
 
 - name: configure additional SSL configuration
   template: src=etc/apache2/conf-available/ssl.conf.j2 dest="{{ apache_ssl_additional_config_path }}/ssl.conf"

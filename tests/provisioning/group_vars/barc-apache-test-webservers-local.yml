@@ -2,7 +2,9 @@
 # These variables override those defined by roles
 
 # Generic
-generic_ssl_cert_src: "certificates/v.m"
-generic_ssl_cert_file: v.m.tls.crt
+generic_enable_feature_ssl_copy_cert: false
+apache_enable_feature_ssl_copy_key: false
 
-generic_ssl_key_file: v.m.tls.key
+generic_ssl_cert_file: ssl-cert-snakeoil.pem
+
+generic_ssl_key_file: ssl-cert-snakeoil.key

@@ -45,6 +45,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.define hostname_project + "-" + hostname_environment + "-" + "http-only" + "." + domain_name do |node|
 
     node.vm.hostname = hostname_project + "-" + hostname_environment + "-" + "http-only" + "." + domain_name  # Define hostname
+  end
+
+  config.vm.define hostname_project + "-" + hostname_environment + "-" + "https-only" + "." + domain_name do |node|
+
+    node.vm.hostname = hostname_project + "-" + hostname_environment + "-" + "https-only" + "." + domain_name  # Define hostname
 
     # Provision using ansible
       # Due to bug[1] in Vagrant this block MUST be in the LAST VM specified in this Vagrantfile

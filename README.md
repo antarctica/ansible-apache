@@ -392,7 +392,8 @@ These tests, and their different configurations aim to cover the most frequent w
 The following configurations are tested:
 
 * An Apache server with no virtual hosts
-* An Apache server with a non-secure (HTTP) virtual host only [1]
+* An Apache server with a non-secure (HTTP) virtual host only
+* An Apache server with a secure (HTTPS) virtual host only [1]
 
 [1] This configuration is also used in automated tests, as discussed in the *automated tests* section.
 

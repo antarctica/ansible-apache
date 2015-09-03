@@ -16,6 +16,3 @@
   tasks:
     - meta: flush_handlers
     - include: ~/apache/test-tasks/main.yml
-
-# TODO:
-#- include: host_playbooks/https.yml
