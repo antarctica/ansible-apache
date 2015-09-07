@@ -15,4 +15,4 @@
     - ~/apache
   tasks:
     - meta: flush_handlers
-    - include: ~/apache/test-tasks/main.yml
+    - include: ~/apache/tests/tasks/main.yml

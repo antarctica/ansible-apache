@@ -6,7 +6,7 @@
   - httplib2
 
 - name: add default non-secure virtual host dummy index file to document root for testing
-  copy: src=../test-files/var/www/default-http-virtualhost-index.html dest="{{ apache_document_root }}/index.html" owner="{{ apache_app_user_username }}" group=www-data
+  copy: src=../files/var/www/default-http-virtualhost-index.html dest="{{ apache_document_root }}/index.html" owner="{{ apache_app_user_username }}" group=www-data
   changed_when: False  # Used because this file will shortly be removed - if left this will always fail the idempotency check, allowed this is testing, not role, logic 
 
 - name: get response from default non-secure virtual host
