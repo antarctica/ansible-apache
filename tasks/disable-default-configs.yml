@@ -1,0 +1,5 @@
+---
+
+- name: remove default apache additional configuration files enabled by default
+  file: path="{{ apache_enabled_configs_dir }}/{{ item }}" state=absent
+  with_items: "{{ apache_default_enabled_configs }}"

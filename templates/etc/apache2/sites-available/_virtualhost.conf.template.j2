@@ -1,0 +1,47 @@
+# {{ ansible_managed }}
+
+# Server wide settings
+
+ServerTokens ProductOnly
+{% if apache_enable_feature_use_canonical_name ==  true %}
+UseCanonicalName on
+{% endif %}
+
+<VirtualHost {{ apache_server_binding }}:{%- block listen_port %}{% endblock %} >
+    
+    # Basic virtual host settings
+
+    ServerName {{ apache_server_name }}
+    ServerAdmin {{ apache_server_admin }}
+    DocumentRoot {{ apache_document_root }}
+
+    # Virtual host logging
+
+    # Possible values include: debug, info, notice, warn, error, crit, alert, emerg.
+    LogLevel warn
+
+    ErrorLog ${APACHE_LOG_DIR}/error.log
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+    # Document root access and display settings
+    
+    <Directory {{ apache_document_root }}>
+{% for option in apache_document_root_options %}
+        Options {{ option }}
+{% endfor %}
+{% if apache_enable_feature_disable_document_root_allow_overrides ==  true %}
+        AllowOverride None
+{% else %}
+        AllowOverride All
+{% endif %}
+        Require all granted
+    </Directory>
+
+    # Additional virtual host configuration
+
+    {%- block additional_config %}{% endblock %}
+
+    # Load any additional configuration files if found in this directory
+    IncludeOptional {{ apache_enabled_configs_dir }}/{{ apache_enabled_configs_file_selector }}
+
+</VirtualHost>

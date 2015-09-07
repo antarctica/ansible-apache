@@ -1,15 +1,52 @@
 ---
-# Installs and configures apache web server
+# Installs and configures Apache web server and default virtual hosts
+
+# Core configuration
 
 - include: install-apache.yml
 
-- include: app-user.yml
+- include: configure-apache.yml
 
-- include: configure-ports.yml
+# Security
 
-- include: configure-default-virtualhost.yml
+- include: configure-ufw.yml
+  when: apache_enable_feature_configure_ufw == true
 
-- include: configure-ssl.yml
-  when: apache_default_var_www_ssl_enabled == true
+# Additional configuration
+
+- include: disable-default-configs.yml
+  when: apache_enable_feature_disable_default_configs == true
 
 - include: remove-default-content.yml
+  when: apache_enable_feature_remove_default_document_root_content == true
+
+- include: configure-ssl.yml
+  when: apache_enable_feature_ssl == true or apache_enable_feature_ssl == "True"
+
+- include: app-user.yml
+
+# Virtual hosts
+
+- include: disable-default-apache-virtualhost.yml
+  when: apache_enable_feature_disable_default_apache_virtual_host == true or apache_enable_feature_disable_default_apache_virtual_host == "True"
+
+
+- include: configure-default-http-virtualhost.yml
+  when: apache_enable_feature_default_http_virtualhost == true or apache_enable_feature_default_http_virtualhost == "True"
+
+- include: disable-default-http-virtualhost.yml
+  when: (apache_enable_feature_default_http_virtualhost == false or apache_enable_feature_default_http_virtualhost == "False")
+
+
+- include: configure-default-https-virtualhost.yml
+  when: apache_enable_feature_default_https_virtualhost == true or apache_enable_feature_default_https_virtualhost == "True"
+
+- include: disable-default-https-virtualhost.yml
+  when: apache_enable_feature_default_https_virtualhost == false or apache_enable_feature_default_https_virtualhost == "False"
+
+
+- include: configure-redirect-http-https-virtualhost.yml
+  when: apache_enable_feature_upgrade_http_to_https == true or apache_enable_feature_upgrade_http_to_https == "True"
+
+- include: disable-redirect-http-https-virtualhost.yml
+  when: (apache_enable_feature_upgrade_http_to_https == false or apache_enable_feature_upgrade_http_to_https == "False")

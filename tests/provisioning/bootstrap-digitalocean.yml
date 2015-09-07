@@ -1,0 +1,8 @@
+---
+# Bootstraps a VM for configuration by ansible - this only needs to be run once per host
+
+- name: setup vm's ready for ansible
+  hosts: digitalocean
+  remote_user: root
+  roles:
+  - bootstrap-digitalocean

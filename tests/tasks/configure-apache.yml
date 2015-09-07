@@ -1,0 +1,23 @@
+---
+
+- name: determine if ports are set correctly within apache ports configuration
+  command: cat /etc/apache2/ports.conf
+  changed_when: False
+  register: apache_fact_ports_are_set_in_apache_ports_configuration
+- name: assert http listening port is set correctly within apache ports configuration
+  assert:
+    that:
+      - "'# HTTP port\nListen {{ apache_server_http_port }}' in apache_fact_ports_are_set_in_apache_ports_configuration.stdout"
+- name: assert https listening port is set correctly within apache ports configuration
+  assert:
+    that:
+      - "'# HTTPS port\n\tListen {{ apache_server_https_port }}' in apache_fact_ports_are_set_in_apache_ports_configuration.stdout"
+
+- name: determine if apache rewrite module is enabled
+  stat: path=/etc/apache2/mods-enabled/rewrite.load
+  register: apache_fact_module_rewrite_is_enabled
+- name: assert apache rewrite module is enabled
+  assert:
+    that:
+      - "apache_fact_module_rewrite_is_enabled.stat.exists == True"
+      - "apache_fact_module_rewrite_is_enabled.stat.islnk == True"

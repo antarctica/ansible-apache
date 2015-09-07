@@ -1,0 +1,28 @@
+---
+# Configure UFW to recognise and control Apache connections
+
+- name: determine if ports are set correctly within UFW application definition
+  command: cat /etc/ufw/applications.d/BARC-apache.ufw.profile
+  changed_when: False
+  register: apache_fact_ports_are_set_in_ufw_application_definition
+- name: assert http listening port is set correctly within UFW application definition
+  assert:
+    that:
+      - "'# HTTP port\nports={{ apache_server_http_port }}/tcp' in apache_fact_ports_are_set_in_ufw_application_definition.stdout"
+- name: assert https listening port is set correctly within UFW application definition
+  assert:
+    that:
+      - "'# HTTPS port\nports={{ apache_server_https_port }}/tcp' in apache_fact_ports_are_set_in_ufw_application_definition.stdout"
+
+- name: check if default apache UFW application definition file is commented out
+  command: 'grep -Fxq "#[Apache]" /etc/ufw/applications.d/apache2-utils.ufw.profile'
+  changed_when: False
+
+- name: check if default apache UFW directory is absent
+  stat: path="/etc/ufw/applications.d/apache2"
+  changed_when: False
+  register: apache_fact_apache_ufw_directory_is_removed
+- name: assert default apache UFW directory is absent
+  assert:
+    that:
+      - "apache_fact_apache_ufw_directory_is_removed.stat.exists == False"

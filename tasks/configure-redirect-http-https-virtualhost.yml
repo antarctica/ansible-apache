@@ -1,0 +1,15 @@
+---
+# Configure and enable the virtual host for upgrading http connections to https
+
+- name: configure non-secure to secure redirection virtual host
+  template: src=etc/apache2/sites-available/redirect-http-https-virtualhost.conf.j2 dest=/etc/apache2/sites-available/redirect-http-https-virtualhost.conf
+  notify:
+    - Restart Apache
+
+- name: enable non-secure to secure redirection virtual host
+  file: src=/etc/apache2/sites-available/redirect-http-https-virtualhost.conf dest=/etc/apache2/sites-enabled/redirect-http-https-virtualhost.conf state=link
+  notify:
+    - Restart Apache
+
+- name: allow non-secure connections to apache
+  ufw: rule=allow name=Apache-Non-Secure

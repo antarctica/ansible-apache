@@ -1,0 +1,15 @@
+
+
+    # Enable SSL for this virtual host.
+    <IfModule mod_ssl.c>
+        # Basic settings
+        SSLEngine on
+        SSLCertificateFile      {{ apache_ssl_cert_base }}/{{ apache_ssl_cert_file }}
+        SSLCertificateChainFile {{ apache_ssl_chain_base }}/{{ apache_ssl_chain_file }}
+        SSLCertificateKeyFile   {{ apache_ssl_key_base }}/{{ apache_ssl_key_file }}
+
+        # Additional settings
+        <FilesMatch "\.(cgi|shtml|phtml|php)$">
+                SSLOptions +StdEnvVars
+        </FilesMatch>
+    </IfModule>

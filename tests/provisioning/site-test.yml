@@ -1,0 +1,18 @@
+---
+# Setup infrastructure for testing role
+
+# Apply role to test VMs,
+# host-vars are used to control which features of the role are applied to each VM.
+# For each test a set of tasks will be run to check the selected features of roles are correctly applied.
+
+- name: setup and test the apache web-server role
+  hosts: barc-apache-test-webservers
+  remote_user: controller
+  sudo: yes
+  roles:
+    - security  # required to ensure firewall is setup so firewall changes made by this role can be tested
+    - python-2-pip  # required so the Ansible URI module can be used
+    - ../../../apache
+  tasks:
+    - meta: flush_handlers
+    - include: ../../../apache/tests/tasks/main.yml

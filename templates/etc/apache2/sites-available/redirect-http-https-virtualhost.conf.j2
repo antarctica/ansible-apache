@@ -1,0 +1,14 @@
+# {{ ansible_managed }}
+# This file is based on the example here: https://wiki.apache.org/httpd/RedirectSSL
+
+<VirtualHost {{ apache_server_binding }}:{{ apache_server_http_port }} >
+    
+    # Basic virtual host settings
+
+    ServerName {{ apache_server_name }}
+
+    # Redirect all requests from http://* to https://*
+    
+    Redirect permanent / https://{{ apache_server_name }}/
+
+</VirtualHost>

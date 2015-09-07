@@ -1,0 +1,42 @@
+---
+# Configure and enable the virtual host for upgrading http connections to https
+
+- name: determine if non-secure to secure redirection virtual host is present
+  stat: path=/etc/apache2/sites-available/redirect-http-https-virtualhost.conf
+  changed_when: False
+  register: apache_fact_non_secure_to_secure_virtual_host_is_present
+- name: assert non-secure to secure redirection virtual host is present
+  assert:
+    that:
+      - "apache_fact_non_secure_to_secure_virtual_host_is_present.stat.exists == True"
+
+- name: get non-secure to secure redirection virtual host configuration file contents
+  command: cat /etc/apache2/sites-available/redirect-http-https-virtualhost.conf
+  changed_when: False
+  register: apache_fact_non_secure_to_secure_virtual_host_contents
+- name: assert variables are correctly set within non-secure to secure redirection virtual host
+  assert:
+    that:
+      - "'<VirtualHost {{ apache_server_binding }}:{{ apache_server_http_port }} >' in apache_fact_non_secure_to_secure_virtual_host_contents.stdout"
+      - "'    ServerName {{ apache_server_name }}' in apache_fact_non_secure_to_secure_virtual_host_contents.stdout"
+      - "'    Redirect permanent / https://{{ apache_server_name }}/' in apache_fact_non_secure_to_secure_virtual_host_contents.stdout"
+
+- name: determine if non-secure to secure redirection virtual host is enabled using symbolic link
+  stat: path=/etc/apache2/sites-enabled/redirect-http-https-virtualhost.conf
+  changed_when: False
+  register: apache_fact_non_secure_to_secure_virtual_host_is_enabled
+- name: assert non-secure to secure redirection virtual host is enabled
+  assert:
+    that:
+      - "apache_fact_non_secure_to_secure_virtual_host_is_enabled.stat.exists == True"
+      - "apache_fact_non_secure_to_secure_virtual_host_is_enabled.stat.islnk == True"
+
+- name: get active firewall rules
+  command: ufw status
+  changed_when: False
+  register: apache_fact_active_firewall_rules
+- name: assert rules to allow non-secure connections to apache are present
+  assert:
+    that:
+      - "'Apache-Non-Secure          ALLOW       Anywhere' in apache_fact_active_firewall_rules.stdout"
+      - "'Apache-Non-Secure (v6)     ALLOW       Anywhere (v6)' in apache_fact_active_firewall_rules.stdout"

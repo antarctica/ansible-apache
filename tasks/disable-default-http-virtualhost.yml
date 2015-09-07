@@ -1,0 +1,11 @@
+---
+# Disable the default virtual host for non-secure connections
+
+- name: disable default non-secure virtual host
+  file: path=/etc/apache2/sites-enabled/default.conf state=absent
+  notify:
+    - Restart Apache
+
+- name: remove rule to allow non-secure connections to apache
+  ufw: rule=allow name=Apache-Non-Secure delete=yes
+  when: (apache_enable_feature_upgrade_http_to_https == false or apache_enable_feature_upgrade_http_to_https == "False")

@@ -1,0 +1,29 @@
+---
+
+-
+    src: https://github.com/antarctica/ansible-bootstrap-vagrant
+    name: bootstrap-vagrant
+    version: v2.0.0
+-
+    src: https://github.com/antarctica/ansible-bootstrap-digitalocean
+    name: bootstrap-digitalocean
+    version: v1.0.0
+-
+    src: ANXS.hostname
+    version: v1.0.4
+-
+    src: https://github.com/antarctica/ansible-core-public
+    name: core
+    version: v1.0.0
+-
+    src: https://github.com/antarctica/ansible-security
+    name: security
+    version: v0.1.0
+-
+    src: https://github.com/antarctica/ansible-python-2
+    name: python-2
+    version: v0.1.0
+-
+    src: https://github.com/antarctica/ansible-python-2-pip
+    name: python-2-pip
+    version: v0.1.1

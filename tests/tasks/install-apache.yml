@@ -1,0 +1,10 @@
+---
+
+- name: determine if apache package is installed
+  command: dpkg -s apache2
+  changed_when: False
+  register: apache_fact_apache_package_is_installed
+- name: assert apache package is installed
+  assert: 
+    that:
+      - "'install ok installed' in apache_fact_apache_package_is_installed.stdout"

@@ -1,0 +1,20 @@
+---
+# Configure Apache for use with app user
+
+- name: determine which groups the app user belongs to
+  command: "groups {{ apache_app_user_username }}"
+  changed_when: False
+  register: apache_fact_app_user_group_memberships
+- name: assert app user is a member of the web-server group
+  assert:
+    that:
+      - "'www-data' in apache_fact_app_user_group_memberships.stdout"
+
+- name: determine ownership of default document root
+  stat: path=/var/www
+  changed_when: False
+  register: apache_fact_default_document_root_stat
+- name: assert default document root is owned by app user
+  assert:
+    that:
+      - "apache_fact_default_document_root_stat.stat.pw_name == apache_app_user_username"

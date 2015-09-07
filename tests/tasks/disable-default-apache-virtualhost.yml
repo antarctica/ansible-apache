@@ -1,0 +1,11 @@
+---
+# Disable the default apache virtual host for non-secure connections
+
+ - name: determine if default apache virtual host is absent
+   stat: path=/etc/apache2/sites-enabled/000-default.conf
+   changed_when: False
+   register: apache_fact_default_apache_virtual_host_is_removed
+ - name: assert default apache virtual host is absent
+   assert:
+     that:
+       - "apache_fact_default_apache_virtual_host_is_removed.stat.exists == False"

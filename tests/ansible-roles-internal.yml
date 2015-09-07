@@ -1,0 +1,23 @@
+---
+
+-
+    src: git+ssh://git@stash.ceh.ac.uk:7999/barc/bootstrap-vagrant.git
+    version: v2.0.0
+-
+    src: git+ssh://git@stash.ceh.ac.uk:7999/barc/bootstrap-digitalocean.git
+    version: v1.0.0
+-
+    src: ANXS.hostname
+    version: v1.0.4
+-
+    src: git+ssh://git@stash.ceh.ac.uk:7999/barc/core.git
+    version: v1.0.0
+-
+    src: git+ssh://git@stash.ceh.ac.uk:7999/barc/security.git
+    version: v0.1.0
+-
+    src: git+ssh://git@stash.ceh.ac.uk:7999/barc/python-2.git
+    version: v0.1.0
+-
+    src: git+ssh://git@stash.ceh.ac.uk:7999/barc/python-2-pip.git
+    version: v0.1.1

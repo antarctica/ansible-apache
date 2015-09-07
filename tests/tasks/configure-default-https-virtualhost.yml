@@ -1,0 +1,56 @@
+---
+# Configure and enable the default virtual host for secure connections
+
+- name: determine if default secure virtual host is present
+  stat: path=/etc/apache2/sites-available/default-ssl.conf
+  changed_when: False
+  register: apache_fact_default_secure_virtual_host_is_present
+- name: assert default secure virtual host is present
+  assert:
+    that:
+      - "apache_fact_default_secure_virtual_host_is_present.stat.exists == True"
+
+- name: get secure virtual host configuration file contents
+  command: cat /etc/apache2/sites-available/default-ssl.conf
+  changed_when: False
+  register: apache_fact_default_secure_virtual_host_contents
+- name: assert variables are correctly set within default secure virtual host
+  assert:
+    that:
+      - "'<VirtualHost {{ apache_server_binding }}:{{ apache_server_https_port }} >' in apache_fact_default_secure_virtual_host_contents.stdout"
+      - "'    ServerName {{ apache_server_name }}' in apache_fact_default_secure_virtual_host_contents.stdout"
+      - "'        SSLEngine on' in apache_fact_default_secure_virtual_host_contents.stdout"
+      - "'        SSLCertificateFile      {{ apache_ssl_cert_base }}/{{ apache_ssl_cert_file }}' in apache_fact_default_secure_virtual_host_contents.stdout"
+      - "'        SSLCertificateChainFile {{ apache_ssl_chain_base }}/{{ apache_ssl_chain_file }}' in apache_fact_default_secure_virtual_host_contents.stdout"
+      - "'        SSLCertificateKeyFile   {{ apache_ssl_key_base }}/{{ apache_ssl_key_file }}' in apache_fact_default_secure_virtual_host_contents.stdout"
+      - "'    IncludeOptional {{ apache_enabled_configs_dir }}/{{ apache_enabled_configs_file_selector }}' in apache_fact_default_secure_virtual_host_contents.stdout"
+- name: assert allow overrides has been set to none where this option has been set
+  assert:
+    that:
+      - "'        AllowOverride None' in apache_fact_default_secure_virtual_host_contents.stdout"
+  when: apache_enable_feature_disable_document_root_allow_overrides == True
+- name: assert allow overrides has been set to all where this option has been set
+  assert:
+    that:
+      - "'        AllowOverride All' in apache_fact_default_secure_virtual_host_contents.stdout"
+  when: apache_enable_feature_disable_document_root_allow_overrides == False
+
+- name: determine if default secure virtual host is enabled using symbolic link
+  stat: path=/etc/apache2/sites-enabled/default-ssl.conf
+  changed_when: False
+  register: apache_fact_default_secure_virtual_host_is_enabled
+- name: assert default secure virtual host is enabled
+  assert:
+    that:
+      - "apache_fact_default_secure_virtual_host_is_enabled.stat.exists == True"
+      - "apache_fact_default_secure_virtual_host_is_enabled.stat.islnk == True"
+
+- name: get active firewall rules
+  command: ufw status
+  changed_when: False
+  register: apache_fact_active_firewall_rules
+- name: assert rules to allow secure connections to apache are present
+  assert:
+    that:
+      - "'Apache-Secure              ALLOW       Anywhere' in apache_fact_active_firewall_rules.stdout"
+      - "'Apache-Secure (v6)         ALLOW       Anywhere (v6)' in apache_fact_active_firewall_rules.stdout"

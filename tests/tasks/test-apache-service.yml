@@ -1,0 +1,13 @@
+---
+
+- meta: flush_handlers
+
+- name: get apache service status
+  command: service apache2 status
+  changed_when: False
+  register: apache_fact_apache_service_status
+
+- name: assert apache service is running
+  assert:
+    that:
+      - "'apache2 is running' in apache_fact_apache_service_status.stdout"

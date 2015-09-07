@@ -1,0 +1,5 @@
+{% extends "_virtualhost.conf.template.j2" %}
+{% block listen_port %}{{ apache_server_https_port }}{% endblock %}
+{% block additional_config %}
+    {% include '_virtualhost-ssl.conf.partial.j2' %}
+{% endblock %}

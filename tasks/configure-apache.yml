@@ -1,0 +1,9 @@
+---
+
+- name: configure apache ports file
+  template: src=etc/apache2/ports.conf.j2 dest=/etc/apache2/ports.conf # no validation currently
+
+- name: enable apache rewrite module
+  apache2_module: name=rewrite state=present
+  notify:
+    - Restart Apache

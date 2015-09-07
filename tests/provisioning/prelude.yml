@@ -1,0 +1,11 @@
+---
+# Setup host computer
+
+# known limitations
+# - You can only specify one public key to be copied into provisioning/public_keys and it will always be named "id_rsa.pub"
+
+- name: setup host
+  hosts: localhost
+  connection: local
+  roles:
+    - ../roles_bootstrap/ansible-prelude

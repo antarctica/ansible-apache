@@ -1,0 +1,11 @@
+---
+# Disable the virtual host for upgrading http connections to https
+
+- name: disable non-secure to secure redirection virtual host
+  file: path=/etc/apache2/sites-enabled/redirect-http-https-virtualhost.conf state=absent
+  notify:
+    - Restart Apache
+
+- name: remove rule to allow non-secure connections to apache
+  ufw: rule=allow name=Apache-Non-Secure delete=yes
+  when: (apache_enable_feature_default_http_virtualhost == false or apache_enable_feature_default_http_virtualhost == "False")

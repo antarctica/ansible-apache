@@ -1,0 +1,9 @@
+---
+# These variables override those defined by roles
+
+# Generic
+generic_ssl_cert_src: "certificates/star.web.nerc-bas.ac.uk"
+generic_ssl_cert_file: star.web.nerc-bas.ac.uk-certificate-including-trust-chain.crt
+
+generic_ssl_key_src: "{{ generic_ssl_cert_src }}"
+generic_ssl_key_file: star.web.nerc-bas.ac.uk.key

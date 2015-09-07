@@ -1,0 +1,28 @@
+# This is an Ansible inventory file. It inherits from /etc/ansible/hosts if it exists
+# It organises hosts/nodes into logical groups which can then be used in playbooks
+
+# This inventory is for the 'testing-local' environment
+
+# It is best practice to group hosts by location and purpose like so:
+
+[vagrant-test]
+barc-apache-test-bare.v.m
+barc-apache-test-http-only.v.m
+barc-apache-test-https-only.v.m
+barc-apache-test-http-to-https.v.m
+
+[vagrant:children]
+vagrant-test
+
+[all-servers:children]
+vagrant
+
+
+[barc-apache-test-webservers-local]
+barc-apache-test-bare.v.m
+barc-apache-test-http-only.v.m
+barc-apache-test-https-only.v.m
+barc-apache-test-http-to-https.v.m
+
+[barc-apache-test-webservers:children]
+barc-apache-test-webservers-local

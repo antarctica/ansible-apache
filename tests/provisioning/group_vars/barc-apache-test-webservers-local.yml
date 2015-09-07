@@ -1,0 +1,10 @@
+---
+# These variables override those defined by roles
+
+# Generic
+generic_enable_feature_ssl_copy_cert: false
+apache_enable_feature_ssl_copy_key: false
+
+generic_ssl_cert_file: ssl-cert-snakeoil.pem
+
+generic_ssl_key_file: ssl-cert-snakeoil.key

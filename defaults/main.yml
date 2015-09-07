@@ -5,33 +5,60 @@
 apache_app_user_username: app
 
 # Server settings
-apache_server_use_canonical_name: "off"
+apache_enable_feature_disable_default_configs: true
+apache_enable_feature_disable_default_apache_virtual_host: true
+apache_enable_feature_default_http_virtualhost: false
+apache_enable_feature_default_https_virtualhost: "{{ apache_enable_feature_ssl }}"
+apache_enable_feature_upgrade_http_to_https: true
+apache_enable_feature_use_canonical_name: false
+apache_enable_feature_remove_default_document_root_content: true
+apache_enable_feature_disable_document_root_allow_overrides: true
 
-# Virtual host settings
-apache_default_var_www_server_binding: 0.0.0.0
-apache_default_var_www_server_http_port: 80
-apache_default_var_www_server_https_port: 443
+apache_server_binding: 0.0.0.0
+apache_server_http_port: 80
+apache_server_https_port: 443
 
-apache_default_var_www_server_name: "{{ ansible_fqdn }}"
-apache_default_var_www_server_admin: "basweb@bas.ac.uk"
+apache_server_name: "{{ ansible_fqdn }}"
+apache_server_admin: "webmaster@example.com"
+apache_document_root: "{{ generic_document_root | default('/var/www') }}"
 
-apache_default_var_www_document_root: /var/www
-apache_default_var_www_document_root_alias: ""
-
-apache_default_var_www_options:
+apache_document_root_options:
   - "-Indexes"
   - "+FollowSymLinks"
   - "-MultiViews"
-apache_default_var_www_allowoverride: "All"
 
-# Virtual host settings: SSL
-apache_default_var_www_ssl_enabled: false
+apache_available_configs_dir: /etc/apache2/conf-available
+apache_enabled_configs_dir: /etc/apache2/conf-enabled
+apache_enabled_configs_file_selector: "*.conf"
+apache_default_enabled_configs:
+  - "charset.conf"
+  - "localized-error-pages.conf"
+  - "other-vhosts-access-log.conf"
+  - "security.conf"
+  - "serve-cgi-bin.conf"
 
-apache_default_var_www_ssl_cert_path: /app/provisioning/certificates/domain
-apache_default_var_www_ssl_cert_file: certificate-including-trust-chain.crt
+# SSL settings
+apache_enable_feature_ssl: "{{ generic_enable_feature_ssl | default(true) }}"
+apache_enable_feature_ssl_copy_cert: "{{ generic_enable_feature_ssl_copy_cert | default(true) }}"
+apache_enable_feature_ssl_copy_key: "{{ generic_enable_feature_ssl_copy_key | default(true) }}"
+apache_enable_feature_ssl_hsts: true
+apache_enable_feature_ssl_custom_dh_parameters: false
 
-apache_default_var_www_ssl_cert_chain_path: "{{ apache_default_var_www_ssl_cert_path }}"
-apache_default_var_www_ssl_cert_chain_file: "{{ apache_default_var_www_ssl_cert_file }}"
+apache_ssl_additional_config_path: "{{ apache_available_configs_dir }}"
 
-apache_default_var_www_ssl_key_path: /etc/ssl/private
-apache_default_var_www_ssl_key_file: "certificate.key"
+apache_ssl_cert_src: "{{ generic_ssl_cert_src | default('certificates') }}"  # Include additional sub-directories if required
+apache_ssl_cert_base: "{{ generic_ssl_cert_base | default('/etc/ssl/certs') }}"
+apache_ssl_cert_file: "{{ generic_ssl_cert_file | default('certificate-including-trust-chain.crt') }}"
+
+apache_ssl_chain_base: "{{ apache_ssl_cert_base }}"
+apache_ssl_chain_file: "{{ apache_ssl_cert_file }}"
+
+apache_ssl_key_src: "{{ generic_ssl_key_src | default('certificates') }}"
+apache_ssl_key_base: "{{ generic_ssl_key_base | default('/etc/ssl/private') }}"  
+apache_ssl_key_file: "{{ generic_ssl_key_file | default('certificate.key') }}"
+
+apache_ssl_dhparam_cert_path: /etc/ssl/certs
+apache_ssl_dhparam_cert_file: dhparam.pem
+
+# UFW settings
+apache_enable_feature_configure_ufw: true

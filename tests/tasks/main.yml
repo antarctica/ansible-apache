@@ -1,0 +1,71 @@
+---
+# Tests the installation, configuration and functionality of the Apache web server and default virtual hosts
+
+# Installation and configuration checks
+# These checks mirror individual tasks to ensure they execute correctly (i.e. that they install the right package or create the correct config file)
+
+# Core configuration
+
+- include: install-apache.yml
+
+- include: configure-apache.yml
+
+# Security
+
+- include: configure-ufw.yml
+  when: apache_enable_feature_configure_ufw == true
+
+# Additional configuration
+
+- include: disable-default-configs.yml
+  when: apache_enable_feature_disable_default_configs == true
+
+- include: remove-default-content.yml
+  when: apache_enable_feature_remove_default_document_root_content == true
+
+- include: configure-ssl.yml
+  when: apache_enable_feature_ssl == true or apache_enable_feature_ssl == "True"
+
+- include: app-user.yml
+
+# Virtual hosts
+
+- include: disable-default-apache-virtualhost.yml
+  when: apache_enable_feature_disable_default_apache_virtual_host == true or apache_enable_feature_disable_default_apache_virtual_host == "True"
+
+
+- include: configure-default-http-virtualhost.yml
+  when: apache_enable_feature_default_http_virtualhost == true or apache_enable_feature_default_http_virtualhost == "True"
+
+- include: disable-default-http-virtualhost.yml
+  when: (apache_enable_feature_default_http_virtualhost == false or apache_enable_feature_default_http_virtualhost == "False")
+
+
+- include: configure-default-https-virtualhost.yml
+  when: apache_enable_feature_default_https_virtualhost == true or apache_enable_feature_default_https_virtualhost == "True"
+
+- include: disable-default-https-virtualhost.yml
+  when: apache_enable_feature_default_https_virtualhost == false or apache_enable_feature_default_https_virtualhost == "False"
+
+
+- include: configure-redirect-http-https-virtualhost.yml
+  when: apache_enable_feature_upgrade_http_to_https == true or apache_enable_feature_upgrade_http_to_https == "True"
+
+- include: disable-redirect-http-https-virtualhost.yml
+  when: (apache_enable_feature_upgrade_http_to_https == false or apache_enable_feature_upgrade_http_to_https == "False")
+
+
+# Functionality checks
+# These checks need to run after the package or service has been configured to ensure it is working correctly,
+# using an configuration that may have been set by this role.
+
+- include: test-apache-service.yml
+
+- include: test-default-http-virtualhost.yml
+  when: apache_enable_feature_default_http_virtualhost == true or apache_enable_feature_default_http_virtualhost == "True"
+
+- include: test-default-https-virtualhost.yml
+  when: apache_enable_feature_default_https_virtualhost == true or apache_enable_feature_default_https_virtualhost == "True"
+
+- include: test-redirect-http-https-virtualhost.yml
+  when: apache_enable_feature_upgrade_http_to_https == true or apache_enable_feature_upgrade_http_to_https == "True"

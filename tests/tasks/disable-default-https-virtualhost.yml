@@ -1,0 +1,21 @@
+---
+# Disable the default virtual host for secure connections
+
+- name: determine if default secure virtual host is disabled
+  stat: path=/etc/apache2/sites-enabled/default-ssl.conf
+  changed_when: False
+  register: apache_fact_default_secure_virtual_host_is_disabled
+- name: assert default secure virtual host is disabled
+  assert:
+    that:
+      - "apache_fact_default_secure_virtual_host_is_disabled.stat.exists == False"
+
+- name: get active firewall rules
+  command: ufw status
+  changed_when: False
+  register: apache_fact_active_firewall_rules
+- name: assert rules to allow secure connections to apache are absent
+  assert:
+    that:
+      - "'Apache-Secure              ALLOW       Anywhere' not in apache_fact_active_firewall_rules.stdout"
+      - "'Apache-Secure (v6)         ALLOW       Anywhere (v6)' not in apache_fact_active_firewall_rules.stdout"

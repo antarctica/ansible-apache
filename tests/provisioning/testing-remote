@@ -1,0 +1,28 @@
+# This is an Ansible inventory file. It inherits from /etc/ansible/hosts if it exists
+# It organises hosts/nodes into logical groups which can then be used in playbooks
+
+# This inventory is for the 'testing-remote' environment
+
+# It is best practice to group hosts by location and purpose like so:
+
+[digitalocean-test]
+barc-apache-test-bare.web.nerc-bas.ac.uk
+barc-apache-test-http-only.web.nerc-bas.ac.uk
+barc-apache-test-https-only.web.nerc-bas.ac.uk
+barc-apache-test-http-to-https.web.nerc-bas.ac.uk
+
+[digitalocean:children]
+digitalocean-test
+
+[all-servers:children]
+digitalocean
+
+
+[barc-apache-test-webservers-remote]
+barc-apache-test-bare.web.nerc-bas.ac.uk
+barc-apache-test-http-only.web.nerc-bas.ac.uk
+barc-apache-test-https-only.web.nerc-bas.ac.uk
+barc-apache-test-http-to-https.web.nerc-bas.ac.uk
+
+[barc-apache-test-webservers:children]
+barc-apache-test-webservers-remote

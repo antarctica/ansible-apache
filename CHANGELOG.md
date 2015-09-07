@@ -1,78 +1,174 @@
-# Apache (`apache`) - Changelog
+# Apache (`apache`) - Change log
 
-## 0.5.1 - May 2015
+All notable changes to this role will be documented in this file.
+This role adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-* Changing the Apache serverName property to use the FQDN by default, rather than the hostname 
-* Fixing names of virtualhost template files
-* Deprecating support for aliases and Ubuntu versions before 14.04
+## [Unreleased][unreleased]
 
-## 0.5.0 - March 2015
+## [1.0.0] - 2015-09-07
 
-* Adding markers for including module and custom configuration within virtualhost configuration files
+### Changed - BREAKING!
 
-## 0.4.2 - March 2015
+* Removing support for un-deprecated feature - markers for including module and custom virtual host configuration details, use new virtual host templates instead
+* Removing support for un-deprecated feature - use of Allow Overrides is disabled by default - re-enable to use `.htaccess` files
+* Removing support for un-deprecated feature - running CGI scripts is removed in default virtual host files
+* Removing support for un-deprecated feature - Alias for system documentation is removed in default virtual host files
+* Support for secure connections (i.e. HTTPS) is now assumed
+* It is assumed the certificate and associated private key for secure connections will be stored as single files inside a base directory (i.e. '/etc/ssl/private/certificate.key' not '/etc/ssl/private/certificate/certificate.key')
+* Refactoring all variables relating to secure connections
+* Removing support for deprecated feature - aliases within virtual hosts
+* Removing support for deprecated feature - Ubuntu versions before 14.04
 
-* Fixing default document root which incorrectly contained a trailing slash
+### Deprecated
 
-## 0.4.1 - March 2015
+* Support for non-secure virtual hosts (i.e. HTTP), is now disabled by default and will be removed entirely - use the non-secure to secure virtual host instead
+* Support for Allow Overrides, is now disabled by default and will be removed entirely
 
-* Adds support for configuring ports file to support non-default ports
+### Added
 
-## 0.4.0 - March 2015
+* Added testing support for automated testing using Semaphore
+* Added testing support for manual testing, using local and remote environments
+* Added support for UFW by creating application definitions and rules
+* Added support for upgrading non-secure to secure requests using a specialist, minimal, virtual host
+* Adding support for uploading a certificate required for secure connections
 
-* Adds SSL chain file support
-* Adds server name support
-* Adds canonical name support
-* Adds support for setting the network interface and secure/non-secure port bindings
+### Fixed
 
-## 0.3.0 - January 2015
+* Default variable values, which were previously defined within the core role, now use generic variables and fall-back defaults
+* Support for uploading a certificate private key has been moved from core role to here
+* Spelling virtual host properly, i.e. virtual host not 'virtualhost'
+
+### Changed
+
+* Updated change log to follow 'keep a changelog' format
+* Significantly improving the configuration of secure connections, through the choice of supported cipher sets and protocols
+* Removing content from the default document root is now optional, but still enabled by default
+* Using Jinja template for virtual host files to reduce duplication
+* Providing future support for custom DH parameters for secure connections, for when this is available with operating systems
+* Refactoring configuration needed for secure connections and configuring the default HTTPS virtual host
+* Refactoring tasks to be clearer and better structured
+
+## [0.5.1] - 2015-05-01
+
+### Deprecated
+
+* Support for aliases
+* Support for Ubuntu versions before 14.04
+
+### Fixed
+
+* Names of virtual host template files
+
+### Changed
+
+* The Apache 'Server Name' property now uses the FQDN by default, rather than the hostname 
+
+## [0.5.0] - 2015-03-01
+
+### Added
+
+* Adding markers for including module and custom configuration within virtual host configuration files
+
+## [0.4.2] - 2015-03-01
+
+### Fixed
+
+* Default document root variable value which incorrectly contained a trailing slash
+
+## [0.4.1] - 2015-03-01
+
+### Added
+
+* Support for configuring ports file to support non-default ports
+
+## [0.4.0] - 2015-03-01
+
+### Added
+
+* Certificate chain file support
+* Server name support
+* Canonical name support
+* Support for setting the network interface and secure/non-secure port bindings
+
+## [0.3.0] - 2015-01-01
+
+### Added
 
 * Adds single alias support
 
-## 0.2.4 - December 2014
+## [0.2.4] - 2014-12-01
+
+### Changed
 
 * Preparing role for public release
 
-## 0.2.3 - October 2014
+## [0.2.3] - 2014-10-01
+
+### Fixed
+
+* The app user's username is now configurable
+
+### Changed
 
 * Updating role dependencies
-* The app user's username is now configurable
 * Spelling
 * Preparing role for public release
 
-## 0.2.2 - October 2014
+## [0.2.2] - 2014-10-01
+
+### Changed
 
 * Adjusting role for inclusion in BARC
-* Tasks cleanup
+* Tasks clean-up
 
-## 0.2.1 - September 2014
+## [0.2.1] - 2014-09-01
 
-* Disabling reporting of apache version
+### Changed
 
-## 0.2.0 - September 2014
+* Disabling reporting of Apache version
 
-* Adding SSL virtual host support
+## [0.2.0] - 2014-09-01
 
-## 0.1.4 - September 2014
+### Added
 
-* Fixing 'Could not reliably determine the server's fully qualified domain name' error
-* Fixing incorrect server admin address
+* Secure virtual host support
 
-## 0.1.3 - September 2014
+## [0.1.4] - 2014-09-01
 
-* Fixing hardcoded non-standard document root
+### Fixed
+
+* 'Could not reliably determine the server's fully qualified domain name' error
+* Incorrect server administrator address error
+
+## [0.1.3] - 2014-09-01
+
+### Fixed
+
+* Hard-coded non-standard document root
+
+### Changed
+
 * Minor template refactoring
 
-## 0.1.2 - July 2014
+## [0.1.2] - 2014-07-01
 
-* Making compatible with apache 2.4
-* If a non-standard document root is used apache file configured to allow access to this directory automatically
+### Added
 
-## 0.1.1 - July 2014
+* Compatibility with Apache 2.4
 
-* Making compatible with ubuntu 14.04
-* Adding new variables for document root and server admin
+### Fixed
 
-## 0.1.0 - June 2014
+* If a non-standard document root is used Apache is configured to allow access to this directory automatically
+
+## [0.1.1] - 2014-07-01
+
+### Added
+
+* Compatibility with Ubuntu 14.04
+* New variables for document root and server administrator
+
+## [0.2.1] - 2014-06-01
+
+### Added
 
 * Initial version
