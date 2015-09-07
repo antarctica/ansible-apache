@@ -1,6 +1,6 @@
-The MIT License
+The MIT license
 
-Copyright (c) 2015 NERC BAS. http://www.antarctica.ac.uk
+Copyright (c) NERC BAS 2015 https://www.bas.ac.uk
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

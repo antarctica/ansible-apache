@@ -30,29 +30,34 @@
   assert:
     that:
       - "apache_fact_stronger_dh_parameters_file_is_present.stat.exists == True"
+      - "apache_fact_stronger_dh_parameters_file_is_present.stat.pw_name == 'root'"
+      - "apache_fact_stronger_dh_parameters_file_is_present.stat.gr_name == 'ssl-cert'"
+      - "apache_fact_stronger_dh_parameters_file_is_present.stat.mode == '0644'"
   when: apache_enable_feature_ssl_custom_dh_parameters == true
 
-- name: determine if SSL certificate has been copied to SSL directory
+- name: determine if SSL certificate is present and its permissions
   stat: path="{{ apache_ssl_cert_base }}/{{ apache_ssl_cert_file }}"
   changed_when: False
   register: apache_fact_ssl_certificate_is_present
-  when: apache_enable_feature_ssl_copy_cert == true or apache_enable_feature_ssl_copy_cert == "True"
-- name: assert SSL certificate is present
+- name: assert SSL certificate is present and has correct permissions
   assert:
     that:
       - "apache_fact_ssl_certificate_is_present.stat.exists == True"
-  when: apache_enable_feature_ssl_copy_cert == true or apache_enable_feature_ssl_copy_cert == "True"
+      - "apache_fact_ssl_certificate_is_present.stat.pw_name == 'root'"
+      - "apache_fact_ssl_certificate_is_present.stat.gr_name == 'ssl-cert'"
+      - "apache_fact_ssl_certificate_is_present.stat.mode == '0644'"
 
-- name: determine if SSL certificate private key has been copied to SSL directory
+- name: determine if SSL certificate private key is present and has correct permissions
   stat: path="{{ apache_ssl_key_base }}/{{ apache_ssl_key_file }}"
   changed_when: False
   register: apache_fact_ssl_certificate_key_is_present
-  when: apache_enable_feature_ssl_copy_key == true or apache_enable_feature_ssl_copy_key == "True"
-- name: assert SSL certificate private key is present
+- name: assert SSL certificate private key is present and has correct permissions
   assert:
     that:
       - "apache_fact_ssl_certificate_key_is_present.stat.exists == True"
-  when: apache_enable_feature_ssl_copy_key == true or apache_enable_feature_ssl_copy_key == "True"
+      - "apache_fact_ssl_certificate_key_is_present.stat.pw_name == 'root'"
+      - "apache_fact_ssl_certificate_key_is_present.stat.gr_name == 'ssl-cert'"
+      - "apache_fact_ssl_certificate_key_is_present.stat.mode == '0640'"
 
 - name: determine if additional SSL configuration is present
   stat: path="{{ apache_ssl_additional_config_path }}/ssl.conf"
