@@ -1,6 +1,6 @@
 # Apache (`apache`)
 
-[![Build Status](https://semaphoreci.com/api/v1/projects/9fd776a8-8f74-4e82-a2e0-bce17fcacdf3/526947/badge.svg)](https://semaphoreci.com/antarctica/ansible-apache)
+[![Build Status](https://semaphoreci.com/api/v1/projects/9fd776a8-8f74-4e82-a2e0-bce17fcacdf3/533398/badge.svg)](https://semaphoreci.com/antarctica/ansible-apache)
 
 **Part of the BAS Ansible Role Collection (BARC)**
 

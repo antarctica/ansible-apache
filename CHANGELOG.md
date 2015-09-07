@@ -5,6 +5,10 @@ This role adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased][unreleased]
 
+### Fixed
+
+* Updating build badge to track *master* rather than *develop* branch
+
 ## [1.0.0] - 2015-09-07
 
 ### Changed - BREAKING!
